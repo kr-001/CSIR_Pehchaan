@@ -16,14 +16,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.2"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:contentDescription="@string/Logo" />
 
     <!-- Login Text -->
     <TextView
         android:id="@+id/textViewLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="@string/Login"
         android:textSize="24sp"
         app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +37,7 @@
         android:id="@+id/editTextIdNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="ID Number"
+        android:hint="@string/ID_Number"
         android:inputType="number"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/textViewLogin"
@@ -45,14 +46,15 @@
         app:layout_constraintHorizontal_bias="0.5"
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:autofillHints="username" />
 
     <!-- Password -->
     <EditText
         android:id="@+id/editTextPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="@string/Password"
         android:inputType="textPassword"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/editTextIdNumber"
@@ -61,14 +63,15 @@
         app:layout_constraintHorizontal_bias="0.5"
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:autofillHints="password" />
 
     <!-- Login Button -->
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="@string/LoginButton"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@id/editTextPassword"
         app:layout_constraintStart_toStartOf="parent"

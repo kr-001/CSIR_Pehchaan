@@ -6,7 +6,12 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="logo_content_description">Logo</string>
-
+    <string name="Logo">Logo</string>
+    <string name="Login">Login</string>
+    <string name="ID_Number">I.D.Number</string>
+    <string name="Password">Password</string>
+    <string name="LoginButton">Login</string>
+    <string name="logo_content_description">Logo Content</string>
+<string name="lorem_ipsum">Lorem</string>
     <string name="dp_Name">D.P.Name</string>
 </resources>
