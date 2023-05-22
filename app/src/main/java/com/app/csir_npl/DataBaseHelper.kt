@@ -1,23 +1,40 @@
-import java.io.File
-import java.sql.DriverManager
-import java.sql.ResultSet
-import java.util.*
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
 
-class DatabaseHelper {
-    private val dbHost = "localhost"
-    private val dbPort = 3306
-    private val dbName = "csir_npl"
-    private val dbUser = "root"
-    private val dbPassword = "Ravi@1998"
+class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
-    data class User(
-        val fullName: String,
-        val designation: String,
-        val email: String,
-        val mobile: String,
-        val address: String,
-        val filePath: String
-    )
+    companion object {
+        private const val DATABASE_VERSION = 1
+        private const val DATABASE_NAME = "UserDatabase.db"
+        private const val TABLE_USERS = "users"
+        private const val COLUMN_ID = "id"
+        private const val COLUMN_FULL_NAME = "full_name"
+        private const val COLUMN_DESIGNATION = "designation"
+        private const val COLUMN_EMAIL = "email"
+        private const val COLUMN_MOBILE = "mobile"
+        private const val COLUMN_ADDRESS = "address"
+        private const val COLUMN_PASSWORD = "password"
+    }
+
+    override fun onCreate(db: SQLiteDatabase) {
+        val createTableQuery = "CREATE TABLE $TABLE_USERS (" +
+                "$COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "$COLUMN_FULL_NAME TEXT," +
+                "$COLUMN_DESIGNATION TEXT," +
+                "$COLUMN_EMAIL TEXT," +
+                "$COLUMN_MOBILE TEXT," +
+                "$COLUMN_ADDRESS TEXT," +
+                "$COLUMN_PASSWORD TEXT)"
+        db.execSQL(createTableQuery)
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_USERS")
+        onCreate(db)
+    }
 
     fun insertUserDetails(
         fullName: String,
@@ -25,118 +42,31 @@ class DatabaseHelper {
         email: String,
         mobile: String,
         address: String,
-        password: String,
-        imageFile: File
-    ) {
-        val query =
-            "INSERT INTO users (full_name, designation, email, mobile, address, password, file_path) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        password: String
+    ): Long {
+        val values = ContentValues()
+        values.put(COLUMN_FULL_NAME, fullName)
+        values.put(COLUMN_DESIGNATION, designation)
+        values.put(COLUMN_EMAIL, email)
+        values.put(COLUMN_MOBILE, mobile)
+        values.put(COLUMN_ADDRESS, address)
+        values.put(COLUMN_PASSWORD, password)
 
-        // Open a connection to the database
-        DriverManager.getConnection(getUrl(), dbUser, dbPassword).use { connection ->
-            // Check if the users table exists
-            val tableExistsQuery = "SHOW TABLES LIKE 'users'"
-            val tableExists = connection.prepareStatement(tableExistsQuery).use { statement ->
-                statement.executeQuery().next()
-            }
-
-            // If the users table does not exist, create it
-            if (!tableExists) {
-                val createTableQuery = "CREATE TABLE users (" +
-                        "id INT AUTO_INCREMENT PRIMARY KEY," +
-                        "full_name VARCHAR(255) NOT NULL," +
-                        "designation VARCHAR(255) NOT NULL," +
-                        "email VARCHAR(255) NOT NULL," +
-                        "mobile VARCHAR(255) NOT NULL," +
-                        "address VARCHAR(255) NOT NULL," +
-                        "password VARCHAR(255) NOT NULL," +
-                        "file_path VARCHAR(255) NOT NULL" +
-                        ")"
-                connection.prepareStatement(createTableQuery).use { statement ->
-                    statement.executeUpdate()
-                }
-            }
-
-            // Save the image file
-            val uniqueFileName = "${System.currentTimeMillis()}_${UUID.randomUUID()}.${getFileExtension(imageFile)}"
-            val destinationFile = File("path/to/your/images/directory", uniqueFileName)
-            imageFile.copyTo(destinationFile)
-
-            // Insert user details into the users table
-            connection.prepareStatement(query).use { statement ->
-                // Set the parameter values
-                statement.setString(1, fullName)
-                statement.setString(2, designation)
-                statement.setString(3, email)
-                statement.setString(4, mobile)
-                statement.setString(5, address)
-                statement.setString(6, password)
-                statement.setString(7, destinationFile.absolutePath)
-
-                // Execute the query
-                statement.executeUpdate()
-            }
-        }
+        val db = this.writableDatabase
+        val id = db.insert(TABLE_USERS, null, values)
+        db.close()
+        return id
     }
 
-    fun authenticateUser(id: String, password: String): Boolean {
-        val query = "SELECT * FROM users WHERE id = ? AND password = ?"
+    fun authenticateUser(email: String, password: String): Boolean {
+        val selectQuery =
+            "SELECT * FROM $TABLE_USERS WHERE $COLUMN_EMAIL = '$email' AND $COLUMN_PASSWORD = '$password'"
 
-        // Open a connection to the database
-        DriverManager.getConnection(getUrl(), dbUser, dbPassword).use { connection ->
-            connection.prepareStatement(query).use { statement ->
-                // Set the parameter values
-                statement.setString(1, id)
-                statement.setString(2, password)
-
-                // Execute the query
-                val resultSet: ResultSet = statement.executeQuery()
-
-                // Check if a user was found
-                if (resultSet.next()) {
-                    return true
-                }
-            }
-        }
-
-        return false
-    }
-
-    fun getUserDetails(email: String, password: String): User? {
-        val query = "SELECT * FROM users WHERE email = ? AND password = ?"
-
-        // Open a connection to the database
-        DriverManager.getConnection(getUrl(), dbUser, dbPassword).use { connection ->
-            connection.prepareStatement(query).use { statement ->
-                // Set the parameter values
-                statement.setString(1, email)
-                statement.setString(2, password)
-
-                // Execute the query
-                val resultSet: ResultSet = statement.executeQuery()
-
-                // Check if a user was found
-                if (resultSet.next()) {
-                    val fullName = resultSet.getString("full_name")
-                    val designation = resultSet.getString("designation")
-                    val mobile = resultSet.getString("mobile")
-                    val address = resultSet.getString("address")
-                    val filePath = resultSet.getString("file_path")
-
-                    return User(fullName, designation, email, mobile, address, filePath)
-                }
-            }
-        }
-
-        return null
-    }
-
-    private fun getUrl(): String {
-        return "jdbc:mysql://$dbHost:$dbPort/$dbName"
-    }
-
-    private fun getFileExtension(file: File): String {
-        val fileName = file.name
-        val dotIndex = fileName.lastIndexOf('.')
-        return if (dotIndex != -1) fileName.substring(dotIndex + 1) else ""
+        val db = this.readableDatabase
+        val cursor: Cursor? = db.rawQuery(selectQuery, null)
+        val rowCount = cursor?.count ?: 0
+        cursor?.close()
+        db.close()
+        return rowCount > 0
     }
 }

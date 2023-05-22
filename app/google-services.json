@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "950484205707",
+    "project_id": "csirnpl-59004",
+    "storage_bucket": "csirnpl-59004.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950484205707:android:98c20a28981a273e54148e",
+        "android_client_info": {
+          "package_name": "com.app.csir_npl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950484205707-j48hirrrtlmssm3375v09k1m2dqurpof.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDns7L1anQMvnMWediTdyYYm04Z0bwfnSc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950484205707-j48hirrrtlmssm3375v09k1m2dqurpof.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

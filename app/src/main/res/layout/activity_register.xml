@@ -1,224 +1,272 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:layout_height="match_parent">
 
-    <!-- Logo -->
-    <ImageView
-        android:id="@+id/imageViewLogo"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.2"
-        android:contentDescription="@string/logo_content_description"
-        android:padding="16dp" />
+        android:orientation="vertical">
 
-    <!-- Enter Your Details Text -->
-    <TextView
-        android:id="@+id/textViewEnterDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enter Your Details - as per your ID"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="16dp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rootLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
 
-    <!-- Full Name -->
-    <EditText
-        android:id="@+id/editTextFullName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Full Name"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/textViewEnterDetails"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:padding="16dp" />
+            <!-- Logo -->
+            <ImageView
+                android:id="@+id/imageViewLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/logo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_bias="0.2"
+                android:contentDescription="@string/logo_content_description"
+                android:padding="16dp" />
 
-    <!-- Designation -->
-    <EditText
-        android:id="@+id/editTextDesignation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Designation"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/editTextFullName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:padding="16dp" />
+            <!-- Enter Your Details Text -->
+            <TextView
+                android:id="@+id/textViewEnterDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter Your Details - as per your ID"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginTop="16dp" />
 
-    <!-- Contact Email -->
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Email"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/editTextDesignation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:padding="16dp" />
+            <!-- Full Name -->
+            <EditText
+                android:id="@+id/editTextFullName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Full Name"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/textViewEnterDetails"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp" />
 
-    <!-- Contact Mobile -->
-    <EditText
-        android:id="@+id/editTextMobile"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Mobile"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/editTextEmail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:padding="16dp" />
+            <!-- ID Number -->
+            <EditText
+                android:id="@+id/editTextIDNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="ID Number"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextFullName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp" />
 
-    <!-- Address -->
-    <EditText
-        android:id="@+id/editTextAddress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Address"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/editTextMobile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:padding="16dp" />
+            <!-- Designation -->
+            <EditText
+                android:id="@+id/editTextDesignation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Designation"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextIDNumber"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp" />
 
-    <!-- Password -->
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:textSize="20sp"
-        android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/editTextAddress"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:padding="16dp" />
+            <!-- Contact Email -->
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextDesignation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp" />
 
-    <!-- Confirm Password -->
-    <EditText
-        android:id="@+id/editTextConfirmPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Confirm Password"
-        android:textSize="20sp"
-        android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="16dp"
-        android:padding="16dp" />
+            <!-- Contact Mobile -->
+            <EditText
+                android:id="@+id/editTextMobile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Mobile"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextEmail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp" />
 
-    <!-- Upload Profile Picture Button -->
-    <Button
-        android:id="@+id/buttonUploadProfilePicture"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Upload Profile Picture"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/editTextConfirmPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="16dp" />
+            <!-- Address -->
+            <EditText
+                android:id="@+id/editTextAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Address"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextMobile"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp" />
 
-    <!-- DU Name Label -->
-    <TextView
-        android:id="@+id/textViewDuNameLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DU Name"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/buttonUploadProfilePicture"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="16dp" />
+            <!-- Password -->
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:textSize="20sp"
+                android:inputType="textPassword"
+                app:layout_constraintTop_toBottomOf="@id/editTextAddress"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp" />
 
-    <!-- DU Name Dropdown -->
-    <Spinner
-        android:id="@+id/spinnerDuName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/textViewDuNameLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginHorizontal="16dp"
-        android:padding="16dp" />
 
-    <!-- DP Name Label -->
-    <TextView
-        android:id="@+id/textViewDpNameLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DP Name"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/spinnerDuName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="16dp" />
+            <!-- Confirm Password -->
+            <EditText
+                android:id="@+id/editTextConfirmPassword"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password"
+                android:textSize="20sp"
+                android:inputType="textPassword"
+                app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp" />
 
-    <!-- DP Name Dropdown -->
-    <Spinner
-        android:id="@+id/spinnerDpName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/textViewDpNameLabel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginHorizontal="16dp"
-        android:padding="16dp" />
+            <!-- Upload Profile Picture Button -->
+            <Button
+                android:id="@+id/buttonUploadProfilePicture"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Upload Profile Picture"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextConfirmPassword"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp" />
 
-    <!-- Register Button -->
-    <Button
-        android:id="@+id/buttonRegister"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/spinnerDpName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="16dp" />
+            <!-- DU Name Label -->
+            <TextView
+                android:id="@+id/textViewDuNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DU Name"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/buttonUploadProfilePicture"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- DU Name Dropdown -->
+            <LinearLayout
+                android:id="@+id/layoutDuName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                app:layout_constraintTop_toBottomOf="@id/buttonUploadProfilePicture"
+                app:layout_constraintStart_toEndOf="@id/textViewDuNameLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp">
+
+                <Spinner
+                    android:id="@+id/spinnerDuName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:paddingRight="32dp"
+                    android:paddingLeft="8dp" />
+
+            </LinearLayout>
+
+            <!-- DP Name Label -->
+            <TextView
+                android:id="@+id/textViewDpNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DP Name"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/layoutDuName"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp" />
+
+            <!-- DP Name Dropdown -->
+            <LinearLayout
+                android:id="@+id/layoutDpName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                app:layout_constraintTop_toBottomOf="@id/layoutDuName"
+                app:layout_constraintStart_toEndOf="@id/textViewDpNameLabel"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp">
+
+                <Spinner
+                    android:id="@+id/spinnerDpName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:paddingRight="32dp"
+                    android:paddingLeft="8dp" />
+
+            </LinearLayout>
+
+            <!-- Submit Button -->
+            <Button
+                android:id="@+id/buttonSubmit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/layoutDpName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginTop="16dp"
+                android:layout_marginHorizontal="16dp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+</ScrollView>

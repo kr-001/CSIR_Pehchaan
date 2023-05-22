@@ -1,18 +1,18 @@
 package com.app.csir_npl
-
-import DatabaseHelper
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-
+import com.app.csir_npl.R
+import com.google.firebase.firestore.FirebaseFirestore
+import com.app.csir_npl.User
 class LoginActivity : AppCompatActivity() {
     private lateinit var editTextId: EditText
     private lateinit var editTextPassword: EditText
     private lateinit var buttonLogin: Button
 
-    private lateinit var databaseHelper: DatabaseHelper
+    private lateinit var firestore: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,28 +22,40 @@ class LoginActivity : AppCompatActivity() {
         editTextPassword = findViewById(R.id.editTextPassword)
         buttonLogin = findViewById(R.id.buttonLogin)
 
-        databaseHelper = DatabaseHelper()
+        firestore = FirebaseFirestore.getInstance()
 
         buttonLogin.setOnClickListener {
             val id = editTextId.text.toString()
             val password = editTextPassword.text.toString()
 
             // Authenticate user
-            val isAuthenticated = databaseHelper.authenticateUser(id, password)
-            if (isAuthenticated) {
-                val user = databaseHelper.getUserDetails(id , password)
-                if (user != null) {
-                    displayIdCard(user)
-                } else {
-                    Toast.makeText(this, "Failed to retrieve user details", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this, "Invalid ID number or password", Toast.LENGTH_SHORT).show()
-            }
+            authenticateUser(id, password)
         }
     }
 
-    private fun displayIdCard(user: DatabaseHelper.User) {
+    private fun authenticateUser(id: String, password: String) {
+        firestore.collection("users")
+            .whereEqualTo("id", id)
+            .whereEqualTo("password", password)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                if (!querySnapshot.isEmpty) {
+                    val user = querySnapshot.documents[0].toObject(User::class.java)
+                    if (user != null) {
+                        displayIdCard(user)
+                    } else {
+                        Toast.makeText(this, "Failed to retrieve user details", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this, "Invalid ID number or password", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Failed to authenticate: ${exception.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun displayIdCard(user: User) {
         val idCardLayout = LinearLayout(this)
         idCardLayout.orientation = LinearLayout.VERTICAL
         idCardLayout.setBackgroundColor(Color.WHITE)
@@ -86,6 +98,19 @@ class LoginActivity : AppCompatActivity() {
         addressText.textSize = 16f
         idCardLayout.addView(addressText)
 
+        // Create and add the user's DU Name
+        val duNameText = TextView(this)
+        duNameText.text = "DU Name: ${user.duName}"
+        duNameText.textSize = 16f
+        idCardLayout.addView(duNameText)
+
+        // Create and add the user's DP Name
+        val dpNameText = TextView(this)
+        dpNameText.text = "DP Name: ${user.dpName}"
+        dpNameText.textSize = 16f
+        idCardLayout.addView(dpNameText)
+
         setContentView(idCardLayout)
     }
+
 }
