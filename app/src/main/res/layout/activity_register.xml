@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rootLayout"
@@ -19,8 +20,8 @@
             <!-- Logo -->
             <ImageView
                 android:id="@+id/imageViewLogo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:src="@drawable/logo"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +30,19 @@
                 android:contentDescription="@string/logo_content_description"
                 android:padding="16dp" />
 
+            <!-- CSIR Pehchaan Text -->
+            <TextView
+                android:id="@+id/textViewCSIRPehchaan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CSIR Pehchaan"
+                android:textSize="24sp"
+                app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginTop="32dp" />
+
             <!-- Enter Your Details Text -->
             <TextView
                 android:id="@+id/textViewEnterDetails"
@@ -36,11 +50,38 @@
                 android:layout_height="wrap_content"
                 android:text="Enter Your Details - as per your ID"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
+                app:layout_constraintTop_toBottomOf="@id/textViewCSIRPehchaan"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 android:layout_marginTop="16dp" />
+
+            <!-- Title Label -->
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/textViewEnterDetails"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
+
+            <!-- Title Spinner -->
+            <Spinner
+                android:id="@+id/spinnerTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:paddingEnd="32dp"
+                android:paddingStart="8dp"
+                app:layout_constraintTop_toBottomOf="@id/textViewTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginTop="8dp"
+                android:entries="@array/title_options" />
 
             <!-- Full Name -->
             <EditText
@@ -49,22 +90,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Full Name"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/textViewEnterDetails"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:padding="16dp" />
-
-            <!-- ID Number -->
-            <EditText
-                android:id="@+id/editTextIDNumber"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="ID Number"
-                android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextFullName"
+                app:layout_constraintTop_toBottomOf="@id/spinnerTitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -77,23 +103,22 @@
                 android:id="@+id/editTextDesignation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Designation"
+                android:hint="Designation/Division Name"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextIDNumber"
+                app:layout_constraintTop_toBottomOf="@id/editTextFullName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintVertical_chainStyle="packed"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 android:padding="16dp" />
 
-            <!-- Contact Email -->
+            <!-- Lab Name -->
             <EditText
-                android:id="@+id/editTextEmail"
+                android:id="@+id/editTextLabName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Email"
+                android:hint="Lab Name"
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@id/editTextDesignation"
                 app:layout_constraintStart_toStartOf="parent"
@@ -103,14 +128,14 @@
                 android:layout_marginTop="16dp"
                 android:padding="16dp" />
 
-            <!-- Contact Mobile -->
+            <!-- City -->
             <EditText
-                android:id="@+id/editTextMobile"
+                android:id="@+id/editTextCity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Mobile"
+                android:hint="City"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextEmail"
+                app:layout_constraintTop_toBottomOf="@id/editTextLabName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -118,39 +143,85 @@
                 android:layout_marginTop="16dp"
                 android:padding="16dp" />
 
-            <!-- Address -->
+            <!-- State -->
             <EditText
-                android:id="@+id/editTextAddress"
+                android:id="@+id/editTextState"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Address"
+                android:hint="State"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextMobile"
+                app:layout_constraintTop_toBottomOf="@id/editTextCity"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 android:padding="16dp" />
+
+            <!-- ID Card Number -->
+            <EditText
+                android:id="@+id/editTextIDCardNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="ID Card Number"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextState"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp" />
+
+            <!-- Photo Upload Section -->
+            <TextView
+                android:id="@+id/textViewPhotoLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upload Photo"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextIDCardNumber"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp" />
+
+            <Button
+                android:id="@+id/buttonUploadPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Upload"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextIDCardNumber"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <ImageView
+                android:id="@+id/imageViewPhotoPreview"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                app:layout_constraintTop_toBottomOf="@id/buttonUploadPhoto"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
 
             <!-- Password -->
+
+            <!-- Confirm Password -->
             <EditText
                 android:id="@+id/editTextPassword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Password"
-                android:textSize="20sp"
-                android:inputType="textPassword"
-                app:layout_constraintTop_toBottomOf="@id/editTextAddress"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:padding="16dp" />
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="16dp"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageViewPhotoPreview" />
 
-
-            <!-- Confirm Password -->
             <EditText
                 android:id="@+id/editTextConfirmPassword"
                 android:layout_width="0dp"
@@ -166,92 +237,6 @@
                 android:layout_marginTop="16dp"
                 android:padding="16dp" />
 
-            <!-- Upload Profile Picture Button -->
-            <Button
-                android:id="@+id/buttonUploadProfilePicture"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Upload Profile Picture"
-                android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextConfirmPassword"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                android:layout_marginTop="16dp"
-                android:layout_marginHorizontal="16dp" />
-
-            <!-- DU Name Label -->
-            <TextView
-                android:id="@+id/textViewDuNameLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DU Name"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@id/buttonUploadProfilePicture"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp" />
-
-            <!-- DU Name Dropdown -->
-            <LinearLayout
-                android:id="@+id/layoutDuName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp"
-                app:layout_constraintTop_toBottomOf="@id/buttonUploadProfilePicture"
-                app:layout_constraintStart_toEndOf="@id/textViewDuNameLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp">
-
-                <Spinner
-                    android:id="@+id/spinnerDuName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:paddingRight="32dp"
-                    android:paddingLeft="8dp" />
-
-            </LinearLayout>
-
-            <!-- DP Name Label -->
-            <TextView
-                android:id="@+id/textViewDpNameLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DP Name"
-                android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@id/layoutDuName"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp" />
-
-            <!-- DP Name Dropdown -->
-            <LinearLayout
-                android:id="@+id/layoutDpName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp"
-                app:layout_constraintTop_toBottomOf="@id/layoutDuName"
-                app:layout_constraintStart_toEndOf="@id/textViewDpNameLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp">
-
-                <Spinner
-                    android:id="@+id/spinnerDpName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:paddingRight="32dp"
-                    android:paddingLeft="8dp" />
-
-            </LinearLayout>
-
             <!-- Submit Button -->
             <Button
                 android:id="@+id/buttonSubmit"
@@ -259,14 +244,15 @@
                 android:layout_height="wrap_content"
                 android:text="Submit"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/layoutDpName"
+                android:background="@drawable/rounded_button_background"
+                app:layout_constraintTop_toBottomOf="@id/editTextConfirmPassword"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="16dp"
-                app:layout_constraintBottom_toBottomOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginTop="24dp"
+                android:padding="16dp" />
 
-    </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </ScrollView>

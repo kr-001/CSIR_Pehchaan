@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="title_options">
+        <item>Prof.</item>
+        <item>Dr.</item>
+        <item>Mr.</item>
+        <item>Ms.</item>
+    </string-array>
+</resources>
