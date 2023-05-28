@@ -22,7 +22,7 @@
                 android:id="@+id/imageViewLogo"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                android:src="@drawable/logo"
+                android:src="@mipmap/ic_launcher_round"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -103,9 +103,24 @@
                 android:id="@+id/editTextDesignation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Designation/Division Name"
+                android:hint="Designation"
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@id/editTextFullName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp" />
+
+            <!-- Department/Division Name -->
+            <EditText
+                android:id="@+id/editTextDivisionName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Department/Division Name"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextDesignation"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -120,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Lab Name"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextDesignation"
+                app:layout_constraintTop_toBottomOf="@id/editTextDivisionName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -128,29 +143,14 @@
                 android:layout_marginTop="16dp"
                 android:padding="16dp" />
 
-            <!-- City -->
+            <!-- City and State -->
             <EditText
-                android:id="@+id/editTextCity"
+                android:id="@+id/editTextCityState"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="City"
+                android:hint="City, State"
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@id/editTextLabName"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:padding="16dp" />
-
-            <!-- State -->
-            <EditText
-                android:id="@+id/editTextState"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="State"
-                android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextCity"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -165,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:hint="ID Card Number"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextState"
+                app:layout_constraintTop_toBottomOf="@id/editTextCityState"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

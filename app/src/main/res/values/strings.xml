@@ -12,6 +12,13 @@
     <string name="Password">Password</string>
     <string name="LoginButton">Login</string>
     <string name="logo_content_description">Logo Content</string>
-<string name="lorem_ipsum">Lorem</string>
+    <string name="full_name">Full Name: %1$s</string>
+    <string name="designation">Designation: %1$s</string>
+    <string name="email">Email: %1$s</string>
+    <string name="mobile">Mobile: %1$s</string>
+    <string name="address">Address: %1$s</string>
+    <string name="verification_status">Verification Status: %1$s</string>
+
+    <string name="lorem_ipsum">Lorem</string>
     <string name="dp_Name">D.P.Name</string>
 </resources>
