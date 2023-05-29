@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace 'com.app.csir_npl'
-    compileSdkVersion 31
+    compileSdkVersion 33
     buildToolsVersion '32.0.0'
     defaultConfig {
         applicationId "com.app.csir_npl"
@@ -53,6 +53,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.21"
 
     implementation files('libs/sqljdbc_6.0.8112.200_enu/sqljdbc_12.2/enu/mssql-jdbc-12.2.0.jre8.jar')
+    implementation 'androidx.core:core-ktx:+'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

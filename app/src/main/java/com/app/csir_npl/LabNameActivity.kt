@@ -56,7 +56,7 @@ class LabNameActivity : AppCompatActivity() {
             try {
                 connection = DriverManager.getConnection(jdbcUrl, username, password)
                 statement = connection.createStatement()
-                val query = "SELECT name FROM csir_labs"
+                val query = "SELECT name FROM CSIR_Labs"
                 resultSet = statement.executeQuery(query)
 
                 withContext(Dispatchers.Main) {
@@ -90,7 +90,7 @@ class LabNameActivity : AppCompatActivity() {
             val viewHolder: ViewHolder
 
             if (itemView == null) {
-                itemView = LayoutInflater.from(context).inflate(R.layout.item_lab, parent, false)
+                itemView = LayoutInflater.from(context).inflate(R.layout.activity_lab_name, parent, false)
                 viewHolder = ViewHolder(itemView)
                 itemView.tag = viewHolder
             } else {
