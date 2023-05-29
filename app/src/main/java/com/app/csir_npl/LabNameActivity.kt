@@ -10,6 +10,10 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
@@ -37,40 +41,41 @@ class LabNameActivity : AppCompatActivity() {
     }
 
     private fun retrieveLabNamesFromDatabase() {
-        // Database connection details
-        val url = "jdbc:sqlserver://plasma-moment-388114:us-central1:ravikumar;databaseName=csir_pehchaan"
-        val username = "ravikumar"
-        val password = "Ravi@1998"
+        val hostname = "34.29.155.1"
+        val port = 1433 // Replace with the actual port number of your SQL Server instance
+        val databaseName = "csir_npl"
+        val username = "sqlserver"
+        val password = "sql123"
+        val jdbcUrl = "jdbc:sqlserver://$hostname:$port;database=$databaseName;user=$username;password=$password"
 
-        var connection: Connection? = null
-        var statement: Statement? = null
-        var resultSet: ResultSet? = null
+        GlobalScope.launch(Dispatchers.IO) {
+            var connection: Connection? = null
+            var statement: Statement? = null
+            var resultSet: ResultSet? = null
 
-        try {
-            // Establish the database connection
-            connection = DriverManager.getConnection(url, username, password)
+            try {
+                connection = DriverManager.getConnection(jdbcUrl, username, password)
+                statement = connection.createStatement()
+                val query = "SELECT name FROM csir_labs"
+                resultSet = statement.executeQuery(query)
 
-            // Create the statement
-            statement = connection.createStatement()
-
-            // Execute the query to retrieve lab names
-            val query = "SELECT lab_name FROM labs"
-            resultSet = statement.executeQuery(query)
-
-            // Process the result set and add lab names to the adapter
-            while (resultSet.next()) {
-                val labName = resultSet.getString("lab_name")
-                labListAdapter.add(labName)
+                withContext(Dispatchers.Main) {
+                    labListAdapter.clear()
+                    while (resultSet.next()) {
+                        val labName = resultSet.getString("name")
+                        labListAdapter.add(labName)
+                    }
+                }
+            } catch (e: SQLException) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@LabNameActivity, "Error retrieving lab names", Toast.LENGTH_SHORT).show()
+                }
+            } finally {
+                resultSet?.close()
+                statement?.close()
+                connection?.close()
             }
-
-        } catch (e: SQLException) {
-            e.printStackTrace()
-            Toast.makeText(this, "Error retrieving lab names", Toast.LENGTH_SHORT).show()
-        } finally {
-            // Close the result set, statement, and connection
-            resultSet?.close()
-            statement?.close()
-            connection?.close()
         }
     }
 
@@ -85,7 +90,7 @@ class LabNameActivity : AppCompatActivity() {
             val viewHolder: ViewHolder
 
             if (itemView == null) {
-                itemView = LayoutInflater.from(context).inflate(R.layout.activity_lab_name, parent, false)
+                itemView = LayoutInflater.from(context).inflate(R.layout.item_lab, parent, false)
                 viewHolder = ViewHolder(itemView)
                 itemView.tag = viewHolder
             } else {
@@ -98,7 +103,6 @@ class LabNameActivity : AppCompatActivity() {
 
             return itemView!!
         }
-
         private class ViewHolder(view: View) {
             val labNameTextView: TextView = view.findViewById(R.id.labNameTextView)
         }

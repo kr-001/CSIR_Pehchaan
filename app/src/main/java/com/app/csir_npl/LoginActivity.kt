@@ -48,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
             val password = "<password>"
 
             // Establish the connection
-            Class.forName("net.sourceforge.jtds.jdbc.Driver")
+            Class.forName("com.mysql.cj.jdbc.Driver")
             connection = DriverManager.getConnection(connectionUrl, username, password)
         } catch (e: ClassNotFoundException) {
             e.printStackTrace()

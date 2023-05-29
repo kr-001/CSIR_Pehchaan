@@ -74,10 +74,11 @@ class RegisterActivity : AppCompatActivity() {
                 if (selectedLabName != null) {
                     // Set the selected lab name in the editTextLabName field
                     editTextLabName.setText(selectedLabName)
-                    this.selectedLabName = selectedLabName
+                    this.selectedLabName = selectedLabName // Initialize the selectedLabName property
                 }
             }
         }
+
 
         editTextLabName.setOnClickListener {
             // Start a new activity to select a lab name
@@ -94,16 +95,6 @@ class RegisterActivity : AppCompatActivity() {
             getContent.launch(intent)
         }
 
-// After selecting an image in onActivityResult or the ActivityResultLauncher callback
-// Load the selected image into the imageViewPhotoPreview using Glide
-        Glide.with(this)
-            .load(File(selectedImageUri.toString()))
-            .apply(
-                RequestOptions()
-                    .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-            )
-            .into(imageViewPhotoPreview)
         // Set up submit button click listener
         buttonSubmit.setOnClickListener {
             // Validate user input
@@ -157,14 +148,12 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun saveUserToDatabase(user: User) {
-        // Perform database operation to save the user data
-        // You will need to implement your own logic based on your database setup
-
-        // Database connection details
-        val url = "jdbc:sqlserver://plasma-moment-388114:us-central1:ravikumar;databaseName=csir_pehchaan"
-        val username = "ravikumar"
-        val password = "Ravi@1998"
-
+        val hostname = "34.29.155.1"
+        val port = 1433 // Replace with the actual port number of your SQL Server instance
+        val databaseName = "csir_npl"
+        val username = "sqlserver"
+        val password = "sql123"
+        val jdbcUrl = "jdbc:sqlserver://$hostname:$port;database=$databaseName;user=$username;password=$password"
         var connection: Connection? = null
         var statement: Statement? = null
 
@@ -173,43 +162,29 @@ class RegisterActivity : AppCompatActivity() {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver")
 
             // Establish the database connection
-            connection = DriverManager.getConnection(url, username, password)
+            connection = DriverManager.getConnection(jdbcUrl)
 
             // Create the statement
             statement = connection.createStatement()
 
             // Create the INSERT query
             val query = """
-    CREATE TABLE IF NOT EXISTS unverified_users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
-        full_name TEXT,
-        designation TEXT,
-        division_name TEXT,
-        lab_name TEXT,
-        city_state TEXT,
-        id_card_number TEXT,
-        photo_path TEXT,
-        password TEXT
-    );
+            CREATE TABLE IF NOT EXISTS unverified_users (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                title VARCHAR(255),
+                full_name VARCHAR(255),
+                designation VARCHAR(255),
+                division_name VARCHAR(255),
+                lab_name VARCHAR(255),
+                city_state VARCHAR(255),
+                id_card_number VARCHAR(255),
+                photo_path VARCHAR(255),
+                password VARCHAR(255)
+            );
 
-    INSERT INTO unverified_users (title, full_name, designation, division_name, lab_name, city_state, id_card_number, photo_path, password)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-"""
-
-            val preparedStatement = connection!!.prepareStatement(query)
-            preparedStatement.setString(1, user.title)
-            preparedStatement.setString(2, user.fullName)
-            preparedStatement.setString(3, user.designation)
-            preparedStatement.setString(4, user.divisionName)
-            preparedStatement.setString(5, user.labName)
-            preparedStatement.setString(6, user.cityState)
-            preparedStatement.setString(7, user.idCardNumber)
-            preparedStatement.setString(8, user.photoPath)
-            preparedStatement.setString(9, user.password)
-
-            preparedStatement.executeUpdate()
-            preparedStatement.close()
+            INSERT INTO unverified_users (title, full_name, designation, division_name, lab_name, city_state, id_card_number, photo_path, password)
+            VALUES ('${user.title}', '${user.fullName}', '${user.designation}', '${user.divisionName}', '${user.labName}', '${user.cityState}', '${user.idCardNumber}', '${user.photoPath}', '${user.password}');
+        """.trimIndent()
 
             // Execute the query
             statement.executeUpdate(query)
@@ -235,8 +210,12 @@ class RegisterActivity : AppCompatActivity() {
 
                 // Load the selected image into imageViewPhotoPreview using Glide
                 Glide.with(this)
-                    .load(selectedImageUri)
-                    .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL)
+                    .load(File(selectedImageUri.toString()))
+                    .apply(
+                        RequestOptions()
+                            .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    )
                     .into(imageViewPhotoPreview)
 
                 // Store the photo path or URL
