@@ -18,6 +18,8 @@
     <string name="mobile">Mobile: %1$s</string>
     <string name="address">Address: %1$s</string>
     <string name="verification_status">Verification Status: %1$s</string>
+    <string name="photo_description">Photo</string>
+
 
     <string name="lorem_ipsum">Lorem</string>
     <string name="dp_Name">D.P.Name</string>

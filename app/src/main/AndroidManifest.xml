@@ -33,7 +33,10 @@
             android:theme="@style/Theme.CSIR_NPL" />
         <activity
             android:name="com.app.csir_npl.LabNameActivity"
-            android:label="Lab Name Activity" />
+            android:label="Lab Name Activity"
+            android:exported="true"/>
+        <activity android:name=".IdCardActivity" />
+
 
 
 

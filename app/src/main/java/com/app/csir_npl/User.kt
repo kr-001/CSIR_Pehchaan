@@ -1,13 +1,15 @@
 package com.app.csir_npl
 
+import java.io.Serializable
+
 data class User(
-    val title: String,
-    val fullName: String,
-    val designation: String,
-    val divisionName: String,
-    val labName: String,
-    val cityState: String,
-    val idCardNumber: String,
-    val photoPath: String,
-    val password: String
-)
+    var title: String = "",
+    var fullName: String = "",
+    var designation: String = "",
+    var divisionName: String = "",
+    var labName: String = "",
+    var cityState: String = "",
+    var idCardNumber: String = "",
+    var photoPath: String = "",
+    var password: String = ""
+) : Serializable
