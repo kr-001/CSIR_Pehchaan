@@ -7,6 +7,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.MotionEvent
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,6 +20,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
@@ -135,6 +138,7 @@ class RegisterActivity : AppCompatActivity() {
         buttonSubmit.setOnClickListener {
             if (validateInput()) {
                 val user = User(
+                    // ... (other user details)
                     spinnerTitle.selectedItem.toString(),
                     editTextFullName.text.toString(),
                     editTextDesignation.text.toString(),
@@ -142,17 +146,32 @@ class RegisterActivity : AppCompatActivity() {
                     selectedLabName,
                     editTextCityState.text.toString(),
                     editTextIDCardNumber.text.toString(),
-                    photoPath,
+                    photoPath, // Save the file path to Firebase
                     editTextPassword.text.toString()
                 )
 
-                saveUserToDatabase(user)
+                // Save photo locally
+                val photoFileName = "${selectedLabName}_${System.currentTimeMillis()}.jpg"
+                val photoFile = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), photoFileName)
 
-                Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
+                try {
+                    val inputStream = contentResolver.openInputStream(selectedImageUri)
+                    val outputStream = FileOutputStream(photoFile)
+                    inputStream?.copyTo(outputStream)
+                    inputStream?.close()
+                    outputStream.close()
 
-                finish()
+                    user.photoPath = photoFile.absolutePath // Save the file path to the user object
+
+                    // Save user to Firebase Realtime Database
+                    saveUserToDatabase(user) // Pass the user object to the function
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    Toast.makeText(this@RegisterActivity, "Failed to save photo", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+
     }
 
     private fun validateInput(): Boolean {
