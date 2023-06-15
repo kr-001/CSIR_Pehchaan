@@ -23,4 +23,6 @@
 
     <string name="lorem_ipsum">Lorem</string>
     <string name="dp_Name">D.P.Name</string>
+    <string name="logo_description" />
+    <string name="qrcode_description" />
 </resources>

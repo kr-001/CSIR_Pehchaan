@@ -63,6 +63,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-database:20.0.0'
 
+    implementation files('libs/sqljdbc_6.0.8112.200_enu/sqljdbc_12.2/enu/mssql-jdbc-12.2.0.jre8.jar')
+
 
     implementation 'org.slf4j:slf4j-api:1.7.32'
     implementation 'ch.qos.logback:logback-classic:1.2.6'

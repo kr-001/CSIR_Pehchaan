@@ -1,5 +1,3 @@
-<!-- activity_id_card.xml -->
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,73 +6,115 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/imageViewPhoto"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop"
-        tools:src="@drawable/default_photo"
-        android:contentDescription="@string/photo_description"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textViewTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+        <ImageView
+            android:id="@+id/imageViewLogoLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/logo_description"
+            android:src="@drawable/logo_left" />
 
-    <TextView
-        android:id="@+id/textViewFullName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        <ImageView
+            android:id="@+id/imageViewLogoRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/logo_description"
+            android:src="@drawable/logo_right" />
 
-    <TextView
-        android:id="@+id/textViewDesignation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textViewDivisionName"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewLabName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        <ImageView
+            android:id="@+id/imageViewPhoto"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/default_photo"
+            android:contentDescription="@string/photo_description"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"/>
 
-    <TextView
-        android:id="@+id/textViewCityState"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
-    <TextView
-        android:id="@+id/textViewIdCardNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
-    <Button
-        android:id="@+id/buttonShareVcf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Share VCF" />
+        <TextView
+            android:id="@+id/textViewFullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
-    <Button
-        android:id="@+id/buttonGenerateQR"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Generate QR Code" />
+        <TextView
+            android:id="@+id/textViewDesignation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
+        <TextView
+            android:id="@+id/textViewDivisionName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <TextView
+            android:id="@+id/textViewLabName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <TextView
+            android:id="@+id/textViewCityState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+        <TextView
+            android:id="@+id/textViewIdCardNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+
+        <Button
+            android:id="@+id/buttonShareVcf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Share VCF"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/buttonGenerateQR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Generate QR Code"
+            android:layout_marginTop="8dp"/>
+
+        <ImageView
+            android:id="@+id/imageViewQRCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            android:contentDescription="@string/qrcode_description"/>
+
+
+    </LinearLayout>
 
 </LinearLayout>

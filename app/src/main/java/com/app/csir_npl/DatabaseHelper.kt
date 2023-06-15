@@ -1,6 +1,9 @@
+package com.app.csir_npl
+import android.widget.Toast
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import java.sql.Connection
+import java.sql.PreparedStatement
 
 class DatabaseHelper {
     private lateinit var dataSource: HikariDataSource
@@ -8,10 +11,10 @@ class DatabaseHelper {
     fun initialize() {
         val config = HikariConfig().apply {
             // Set your database connection details
-            jdbcUrl = "jdbc:mysql://localhost:3306/csir_pehchaan"
-            username = "root"
-            password = "Ravi@1998"
-            driverClassName = "com.mysql.cj.jdbc.Driver"
+            jdbcUrl = "jdbc:sqlserver://35.232.226.19:1433;DatabaseName=csir_db;encrypt=true;trustServerCertificate=true;"
+            username = "sqlserver"
+            password = "sql123"
+            driverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
         }
 
         dataSource = HikariDataSource(config)
@@ -24,4 +27,6 @@ class DatabaseHelper {
     fun close() {
         dataSource.close()
     }
+
+
 }
