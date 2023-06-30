@@ -1,3 +1,4 @@
+import com.app.csir_npl.DatabaseHelper
 import org.junit.AfterClass
 import org.junit.Assert.assertEquals
 import org.junit.BeforeClass
@@ -21,7 +22,7 @@ class DatabaseHelperTest {
         @AfterClass
         @JvmStatic
         fun teardown() {
-            databaseHelper.close()
+            databaseHelper.closeConnection()
         }
     }
 

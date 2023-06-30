@@ -24,7 +24,7 @@ class DatabaseHelper {
         return dataSource.connection
     }
 
-    fun close() {
+    fun closeConnection() {
         dataSource.close()
     }
 

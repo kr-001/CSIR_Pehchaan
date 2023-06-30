@@ -1,13 +1,13 @@
 package com.app.csir_npl
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
-import com.google.firebase.database.FirebaseDatabase
+
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,17 +15,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.sql.Connection
-import java.sql.DriverManager
-import java.sql.SQLException
-import java.sql.Statement
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -64,27 +60,32 @@ class RegisterActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
                 val imageUri = data?.data
-                if (imageUri != null) {
+                if (imageUri != null && fileExists(imageUri)) {
                     selectedImageUri = imageUri
 
                     Glide.with(this)
-                        .load(File(selectedImageUri.toString()))
+                        .load(selectedImageUri)
                         .apply(
                             RequestOptions()
-                                .override(com.bumptech.glide.request.target.Target.SIZE_ORIGINAL)
                                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                         )
                         .into(imageViewPhotoPreview)
 
-                    photoPath = imageUri.toString()
+                    photoPath = getFilePathFromUri(selectedImageUri) ?: ""
+                } else {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "File not found",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
 
         spinnerTitle = findViewById(R.id.spinnerTitle)
         editTextFullName = findViewById(R.id.editTextFullName)
@@ -128,7 +129,6 @@ class RegisterActivity : AppCompatActivity() {
             return@setOnTouchListener false
         }
 
-
         buttonUploadPhoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
@@ -138,7 +138,6 @@ class RegisterActivity : AppCompatActivity() {
         buttonSubmit.setOnClickListener {
             if (validateInput()) {
                 val user = User(
-                    // ... (other user details)
                     spinnerTitle.selectedItem.toString(),
                     editTextFullName.text.toString(),
                     editTextDesignation.text.toString(),
@@ -146,32 +145,45 @@ class RegisterActivity : AppCompatActivity() {
                     selectedLabName,
                     editTextCityState.text.toString(),
                     editTextIDCardNumber.text.toString(),
-                    photoPath, // Save the file path to Firebase
+                    photoPath,
                     editTextPassword.text.toString()
                 )
+                Log.i("RegisterActivity", "User data: $user")
 
                 // Save photo locally
                 val photoFileName = "${selectedLabName}_${System.currentTimeMillis()}.jpg"
-                val photoFile = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), photoFileName)
+                val photoFile =
+                    File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), photoFileName)
 
-                try {
-                    val inputStream = contentResolver.openInputStream(selectedImageUri)
-                    val outputStream = FileOutputStream(photoFile)
-                    inputStream?.copyTo(outputStream)
-                    inputStream?.close()
-                    outputStream.close()
+                if (selectedImageUri != null && fileExists(selectedImageUri)) {
+                    try {
+                        val inputStream = contentResolver.openInputStream(selectedImageUri)
+                        val outputStream = FileOutputStream(photoFile)
+                        inputStream?.copyTo(outputStream)
+                        inputStream?.close()
+                        outputStream.close()
 
-                    user.photoPath = photoFile.absolutePath // Save the file path to the user object
+                        user.photoPath = photoFile.absolutePath
 
-                    // Save user to Firebase Realtime Database
-                    saveUserToDatabase(user) // Pass the user object to the function
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                    Toast.makeText(this@RegisterActivity, "Failed to save photo", Toast.LENGTH_SHORT).show()
+                        // Upload user data to the server
+                        uploadUserData(user)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            "Failed to save photo",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "No image selected",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
-
     }
 
     private fun validateInput(): Boolean {
@@ -184,40 +196,99 @@ class RegisterActivity : AppCompatActivity() {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             return false
         } else if (password != confirmPassword) {
-            Toast.makeText(this, "Password and confirm password do not match", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                this,
+                "Password and confirm password do not match",
+                Toast.LENGTH_SHORT
+            ).show()
             return false
         }
 
         return true
     }
 
-    private fun saveUserToDatabase(user: User) {
-        val database: FirebaseDatabase = FirebaseDatabase.getInstance()
-        val unverifiedUsersRef: DatabaseReference = database.getReference("unverified_users")
+    private fun uploadUserData(user: User) {
+        val client = OkHttpClient()
 
-        unverifiedUsersRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    unverifiedUsersRef.setValue(true)
+        // Create MultipartBody.Builder for sending form data including the photo
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("title", user.title)
+            .addFormDataPart("fullName", user.fullName)
+            .addFormDataPart("designation", user.designation)
+            .addFormDataPart("divisionName", user.divisionName)
+            .addFormDataPart("labName", user.labName)
+            .addFormDataPart("cityState", user.cityState)
+            .addFormDataPart("idCardNumber", user.idCardNumber)
+            .addFormDataPart("password", user.password)
+            .addFormDataPart("photo", user.photoPath,
+                File(user.photoPath).asRequestBody("image/jpeg".toMediaTypeOrNull())
+            )
+            .build()
+
+        // Create POST request
+        val request = Request.Builder()
+            .url("http://192.168.0.222:3000/register") // Replace <YOUR_SERVER_HOST> with your server's IP address or domain name
+            .post(requestBody)
+            .build()
+
+        // Send the request asynchronously
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        "Failed to upload user data",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-
-                val userKey = unverifiedUsersRef.push().key
-                val userRef = unverifiedUsersRef.child(userKey!!)
-
-                userRef.setValue(user)
-                    .addOnSuccessListener {
-                        Toast.makeText(this@RegisterActivity, "Registration successful", Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this@RegisterActivity, "Registration failed: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(this@RegisterActivity, "Failed to check database", Toast.LENGTH_SHORT).show()
+            override fun onResponse(call: Call, response: Response) {
+                val responseMessage = response.message
+                if (response.isSuccessful) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            "Registration Successful",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            "Registration failed: $responseMessage",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
         })
     }
 
+
+    private fun fileExists(uri: Uri): Boolean {
+        val filePath = getFilePathFromUri(uri)
+        if (filePath != null) {
+            val file = File(filePath)
+            return file.exists()
+        }
+        return false
+    }
+
+
+    private fun getFilePathFromUri(uri: Uri): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = contentResolver.query(uri, projection, null, null, null)
+        if (cursor != null) {
+            val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            val filePath = cursor.getString(columnIndex)
+            cursor.close()
+            return filePath
+        }
+        return null
+    }
 }
