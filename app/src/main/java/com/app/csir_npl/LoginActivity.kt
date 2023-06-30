@@ -7,7 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.*
-import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
@@ -52,6 +52,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity, "Failed to authenticate", Toast.LENGTH_SHORT).show()
                 }
             }
+
             override fun onResponse(call: Call, response: Response) {
                 val responseBody = response.body?.string()
 
@@ -59,29 +60,47 @@ class LoginActivity : AppCompatActivity() {
 
                 runOnUiThread {
                     if (response.isSuccessful) {
-                        val jsonResponse = JSONArray(responseBody)
-                        if (jsonResponse.length() > 0) {
-                            val user = jsonResponse.getJSONObject(0)
-                            val name = user.getString("fullName")
-                            val photoPath = user.getString("photoPath")
+                        try {
+                            val jsonResponse = JSONObject(responseBody)
+                            val message = jsonResponse.getString("message")
+                            val user = jsonResponse.getJSONObject("user")
+                            Log.d("LoginActivity", "Response Body: $responseBody") // Log the response body
 
-                            // Authentication successful, proceed to the next activity
-                            val intent = Intent(this@LoginActivity, IdCardActivity::class.java)
-                            intent.putExtra("name", name)
-                            intent.putExtra("photoPath", photoPath)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Toast.makeText(this@LoginActivity, "Authentication failed", Toast.LENGTH_SHORT).show()
+                            if (user.length() > 0) {
+                                val title = user.getString("title")
+                                val name = user.getString("name")
+                                val photoPath = user.getString("photoUrl")
+                                val designation = user.getString("designation")
+                                val division = user.getString("division")
+                                val cityState = user.getString("cityState")
+                                val lab = user.getString("lab")
+                                val idCardNumber = user.getString("id")
+
+
+                                // Authentication successful, proceed to the next activity
+                                val intent = Intent(this@LoginActivity, IdCardActivity::class.java)
+                                intent.putExtra("title", title)
+                                intent.putExtra("name", name)
+                                intent.putExtra("photoPath", photoPath)
+                                intent.putExtra("designation", designation)
+                                intent.putExtra("division", division)
+                                intent.putExtra("cityState", cityState)
+                                intent.putExtra("lab", lab)
+                                intent.putExtra("idCardNumber", idCardNumber)
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                Toast.makeText(this@LoginActivity, "Empty user object. Authentication failed", Toast.LENGTH_SHORT).show()
+                            }
+                        } catch (e: JSONException) {
+                            e.printStackTrace()
+                            Toast.makeText(this@LoginActivity, "Failed to parse response", Toast.LENGTH_SHORT).show()
                         }
                     } else {
                         Toast.makeText(this@LoginActivity, "Authentication failed", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
-
-
-
         })
     }
 }

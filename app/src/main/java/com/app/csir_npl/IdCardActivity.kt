@@ -12,7 +12,6 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import java.io.File
-import java.io.FileOutputStream
 
 class IdCardActivity : AppCompatActivity() {
     private lateinit var imageViewPhoto: ImageView
@@ -25,6 +24,7 @@ class IdCardActivity : AppCompatActivity() {
     private lateinit var textViewIdCardNumber: TextView
     private lateinit var buttonShareVcf: Button
     private lateinit var buttonGenerateQR: Button
+    private lateinit var imageViewQRCode: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,44 +40,48 @@ class IdCardActivity : AppCompatActivity() {
         textViewIdCardNumber = findViewById(R.id.textViewIdCardNumber)
         buttonShareVcf = findViewById(R.id.buttonShareVcf)
         buttonGenerateQR = findViewById(R.id.buttonGenerateQR)
+        imageViewQRCode = findViewById(R.id.imageViewQRCode)
 
-        val user = intent.getSerializableExtra("user") as? User
+        val title = intent.getStringExtra("title")
+        val name = intent.getStringExtra("name")
+        val photoPath = intent.getStringExtra("photoPath")
+        val designation = intent.getStringExtra("designation")
+        val division = intent.getStringExtra("division")
+        val cityState = intent.getStringExtra("cityState")
+        val lab = intent.getStringExtra("lab")
+        val idCardNumber = intent.getStringExtra("idCardNumber")
 
-        if (user != null) {
+        if (name != null && photoPath != null) {
             // Set user details
-            val photoBitmap = BitmapFactory.decodeFile(user.photoPath)
+            val photoBitmap = BitmapFactory.decodeFile(photoPath)
             imageViewPhoto.setImageBitmap(photoBitmap)
-            textViewTitle.text = user.title
-            textViewFullName.text = user.fullName
-            textViewDesignation.text = user.designation
-            textViewDivisionName.text = user.divisionName
-            textViewLabName.text = user.labName
-            textViewCityState.text = user.cityState
-            textViewIdCardNumber.text = user.idCardNumber
+            textViewTitle.text = title
+            textViewFullName.text = name
+            textViewDesignation.text = designation
+            textViewDivisionName.text = division
+            textViewLabName.text = lab
+            textViewCityState.text = cityState
+            textViewIdCardNumber.text = idCardNumber
 
             buttonShareVcf.setOnClickListener {
-                shareVcfFile(user)
+                shareVcfFile(name)
             }
 
             buttonGenerateQR.setOnClickListener {
-                generateQRCode(user)
+                generateQRCode(name)
             }
         }
     }
 
-    private fun shareVcfFile(user: User) {
+    private fun shareVcfFile(name: String) {
         // Create a VCF file and save it locally
         val vcfFile = File(cacheDir, "contact.vcf")
         val vcfData = "BEGIN:VCARD\n" +
                 "VERSION:3.0\n" +
-                "FN:${user.fullName}\n" +
-                "TITLE:${user.title}\n" +
-                "ORG:${user.divisionName}\n" +
+                "FN:$name\n" +
                 "END:VCARD"
 
-        FileOutputStream(vcfFile).use { stream ->
-            stream.write(vcfData.toByteArray())
-        }
+        vcfFile.writeText(vcfData)
 
         // Create a share intent and set the VCF file
         val shareIntent = Intent(Intent.ACTION_SEND)
@@ -88,21 +92,20 @@ class IdCardActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(shareIntent, "Share Contact"))
     }
 
-    private fun generateQRCode(user: User) {
+    private fun generateQRCode(name: String) {
         try {
             // Generate QR code from user details
             val qrData = "BEGIN:VCARD\n" +
                     "VERSION:3.0\n" +
-                    "FN:${user.fullName}\n" +
-                    "TITLE:${user.title}\n" +
-                    "ORG:${user.divisionName}\n" +
+                    "FN:$name\n" +
                     "END:VCARD"
 
             val barcodeEncoder = BarcodeEncoder()
             val bitmap: Bitmap = barcodeEncoder.encodeBitmap(qrData, BarcodeFormat.QR_CODE, 500, 500)
 
             // Display the QR code
-            imageViewPhoto.setImageBitmap(bitmap)
+            imageViewQRCode.setImageBitmap(bitmap)
+            imageViewQRCode.visibility = ImageView.VISIBLE
         } catch (e: WriterException) {
             e.printStackTrace()
         }
