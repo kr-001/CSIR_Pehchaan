@@ -1,13 +1,18 @@
 package com.app.csir_npl
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -25,6 +30,11 @@ class IdCardActivity : AppCompatActivity() {
     private lateinit var buttonShareVcf: Button
     private lateinit var buttonGenerateQR: Button
     private lateinit var imageViewQRCode: ImageView
+    private lateinit var photoPath:String;
+
+    companion object {
+        private const val READ_EXTERNAL_STORAGE_REQUEST_CODE = 123
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +63,8 @@ class IdCardActivity : AppCompatActivity() {
 
         if (name != null && photoPath != null) {
             // Set user details
-            val photoBitmap = BitmapFactory.decodeFile(photoPath)
-            imageViewPhoto.setImageBitmap(photoBitmap)
+            Log.e("PhotoPath: ", "$photoPath")
+            loadPhoto(photoPath)
             textViewTitle.text = title
             textViewFullName.text = name
             textViewDesignation.text = designation
@@ -69,6 +79,54 @@ class IdCardActivity : AppCompatActivity() {
 
             buttonGenerateQR.setOnClickListener {
                 generateQRCode(name)
+            }
+        } else {
+            Log.e("IdCardActivity", "photoPath is null")
+        }
+    }
+
+    private fun loadPhoto(photoPath: String) {
+        // Check if the app has permission to read external storage
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Permission is not granted, request it
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                READ_EXTERNAL_STORAGE_REQUEST_CODE
+            )
+        } else {
+            // Permission is already granted, load the photo
+            val photoFile = File(photoPath)
+            if (photoFile.exists()) {
+                val photoBitmap = BitmapFactory.decodeFile(photoPath)
+                Log.e("BITMAP" , "$photoBitmap")
+                imageViewPhoto.setImageBitmap(photoBitmap)
+            } else {
+                Log.e("IdCardActivity", "Photo file does not exist")
+            }
+        }
+    }
+
+    // Handle the result of the permission request
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted, load the photo
+                    loadPhoto(photoPath)
+                } else {
+                    // Permission denied, handle accordingly (e.g., show a message to the user)
+//                    Log.e("PHOTOPATH" , "ERROR $photoPath")
+                }
             }
         }
     }
@@ -101,7 +159,8 @@ class IdCardActivity : AppCompatActivity() {
                     "END:VCARD"
 
             val barcodeEncoder = BarcodeEncoder()
-            val bitmap: Bitmap = barcodeEncoder.encodeBitmap(qrData, BarcodeFormat.QR_CODE, 500, 500)
+            val bitmap: Bitmap =
+                barcodeEncoder.encodeBitmap(qrData, BarcodeFormat.QR_CODE, 500, 500)
 
             // Display the QR code
             imageViewQRCode.setImageBitmap(bitmap)

@@ -150,67 +150,37 @@ class RegisterActivity : AppCompatActivity() {
                 )
                 Log.i("RegisterActivity", "User data: $user")
 
-                // Save photo locally
-                val photoFileName = "${selectedLabName}_${System.currentTimeMillis()}.jpg"
-                val photoFile =
-                    File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), photoFileName)
-
-                if (selectedImageUri != null && fileExists(selectedImageUri)) {
-                    try {
-                        val inputStream = contentResolver.openInputStream(selectedImageUri)
-                        val outputStream = FileOutputStream(photoFile)
-                        inputStream?.copyTo(outputStream)
-                        inputStream?.close()
-                        outputStream.close()
-
-                        user.photoPath = photoFile.absolutePath
-
-                        // Upload user data to the server
-                        uploadUserData(user)
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                        Toast.makeText(
-                            this@RegisterActivity,
-                            "Failed to save photo",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                } else {
-                    Toast.makeText(
-                        this@RegisterActivity,
-                        "No image selected",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                // Upload user data to the server
+                uploadUserData(user, photoPath)
             }
         }
     }
 
-    private fun validateInput(): Boolean {
-        val fullName = editTextFullName.text.toString().trim()
-        val labName = editTextLabName.text.toString().trim()
-        val password = editTextPassword.text.toString()
-        val confirmPassword = editTextConfirmPassword.text.toString()
+            private fun validateInput(): Boolean {
+                val fullName = editTextFullName.text.toString().trim()
+                val labName = editTextLabName.text.toString().trim()
+                val password = editTextPassword.text.toString()
+                val confirmPassword = editTextConfirmPassword.text.toString()
 
-        if (fullName.isEmpty() || labName.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-            return false
-        } else if (password != confirmPassword) {
-            Toast.makeText(
-                this,
-                "Password and confirm password do not match",
-                Toast.LENGTH_SHORT
-            ).show()
-            return false
-        }
+                if (fullName.isEmpty() || labName.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                    Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                    return false
+                } else if (password != confirmPassword) {
+                    Toast.makeText(
+                        this,
+                        "Password and confirm password do not match",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return false
+                }
 
-        return true
-    }
+                return true
+            }
 
-    private fun uploadUserData(user: User) {
+    private fun uploadUserData(user: User, photoPath: String) {
         val client = OkHttpClient()
 
-        // Create MultipartBody.Builder for sending form data including the photo
+        // Create RequestBody for sending form data
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart("title", user.title)
@@ -221,9 +191,7 @@ class RegisterActivity : AppCompatActivity() {
             .addFormDataPart("cityState", user.cityState)
             .addFormDataPart("idCardNumber", user.idCardNumber)
             .addFormDataPart("password", user.password)
-            .addFormDataPart("photo", user.photoPath,
-                File(user.photoPath).asRequestBody("image/jpeg".toMediaTypeOrNull())
-            )
+            .addFormDataPart("photoPath", photoPath)
             .build()
 
         // Create POST request
@@ -267,6 +235,7 @@ class RegisterActivity : AppCompatActivity() {
             }
         })
     }
+
 
 
     private fun fileExists(uri: Uri): Boolean {
