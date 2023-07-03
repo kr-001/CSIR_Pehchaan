@@ -11,5 +11,7 @@ data class User(
     var cityState: String = "",
     var idCardNumber: String = "",
     var photoPath: String = "",
-    var password: String = ""
+    var password: String = "",
+    var email : String = "",
+    var contact : String = ""
 ) : Serializable

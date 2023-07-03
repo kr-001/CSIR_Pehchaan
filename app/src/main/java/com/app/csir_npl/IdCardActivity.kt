@@ -30,7 +30,7 @@ class IdCardActivity : AppCompatActivity() {
     private lateinit var buttonShareVcf: Button
     private lateinit var buttonGenerateQR: Button
     private lateinit var imageViewQRCode: ImageView
-    private lateinit var photoPath:String;
+    private lateinit var photoPath: String
 
     companion object {
         private const val READ_EXTERNAL_STORAGE_REQUEST_CODE = 123
@@ -54,12 +54,16 @@ class IdCardActivity : AppCompatActivity() {
 
         val title = intent.getStringExtra("title")
         val name = intent.getStringExtra("name")
-        val photoPath = intent.getStringExtra("photoPath")
+        photoPath = intent.getStringExtra("photoPath").toString() // Removed the 'val' keyword here
         val designation = intent.getStringExtra("designation")
         val division = intent.getStringExtra("division")
         val cityState = intent.getStringExtra("cityState")
         val lab = intent.getStringExtra("lab")
         val idCardNumber = intent.getStringExtra("idCardNumber")
+        val emailId = intent.getStringExtra("emailID")
+        val contact = intent.getStringExtra("contact")
+        val status = intent.getStringExtra("status")
+        val autho = intent.getStringExtra("autho")
 
         if (name != null && photoPath != null) {
             // Set user details
@@ -78,8 +82,21 @@ class IdCardActivity : AppCompatActivity() {
             }
 
             buttonGenerateQR.setOnClickListener {
-                generateQRCode(name)
+                if (idCardNumber != null) {
+                    if (lab != null) {
+                        if (emailId != null) {
+                            if (contact != null) {
+                                if (status != null) {
+                                    if (autho != null) {
+                                        generateQRCode(name, lab, idCardNumber, emailId, contact, status, autho)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
+
         } else {
             Log.e("IdCardActivity", "photoPath is null")
         }
@@ -103,7 +120,7 @@ class IdCardActivity : AppCompatActivity() {
             val photoFile = File(photoPath)
             if (photoFile.exists()) {
                 val photoBitmap = BitmapFactory.decodeFile(photoPath)
-                Log.e("BITMAP" , "$photoBitmap")
+                Log.e("BITMAP", "$photoBitmap")
                 imageViewPhoto.setImageBitmap(photoBitmap)
             } else {
                 Log.e("IdCardActivity", "Photo file does not exist")
@@ -124,8 +141,7 @@ class IdCardActivity : AppCompatActivity() {
                     // Permission granted, load the photo
                     loadPhoto(photoPath)
                 } else {
-                    // Permission denied, handle accordingly (e.g., show a message to the user)
-//                    Log.e("PHOTOPATH" , "ERROR $photoPath")
+          Log.e("PHOTOPATH" , "ERROR $photoPath")
                 }
             }
         }
@@ -150,12 +166,18 @@ class IdCardActivity : AppCompatActivity() {
         startActivity(Intent.createChooser(shareIntent, "Share Contact"))
     }
 
-    private fun generateQRCode(name: String) {
+    private fun generateQRCode(name: String, lab: String, idCardNumber: String, emailID: String, contact: String, status: String, autho: String) {
         try {
             // Generate QR code from user details
             val qrData = "BEGIN:VCARD\n" +
                     "VERSION:3.0\n" +
                     "FN:$name\n" +
+                    "LAB:$lab\n" +
+                    "ID:$idCardNumber\n" +
+                    "EMAIL:$emailID\n" +
+                    "CONTACT:$contact\n" +
+                    "STATUS:$status\n" +
+                    "AUTHO:$autho\n" +
                     "END:VCARD"
 
             val barcodeEncoder = BarcodeEncoder()
@@ -169,4 +191,6 @@ class IdCardActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+
+
 }

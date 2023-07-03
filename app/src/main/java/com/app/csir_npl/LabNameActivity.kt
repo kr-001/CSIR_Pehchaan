@@ -1,7 +1,9 @@
 package com.app.csir_npl
 
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +41,16 @@ class LabNameActivity : AppCompatActivity() {
         // Create the adapter for the lab names list
         labListAdapter = LabListAdapter(this, getLabNames())
         labListView.adapter = labListAdapter
+
+        // Set item click listener
+        labListView.setOnItemClickListener { parent, view, position, id ->
+            val selectedLabName = labListAdapter.getItem(position)
+            val resultIntent = Intent().apply {
+                putExtra(EXTRA_SELECTED_LAB_NAME, selectedLabName)
+            }
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        }
     }
 
 

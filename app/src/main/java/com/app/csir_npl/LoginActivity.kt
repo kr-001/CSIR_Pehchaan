@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         val request = Request.Builder()
-            .url("http://192.168.0.222:3000/login") // Replace <YOUR_SERVER_HOST> with your server's IP address or domain name
+            .url("http://192.168.0.132:4000/login") // Replace <YOUR_SERVER_HOST> with your server's IP address or domain name
             .post(requestBody)
             .build()
 
@@ -75,6 +75,11 @@ class LoginActivity : AppCompatActivity() {
                                 val cityState = user.getString("cityState")
                                 val lab = user.getString("lab")
                                 val idCardNumber = user.getString("id")
+                                val emaiId = user.getString("email")
+                                val contact = user.getString("contact")
+                                val status = user.getString("verification_status")
+                                val autho = user.getString("verification_authority")
+
 
 
                                 // Authentication successful, proceed to the next activity
@@ -87,6 +92,10 @@ class LoginActivity : AppCompatActivity() {
                                 intent.putExtra("cityState", cityState)
                                 intent.putExtra("lab", lab)
                                 intent.putExtra("idCardNumber", idCardNumber)
+                                intent.putExtra("emailId" , emaiId)
+                                intent.putExtra("contact" , contact)
+                                intent.putExtra("status" , status)
+                                intent.putExtra("autho" , autho)
                                 startActivity(intent)
                                 finish()
                             } else {

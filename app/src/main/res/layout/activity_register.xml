@@ -129,28 +129,42 @@
                 android:padding="16dp" />
 
             <!-- Lab Name -->
-            <EditText
-                android:id="@+id/editTextLabName"
+            <!-- Lab Name -->
+            <TextView
+                android:id="@+id/textViewLabName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lab Name"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextDivisionName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp" />
+            <Spinner
+                android:id="@+id/spinnerLabName"
+                android:text = "Lab Name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Lab Name"
-                android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextDivisionName"
+                android:background="@android:drawable/btn_dropdown"
+                android:paddingEnd="32dp"
+                android:paddingStart="8dp"
+                android:hint="Select Lab Name"
+                app:layout_constraintTop_toBottomOf="@id/textViewLabName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:padding="16dp" />
+                android:entries="@array/lab_names" />
 
             <!-- City and State -->
             <EditText
                 android:id="@+id/editTextCityState"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="City, State"
+                android:hint="State"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextLabName"
+                app:layout_constraintTop_toBottomOf="@id/spinnerLabName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -172,6 +186,35 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 android:padding="16dp" />
+            <!-- Email -->
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextIDCardNumber"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp" />
+
+            <!-- Contact Number -->
+            <EditText
+                android:id="@+id/editTextContactNumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Contact Number"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/editTextEmail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:padding="16dp" />
 
             <!-- Photo Upload Section -->
             <TextView
@@ -180,7 +223,7 @@
                 android:layout_height="wrap_content"
                 android:text="Upload Photo"
                 android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextIDCardNumber"
+                app:layout_constraintTop_toBottomOf="@id/editTextContactNumber"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp" />
@@ -191,7 +234,7 @@
                 android:layout_height="wrap_content"
                 android:text="Upload"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextIDCardNumber"
+                app:layout_constraintTop_toBottomOf="@id/editTextContactNumber"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp" />

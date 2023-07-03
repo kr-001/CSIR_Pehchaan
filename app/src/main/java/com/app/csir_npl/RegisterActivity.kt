@@ -3,6 +3,7 @@ package com.app.csir_npl
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -15,13 +16,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.InputStream
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -29,7 +30,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var editTextFullName: EditText
     private lateinit var editTextDesignation: EditText
     private lateinit var editTextDivisionName: EditText
-    private lateinit var editTextLabName: EditText
+    private lateinit var spinnerLabName: Spinner
     private lateinit var editTextCityState: EditText
     private lateinit var editTextIDCardNumber: EditText
     private lateinit var buttonUploadPhoto: Button
@@ -39,6 +40,9 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var buttonSubmit: Button
     private lateinit var selectedImageUri: Uri
     private lateinit var selectedLabName: String
+    private lateinit var editTextEmail: EditText
+    private lateinit var editTextContactNumber: EditText
+
 
     private var photoPath: String = ""
 
@@ -49,38 +53,53 @@ class RegisterActivity : AppCompatActivity() {
                 val selectedLabName =
                     data?.getStringExtra(LabNameActivity.EXTRA_SELECTED_LAB_NAME)
                 if (selectedLabName != null) {
-                    editTextLabName.setText(selectedLabName)
+                    spinnerLabName.setSelection(getLabNameIndex(selectedLabName))
                     this.selectedLabName = selectedLabName
                 }
             }
         }
 
-    private val getContent =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = result.data
-                val imageUri = data?.data
-                if (imageUri != null && fileExists(imageUri)) {
-                    selectedImageUri = imageUri
+    private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            val imageUri = data?.data
+            if (imageUri != null) {
+                selectedImageUri = imageUri
 
-                    Glide.with(this)
-                        .load(selectedImageUri)
-                        .apply(
-                            RequestOptions()
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        )
-                        .into(imageViewPhotoPreview)
+                Glide.with(this)
+                    .load(selectedImageUri)
+                    .apply(
+                        RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    )
+                    .into(imageViewPhotoPreview)
 
-                    photoPath = getFilePathFromUri(selectedImageUri) ?: ""
-                } else {
-                    Toast.makeText(
-                        this@RegisterActivity,
-                        "File not found",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                photoPath = getFilePathFromUri(selectedImageUri) ?: ""
+            } else {
+                Toast.makeText(
+                    this@RegisterActivity,
+                    "File not found",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
+    }
+
+    private fun getFilePathFromUri(uri: Uri): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor: Cursor? = contentResolver.query(uri, projection, null, null, null)
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val columnIndex: Int = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                val filePath = it.getString(columnIndex)
+                Log.e("RegisterActivity", "File path: $filePath")
+                return filePath
+            } else {
+                Log.e("RegisterActivity", "Cursor is empty")
+            }
+        } ?: Log.e("RegisterActivity", "Cursor is null")
+        return null
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +110,7 @@ class RegisterActivity : AppCompatActivity() {
         editTextFullName = findViewById(R.id.editTextFullName)
         editTextDesignation = findViewById(R.id.editTextDesignation)
         editTextDivisionName = findViewById(R.id.editTextDivisionName)
-        editTextLabName = findViewById(R.id.editTextLabName)
+        spinnerLabName = findViewById(R.id.spinnerLabName)
         editTextCityState = findViewById(R.id.editTextCityState)
         editTextIDCardNumber = findViewById(R.id.editTextIDCardNumber)
         buttonUploadPhoto = findViewById(R.id.buttonUploadPhoto)
@@ -99,35 +118,28 @@ class RegisterActivity : AppCompatActivity() {
         editTextPassword = findViewById(R.id.editTextPassword)
         editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword)
         buttonSubmit = findViewById(R.id.buttonSubmit)
+        editTextEmail = findViewById(R.id.editTextEmail)
+        editTextContactNumber = findViewById(R.id.editTextContactNumber)
+
 
         val titleOptions = resources.getStringArray(R.array.title_options)
         val titleAdapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, titleOptions)
         spinnerTitle.adapter = titleAdapter
 
-        editTextLabName.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                val labNameInput = EditText(this)
-                labNameInput.hint = "Enter Lab Name"
+        val labNames = fetchLabNamesFromDatabase()
+        val labNameAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, labNames)
+        spinnerLabName.adapter = labNameAdapter
 
-                AlertDialog.Builder(this)
-                    .setTitle("Enter Lab Name")
-                    .setView(labNameInput)
-                    .setPositiveButton("OK") { dialog, _ ->
-                        val enteredLabName = labNameInput.text.toString()
-                        editTextLabName.setText(enteredLabName)
-                        selectedLabName = enteredLabName
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton("Cancel") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    .show()
-
-                return@setOnTouchListener true
+        spinnerLabName.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val intent = Intent(this, LabNameActivity::class.java)
+                labNameLauncher.launch(intent)
             }
-            return@setOnTouchListener false
+            true
         }
+
 
         buttonUploadPhoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -146,8 +158,11 @@ class RegisterActivity : AppCompatActivity() {
                     editTextCityState.text.toString(),
                     editTextIDCardNumber.text.toString(),
                     photoPath,
-                    editTextPassword.text.toString()
+                    editTextPassword.text.toString(),
+                    editTextEmail.text.toString(),
+                    editTextContactNumber.text.toString()
                 )
+
                 Log.i("RegisterActivity", "User data: $user")
 
                 // Upload user data to the server
@@ -156,31 +171,31 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-            private fun validateInput(): Boolean {
-                val fullName = editTextFullName.text.toString().trim()
-                val labName = editTextLabName.text.toString().trim()
-                val password = editTextPassword.text.toString()
-                val confirmPassword = editTextConfirmPassword.text.toString()
+    private fun validateInput(): Boolean {
+        val fullName = editTextFullName.text.toString().trim()
+        val labName = spinnerLabName.selectedItem.toString().trim()
+        val password = editTextPassword.text.toString()
+        val confirmPassword = editTextConfirmPassword.text.toString()
 
-                if (fullName.isEmpty() || labName.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                    Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-                    return false
-                } else if (password != confirmPassword) {
-                    Toast.makeText(
-                        this,
-                        "Password and confirm password do not match",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return false
-                }
+        if (fullName.isEmpty() || labName.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            return false
+        } else if (password != confirmPassword) {
+            Toast.makeText(
+                this,
+                "Password and confirm password do not match",
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
 
-                return true
-            }
+        return true
+    }
 
     private fun uploadUserData(user: User, photoPath: String) {
         val client = OkHttpClient()
 
-        // Create RequestBody for sending form data
+        val file = File(photoPath)
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart("title", user.title)
@@ -191,19 +206,23 @@ class RegisterActivity : AppCompatActivity() {
             .addFormDataPart("cityState", user.cityState)
             .addFormDataPart("idCardNumber", user.idCardNumber)
             .addFormDataPart("password", user.password)
-            .addFormDataPart("photoPath", photoPath)
+            .addFormDataPart("email", user.email)
+            .addFormDataPart("contact", user.contact)
+            .addFormDataPart(
+                "photo",
+                file.name,
+                file.asRequestBody("image/*".toMediaTypeOrNull())
+            )
             .build()
 
-        // Create POST request
         val request = Request.Builder()
-            .url("http://192.168.0.222:3000/register") // Replace <YOUR_SERVER_HOST> with your server's IP address or domain name
+            .url("http://192.168.0.132:4000/register")
             .post(requestBody)
             .build()
 
-        // Send the request asynchronously
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
+                Log.e("RegisterActivity", "Failed to upload user data", e)
                 runOnUiThread {
                     Toast.makeText(
                         this@RegisterActivity,
@@ -214,20 +233,20 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val responseMessage = response.message
                 if (response.isSuccessful) {
                     runOnUiThread {
                         Toast.makeText(
                             this@RegisterActivity,
-                            "Registration Successful",
+                            "User registered successfully",
                             Toast.LENGTH_SHORT
                         ).show()
+                        finish()
                     }
                 } else {
                     runOnUiThread {
                         Toast.makeText(
                             this@RegisterActivity,
-                            "Registration failed: $responseMessage",
+                            "Failed to register user",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -236,28 +255,20 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
+    private fun fetchLabNamesFromDatabase(): List<String> {
+        // Replace this with your database query to fetch lab names
+        val labNames = listOf("Lab 1", "Lab 2", "Lab 3") // Dummy data for demonstration
+        return labNames
+    }
 
-
-    private fun fileExists(uri: Uri): Boolean {
-        val filePath = getFilePathFromUri(uri)
-        if (filePath != null) {
-            val file = File(filePath)
-            return file.exists()
-        }
-        return false
+    private fun getLabNameIndex(labName: String): Int {
+        val labNames = spinnerLabName.adapter as ArrayAdapter<String>
+        return labNames.getPosition(labName)
     }
 
 
-    private fun getFilePathFromUri(uri: Uri): String? {
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = contentResolver.query(uri, projection, null, null, null)
-        if (cursor != null) {
-            val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-            cursor.moveToFirst()
-            val filePath = cursor.getString(columnIndex)
-            cursor.close()
-            return filePath
-        }
-        return null
+    private fun fileExists(uri: Uri): Boolean {
+        val file = File(uri.path)
+        return file.exists()
     }
 }

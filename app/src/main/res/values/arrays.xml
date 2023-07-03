@@ -6,4 +6,5 @@
         <item>Mr.</item>
         <item>Ms.</item>
     </string-array>
+    <string-array name="lab_names" />
 </resources>
