@@ -77,28 +77,36 @@ class LoginActivity : AppCompatActivity() {
                                 val idCardNumber = user.getString("id")
                                 val emaiId = user.getString("email")
                                 val contact = user.getString("contact")
-                                val status = user.getString("verification_status")
-                                val autho = user.getString("verification_authority")
+                                val status = user.getString("status")
+                                val autho = user.getString("autho")
 
+                                if (status == "unverified" || status == "User Revoked") {
+                                    Toast.makeText(
+                                        this@LoginActivity,
+                                        "User unverified or revoked by admin",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
 
-
-                                // Authentication successful, proceed to the next activity
-                                val intent = Intent(this@LoginActivity, IdCardActivity::class.java)
-                                intent.putExtra("title", title)
-                                intent.putExtra("name", name)
-                                intent.putExtra("photoPath", photoPath)
-                                intent.putExtra("designation", designation)
-                                intent.putExtra("division", division)
-                                intent.putExtra("cityState", cityState)
-                                intent.putExtra("lab", lab)
-                                intent.putExtra("idCardNumber", idCardNumber)
-                                intent.putExtra("emailId" , emaiId)
-                                intent.putExtra("contact" , contact)
-                                intent.putExtra("status" , status)
-                                intent.putExtra("autho" , autho)
-                                startActivity(intent)
-                                finish()
-                            } else {
+                                    // Authentication successful, proceed to the next activity
+                                    val intent =
+                                        Intent(this@LoginActivity, IdCardActivity::class.java)
+                                    intent.putExtra("title", title)
+                                    intent.putExtra("name", name)
+                                    intent.putExtra("photoPath", photoPath)
+                                    intent.putExtra("designation", designation)
+                                    intent.putExtra("division", division)
+                                    intent.putExtra("cityState", cityState)
+                                    intent.putExtra("lab", lab)
+                                    intent.putExtra("idCardNumber", idCardNumber)
+                                    intent.putExtra("emailId", emaiId)
+                                    intent.putExtra("contact", contact)
+                                    intent.putExtra("status", status)
+                                    intent.putExtra("autho", autho)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                            }else {
                                 Toast.makeText(this@LoginActivity, "Empty user object. Authentication failed", Toast.LENGTH_SHORT).show()
                             }
                         } catch (e: JSONException) {

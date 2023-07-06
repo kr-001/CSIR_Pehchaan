@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -54,21 +55,24 @@ class IdCardActivity : AppCompatActivity() {
 
         val title = intent.getStringExtra("title")
         val name = intent.getStringExtra("name")
-        photoPath = intent.getStringExtra("photoPath").toString() // Removed the 'val' keyword here
+        photoPath = intent.getStringExtra("photoPath").toString()
+
+        val photoUrl = photoPath
+        val correctedPhotoUrl = photoUrl.replace("\\", "/")
         val designation = intent.getStringExtra("designation")
         val division = intent.getStringExtra("division")
         val cityState = intent.getStringExtra("cityState")
         val lab = intent.getStringExtra("lab")
         val idCardNumber = intent.getStringExtra("idCardNumber")
-        val emailId = intent.getStringExtra("emailID")
+        val emailId = intent.getStringExtra("emailId")
         val contact = intent.getStringExtra("contact")
         val status = intent.getStringExtra("status")
         val autho = intent.getStringExtra("autho")
 
         if (name != null && photoPath != null) {
             // Set user details
-            Log.e("PhotoPath: ", "$photoPath")
-            loadPhoto(photoPath)
+            Log.i("PhotoPath: ", "$correctedPhotoUrl")
+            loadPhoto(correctedPhotoUrl)
             textViewTitle.text = title
             textViewFullName.text = name
             textViewDesignation.text = designation
@@ -82,13 +86,13 @@ class IdCardActivity : AppCompatActivity() {
             }
 
             buttonGenerateQR.setOnClickListener {
-                if (idCardNumber != null) {
-                    if (lab != null) {
-                        if (emailId != null) {
-                            if (contact != null) {
-                                if (status != null) {
-                                    if (autho != null) {
-                                        generateQRCode(name, lab, idCardNumber, emailId, contact, status, autho)
+                idCardNumber?.let { id ->
+                    lab?.let { labName ->
+                        emailId?.let { email ->
+                            contact?.let { contactInfo ->
+                                status?.let { statusValue ->
+                                    autho?.let { auth ->
+                                        generateQRCode(name, labName, id, email, contactInfo, statusValue, auth)
                                     }
                                 }
                             }
@@ -96,36 +100,18 @@ class IdCardActivity : AppCompatActivity() {
                     }
                 }
             }
+            Log.e("Id CArd : " , "$emailId");
+
 
         } else {
             Log.e("IdCardActivity", "photoPath is null")
         }
     }
 
-    private fun loadPhoto(photoPath: String) {
-        // Check if the app has permission to read external storage
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // Permission is not granted, request it
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                READ_EXTERNAL_STORAGE_REQUEST_CODE
-            )
-        } else {
-            // Permission is already granted, load the photo
-            val photoFile = File(photoPath)
-            if (photoFile.exists()) {
-                val photoBitmap = BitmapFactory.decodeFile(photoPath)
-                Log.e("BITMAP", "$photoBitmap")
-                imageViewPhoto.setImageBitmap(photoBitmap)
-            } else {
-                Log.e("IdCardActivity", "Photo file does not exist")
-            }
-        }
+    private fun loadPhoto(correctedPhotoUrl: String) {
+        Glide.with(this)
+            .load(correctedPhotoUrl)
+            .into(imageViewPhoto)
     }
 
     // Handle the result of the permission request
@@ -139,7 +125,8 @@ class IdCardActivity : AppCompatActivity() {
             READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted, load the photo
-                    loadPhoto(photoPath)
+                    val correctedPhotoUrl = photoPath;
+                    loadPhoto(correctedPhotoUrl)
                 } else {
           Log.e("PHOTOPATH" , "ERROR $photoPath")
                 }
