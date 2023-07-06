@@ -91,6 +91,42 @@
             android:layout_marginTop="16dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <CheckBox
+            android:id="@+id/checkboxEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:checked="true" />
+
+            <CheckBox
+                android:id="@+id/checkboxContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact"
+                android:checked="true" />
+
+            <CheckBox
+                android:id="@+id/checkboxStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                android:checked="true" />
+
+            <CheckBox
+                android:id="@+id/checkboxAutho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Autho"
+                android:checked="true" />
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/buttonShareVcf"
             android:layout_width="wrap_content"
@@ -113,7 +149,6 @@
             android:layout_marginTop="16dp"
             android:visibility="gone"
             android:contentDescription="@string/qrcode_description"/>
-
 
     </LinearLayout>
 

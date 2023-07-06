@@ -1,18 +1,14 @@
-package com.app.csir_npl
-
-import android.Manifest
+package  com.app.csir_npl
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
@@ -28,6 +24,10 @@ class IdCardActivity : AppCompatActivity() {
     private lateinit var textViewLabName: TextView
     private lateinit var textViewCityState: TextView
     private lateinit var textViewIdCardNumber: TextView
+    private lateinit var checkboxEmail: CheckBox
+    private lateinit var checkboxContact: CheckBox
+    private lateinit var checkboxStatus: CheckBox
+    private lateinit var checkboxAutho: CheckBox
     private lateinit var buttonShareVcf: Button
     private lateinit var buttonGenerateQR: Button
     private lateinit var imageViewQRCode: ImageView
@@ -49,6 +49,10 @@ class IdCardActivity : AppCompatActivity() {
         textViewLabName = findViewById(R.id.textViewLabName)
         textViewCityState = findViewById(R.id.textViewCityState)
         textViewIdCardNumber = findViewById(R.id.textViewIdCardNumber)
+        checkboxEmail = findViewById(R.id.checkboxEmail)
+        checkboxContact = findViewById(R.id.checkboxContact)
+        checkboxStatus = findViewById(R.id.checkboxStatus)
+        checkboxAutho = findViewById(R.id.checkboxAutho)
         buttonShareVcf = findViewById(R.id.buttonShareVcf)
         buttonGenerateQR = findViewById(R.id.buttonGenerateQR)
         imageViewQRCode = findViewById(R.id.imageViewQRCode)
@@ -70,7 +74,6 @@ class IdCardActivity : AppCompatActivity() {
         val autho = intent.getStringExtra("autho")
 
         if (name != null && photoPath != null) {
-            // Set user details
             Log.i("PhotoPath: ", "$correctedPhotoUrl")
             loadPhoto(correctedPhotoUrl)
             textViewTitle.text = title
@@ -82,25 +85,37 @@ class IdCardActivity : AppCompatActivity() {
             textViewIdCardNumber.text = idCardNumber
 
             buttonShareVcf.setOnClickListener {
-                shareVcfFile(name)
+                val name = textViewFullName.text.toString()
+                val lab = textViewLabName.text.toString()
+                val idCardNumber = textViewIdCardNumber.text.toString()
+
+                val emailSelected = checkboxEmail.isChecked
+                val contactSelected = checkboxContact.isChecked
+                val statusSelected = checkboxStatus.isChecked
+                val authoSelected = checkboxAutho.isChecked
+
+                shareVcfFile(name, lab, idCardNumber, emailId, contact, status, autho,
+                    emailSelected, contactSelected, statusSelected, authoSelected)
             }
 
             buttonGenerateQR.setOnClickListener {
-                idCardNumber?.let { id ->
-                    lab?.let { labName ->
-                        emailId?.let { email ->
-                            contact?.let { contactInfo ->
-                                status?.let { statusValue ->
-                                    autho?.let { auth ->
-                                        generateQRCode(name, labName, id, email, contactInfo, statusValue, auth)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                val name = textViewFullName.text.toString()
+                val lab = textViewLabName.text.toString()
+                val idCardNumber = textViewIdCardNumber.text.toString()
+
+                val emailSelected = checkboxEmail.isChecked
+                val contactSelected = checkboxContact.isChecked
+                val statusSelected = checkboxStatus.isChecked
+                val authoSelected = checkboxAutho.isChecked
+
+                val emailValue = if (emailSelected) emailId else ""
+                val contactValue = if (contactSelected) contact else ""
+                val statusValue = if (statusSelected) status else ""
+                val authoValue = if (authoSelected) autho else ""
+
+                generateQRCode(name, lab, idCardNumber, emailValue!!, contactValue!!, statusValue!!, authoValue!!,
+                    emailSelected, contactSelected, statusSelected, authoSelected)
             }
-            Log.e("Id CArd : " , "$emailId");
 
 
         } else {
@@ -114,7 +129,6 @@ class IdCardActivity : AppCompatActivity() {
             .into(imageViewPhoto)
     }
 
-    // Handle the result of the permission request
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -124,60 +138,126 @@ class IdCardActivity : AppCompatActivity() {
         when (requestCode) {
             READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted, load the photo
-                    val correctedPhotoUrl = photoPath;
+                    val correctedPhotoUrl = photoPath
                     loadPhoto(correctedPhotoUrl)
                 } else {
-          Log.e("PHOTOPATH" , "ERROR $photoPath")
+                    Log.e("PHOTOPATH", "ERROR $photoPath")
                 }
             }
         }
     }
 
-    private fun shareVcfFile(name: String) {
-        // Create a VCF file and save it locally
+    private fun shareVcfFile(
+        name: String,
+        lab: String,
+        idCardNumber: String,
+        emailID: String?,
+        contact: String?,
+        status: String?,
+        autho: String?,
+        emailSelected: Boolean,
+        contactSelected: Boolean,
+        statusSelected: Boolean,
+        authoSelected: Boolean
+    ) {
         val vcfFile = File(cacheDir, "contact.vcf")
-        val vcfData = "BEGIN:VCARD\n" +
-                "VERSION:3.0\n" +
-                "FN:$name\n" +
-                "END:VCARD"
-
+        val vcfData = buildVcfData(
+            name,
+            lab,
+            idCardNumber,
+            emailID,
+            contact,
+            status,
+            autho,
+            emailSelected,
+            contactSelected,
+            statusSelected,
+            authoSelected
+        )
         vcfFile.writeText(vcfData)
-
-        // Create a share intent and set the VCF file
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "text/x-vcard"
         shareIntent.putExtra(Intent.EXTRA_STREAM, vcfFile)
-
-        // Start the activity to share the VCF file
         startActivity(Intent.createChooser(shareIntent, "Share Contact"))
     }
 
-    private fun generateQRCode(name: String, lab: String, idCardNumber: String, emailID: String, contact: String, status: String, autho: String) {
+    private fun buildVcfData(
+        name: String,
+        lab: String,
+        idCardNumber: String,
+        emailID: String?,
+        contact: String?,
+        status: String?,
+        autho: String?,
+        emailSelected: Boolean,
+        contactSelected: Boolean,
+        statusSelected: Boolean,
+        authoSelected: Boolean
+    ): String {
+        val builder = StringBuilder()
+        builder.append("BEGIN:VCARD\n")
+        builder.append("VERSION:3.0\n")
+        builder.append("FN:$name\n")
+
+        if (emailSelected && emailID != null) {
+            builder.append("EMAIL:$emailID\n")
+        }
+
+        if (contactSelected && contact != null) {
+            builder.append("CONTACT:$contact\n")
+        }
+
+        if (statusSelected && status != null) {
+            builder.append("STATUS:$status\n")
+        }
+
+        if (authoSelected && autho != null) {
+            builder.append("AUTHO:$autho\n")
+        }
+
+        builder.append("LAB:$lab\n")
+        builder.append("ID:$idCardNumber\n")
+        builder.append("END:VCARD")
+
+        return builder.toString()
+    }
+
+    private fun generateQRCode(
+        name: String,
+        lab: String,
+        idCardNumber: String,
+        emailID: String,
+        contact: String,
+        status: String,
+        autho: String,
+        emailSelected: Boolean,
+        contactSelected: Boolean,
+        statusSelected: Boolean,
+        authoSelected: Boolean
+    ) {
         try {
-            // Generate QR code from user details
-            val qrData = "BEGIN:VCARD\n" +
-                    "VERSION:3.0\n" +
-                    "FN:$name\n" +
-                    "LAB:$lab\n" +
-                    "ID:$idCardNumber\n" +
-                    "EMAIL:$emailID\n" +
-                    "CONTACT:$contact\n" +
-                    "STATUS:$status\n" +
-                    "AUTHO:$autho\n" +
-                    "END:VCARD"
+            val qrData = buildVcfData(
+                name,
+                lab,
+                idCardNumber,
+                emailID,
+                contact,
+                status,
+                autho,
+                emailSelected,
+                contactSelected,
+                statusSelected,
+                authoSelected
+            )
 
             val barcodeEncoder = BarcodeEncoder()
             val bitmap: Bitmap =
                 barcodeEncoder.encodeBitmap(qrData, BarcodeFormat.QR_CODE, 500, 500)
 
-            // Display the QR code
             imageViewQRCode.setImageBitmap(bitmap)
             imageViewQRCode.visibility = ImageView.VISIBLE
         } catch (e: WriterException) {
             e.printStackTrace()
         }
     }
-
-
 }
