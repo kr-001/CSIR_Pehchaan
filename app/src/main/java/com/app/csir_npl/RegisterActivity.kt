@@ -1,63 +1,309 @@
 package com.app.csir_npl
 
+import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
-import android.content.Intent
-import android.database.Cursor
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
-import android.view.MotionEvent
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import android.content.Intent
+import android.provider.MediaStore
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.io.FileOutputStream
+
 import java.io.IOException
-import java.io.InputStream
 
 class RegisterActivity : AppCompatActivity() {
-
-    private lateinit var spinnerTitle: Spinner
-    private lateinit var editTextFullName: EditText
-    private lateinit var editTextDesignation: EditText
-    private lateinit var editTextDivisionName: EditText
-    private lateinit var spinnerLabName: Spinner
-    private lateinit var editTextCityState: EditText
-    private lateinit var editTextIDCardNumber: EditText
-    private lateinit var buttonUploadPhoto: Button
-    private lateinit var imageViewPhotoPreview: ImageView
-    private lateinit var editTextPassword: EditText
-    private lateinit var editTextConfirmPassword: EditText
-    private lateinit var buttonSubmit: Button
-    private lateinit var selectedImageUri: Uri
-    private lateinit var selectedLabName: String
     private lateinit var editTextEmail: EditText
-    private lateinit var editTextContactNumber: EditText
-
-
+    private lateinit var buttonSendOTP: Button
+    private lateinit var editTextOTP: EditText
+    private lateinit var buttonSubmitOTP: Button
+    private lateinit var editTextIDCardNumber: EditText
+    private lateinit var editTextContact: EditText
+    private lateinit var imageViewPhotoPreview: ImageView
+    private lateinit var buttonUploadPhoto: Button
+    private val labNameList: MutableList<String> = mutableListOf()
+    private var generatedOTP: String = "" // Variable to store the generated OTP
+    private val PICK_IMAGE_REQUEST_CODE = 100
+    private val READ_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE = 101
+    private var selectedImageUri: Uri? = null
     private var photoPath: String = ""
 
-    private val labNameLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data = result.data
-                val selectedLabName =
-                    data?.getStringExtra(LabNameActivity.EXTRA_SELECTED_LAB_NAME)
-                if (selectedLabName != null) {
-                    spinnerLabName.setSelection(getLabNameIndex(selectedLabName))
-                    this.selectedLabName = selectedLabName
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_register)
+        editTextEmail = findViewById(R.id.editTextEmail)
+        buttonSendOTP = findViewById(R.id.buttonSendOTP)
+        editTextOTP = findViewById(R.id.editTextOTP)
+        buttonSubmitOTP = findViewById(R.id.buttonSubmitOTP)
+        editTextIDCardNumber = findViewById(R.id.editTextIDCardNumber)
+        imageViewPhotoPreview = findViewById(R.id.imageViewPhotoPreview)
+        buttonUploadPhoto = findViewById(R.id.buttonUploadPhoto)
+        val spinnerLabName: Spinner = findViewById(R.id.spinnerLabName)
+
+        val labNameAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, labNameList)
+        labNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerLabName.adapter = labNameAdapter
+
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://192.168.0.132:4000/labnames") // Replace with the actual URL to fetch LabName options
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(
+                        applicationContext,
+                        "Failed to fetch LabName options",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+
+                // Parse the response body and extract the LabName options
+                val labNamesJsonArray = JSONArray(responseBody)
+
+                // Clear the existing LabName options list
+                labNameList.clear()
+
+                // Iterate through the LabName options JSON array and add them to the list
+                for (i in 0 until labNamesJsonArray.length()) {
+                    val labName = labNamesJsonArray.getString(i)
+                    labNameList.add(labName)
+                }
+
+                // Notify the adapter that the data has changed
+                runOnUiThread {
+                    labNameAdapter.notifyDataSetChanged()
+                }
+            }
+        })
+
+        buttonSendOTP.setOnClickListener {
+            val email = editTextEmail.text.toString().trim()
+            if (isValidEmail(email)) {
+                sendOTPRequest(email)
+            } else {
+                editTextEmail.error = "Invalid email address"
+            }
         }
+
+        buttonSubmitOTP.setOnClickListener {
+            val enteredOTP = editTextOTP.text.toString().trim()
+            if (enteredOTP == generatedOTP) {
+                checkMasterTableAndSaveUser()
+            } else {
+                editTextOTP.error = "Incorrect OTP"
+            }
+        }
+
+        buttonUploadPhoto.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            getContent.launch(intent)
+        }
+    }
+    private fun getFilePathFromUri(uri: Uri): String? {
+        val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor = contentResolver.query(uri, filePathColumn, null, null, null)
+        cursor?.let {
+            it.moveToFirst()
+            val columnIndex = it.getColumnIndex(filePathColumn[0])
+            val filePath = it.getString(columnIndex)
+            it.close()
+            return filePath
+        }
+        return null
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
+        return email.matches(emailPattern.toRegex())
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
+            val selectedImageUri: Uri? = data?.data
+            if (selectedImageUri != null) {
+                handleSelectedImage(selectedImageUri)
+            }
+        }
+    }
+
+
+
+    private fun generateOTP(): String {
+        val random = (1000..9999).random()
+        return random.toString()
+    }
+
+    private fun sendOTPRequest(email: String) {
+        val client = OkHttpClient()
+
+        // Create a JSON object with the email data
+        val requestBody = JSONObject().apply {
+            put("email", email)
+        }
+
+        // Create a request to send the email data to the server
+        val request = Request.Builder()
+            .url("http://192.168.0.132:4000/send-otp")
+            .post(requestBody.toString().toRequestBody("application/json".toMediaTypeOrNull()))
+            .build()
+
+        // Send the request asynchronously
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(applicationContext, "Failed to send OTP", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+
+                runOnUiThread {
+                    if (response.isSuccessful) {
+                        // Extract the OTP from the server response
+                        Log.e("response Body", "${responseBody.toString()}")
+                        val otpJson = JSONObject(responseBody)
+                        val otp = otpJson.getString("otp")
+
+                        // Assign the received OTP to the generatedOTP variable
+                        generatedOTP = otp
+
+                        Toast.makeText(
+                            applicationContext,
+                            "OTP sent successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            applicationContext,
+                            "Failed to send OTP",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        })
+    }
+
+    private fun checkMasterTableAndSaveUser() {
+        val client = OkHttpClient()
+
+        // Get the values from the EditText and ImageView
+        val email = editTextEmail.text.toString().trim()
+        val idCardNumber = editTextIDCardNumber.text.toString().trim()
+        val photoBitmap = (imageViewPhotoPreview.drawable as BitmapDrawable).bitmap
+
+        // Create a temporary file to store the photo
+        val photoFile = File.createTempFile("photo", ".jpg", cacheDir)
+        val outputStream = FileOutputStream(photoFile)
+        photoBitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+        outputStream.close()
+
+        // Create a multipart/form-data request body
+        val requestBody = MultipartBody.Builder()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("email", email)
+            .addFormDataPart("idCardNumber", idCardNumber)
+            .addFormDataPart(
+                "photo",
+                photoFile.name,
+                photoFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            )
+            .build()
+
+        val request = Request.Builder()
+            .url("http://192.168.0.132:4000/register")
+            .post(requestBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                runOnUiThread {
+                    Toast.makeText(
+                        applicationContext,
+                        "Failed to register user",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+
+                runOnUiThread {
+                    if (response.isSuccessful) {
+                        Toast.makeText(
+                            applicationContext,
+                            "Registration successful",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            applicationContext,
+                            "Failed to register user",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        })
+    }
+
+
+    private fun bitmapToBase64(bitmap: Bitmap): String {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
+
+    private fun openImagePicker() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        if (intent.resolveActivity(packageManager) != null) {
+            getContent.launch(intent)
+        } else {
+            Toast.makeText(
+                this,
+                "No app found to handle the image picker.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+
+
 
     private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -74,7 +320,7 @@ class RegisterActivity : AppCompatActivity() {
                     )
                     .into(imageViewPhotoPreview)
 
-                photoPath = getFilePathFromUri(selectedImageUri) ?: ""
+                photoPath = getFilePathFromUri(selectedImageUri!!) ?: ""
             } else {
                 Toast.makeText(
                     this@RegisterActivity,
@@ -85,190 +331,35 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun getFilePathFromUri(uri: Uri): String? {
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor: Cursor? = contentResolver.query(uri, projection, null, null, null)
-        cursor?.use {
-            if (it.moveToFirst()) {
-                val columnIndex: Int = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                val filePath = it.getString(columnIndex)
-                Log.e("RegisterActivity", "File path: $filePath")
-                return filePath
+
+
+    private fun handleSelectedImage(uri: Uri) {
+        try {
+            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+            imageViewPhotoPreview.setImageBitmap(bitmap)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == READ_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openImagePicker()
             } else {
-                Log.e("RegisterActivity", "Cursor is empty")
-            }
-        } ?: Log.e("RegisterActivity", "Cursor is null")
-        return null
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
-
-        spinnerTitle = findViewById(R.id.spinnerTitle)
-        editTextFullName = findViewById(R.id.editTextFullName)
-        editTextDesignation = findViewById(R.id.editTextDesignation)
-        editTextDivisionName = findViewById(R.id.editTextDivisionName)
-        spinnerLabName = findViewById(R.id.spinnerLabName)
-        editTextCityState = findViewById(R.id.editTextCityState)
-        editTextIDCardNumber = findViewById(R.id.editTextIDCardNumber)
-        buttonUploadPhoto = findViewById(R.id.buttonUploadPhoto)
-        imageViewPhotoPreview = findViewById(R.id.imageViewPhotoPreview)
-        editTextPassword = findViewById(R.id.editTextPassword)
-        editTextConfirmPassword = findViewById(R.id.editTextConfirmPassword)
-        buttonSubmit = findViewById(R.id.buttonSubmit)
-        editTextEmail = findViewById(R.id.editTextEmail)
-        editTextContactNumber = findViewById(R.id.editTextContactNumber)
-
-
-        val titleOptions = resources.getStringArray(R.array.title_options)
-        val titleAdapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, titleOptions)
-        spinnerTitle.adapter = titleAdapter
-
-        val labNames = fetchLabNamesFromDatabase()
-        val labNameAdapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, labNames)
-        spinnerLabName.adapter = labNameAdapter
-
-        spinnerLabName.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                val intent = Intent(this, LabNameActivity::class.java)
-                labNameLauncher.launch(intent)
-            }
-            true
-        }
-
-
-        buttonUploadPhoto.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            getContent.launch(intent)
-        }
-
-        buttonSubmit.setOnClickListener {
-            if (validateInput()) {
-                val user = User(
-                    spinnerTitle.selectedItem.toString(),
-                    editTextFullName.text.toString(),
-                    editTextDesignation.text.toString(),
-                    editTextDivisionName.text.toString(),
-                    selectedLabName,
-                    editTextCityState.text.toString(),
-                    editTextIDCardNumber.text.toString(),
-                    photoPath,
-                    editTextPassword.text.toString(),
-                    editTextEmail.text.toString(),
-                    editTextContactNumber.text.toString()
-                )
-
-                Log.i("RegisterActivity", "User data: $user")
-
-                // Upload user data to the server
-                uploadUserData(user, photoPath)
+                Toast.makeText(
+                    this,
+                    "Permission denied. Cannot open image picker.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
-    }
-
-    private fun validateInput(): Boolean {
-        val fullName = editTextFullName.text.toString().trim()
-        val labName = spinnerLabName.selectedItem.toString().trim()
-        val password = editTextPassword.text.toString()
-        val confirmPassword = editTextConfirmPassword.text.toString()
-
-        if (fullName.isEmpty() || labName.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-            return false
-        } else if (password != confirmPassword) {
-            Toast.makeText(
-                this,
-                "Password and confirm password do not match",
-                Toast.LENGTH_SHORT
-            ).show()
-            return false
-        }
-
-        return true
-    }
-
-    private fun uploadUserData(user: User, photoPath: String) {
-        val client = OkHttpClient()
-
-        val file = File(photoPath)
-        val requestBody = MultipartBody.Builder()
-            .setType(MultipartBody.FORM)
-            .addFormDataPart("title", user.title)
-            .addFormDataPart("fullName", user.fullName)
-            .addFormDataPart("designation", user.designation)
-            .addFormDataPart("divisionName", user.divisionName)
-            .addFormDataPart("labName", user.labName)
-            .addFormDataPart("cityState", user.cityState)
-            .addFormDataPart("idCardNumber", user.idCardNumber)
-            .addFormDataPart("password", user.password)
-            .addFormDataPart("email", user.email)
-            .addFormDataPart("contact", user.contact)
-            .addFormDataPart(
-                "photo",
-                file.name,
-                file.asRequestBody("image/*".toMediaTypeOrNull())
-            )
-            .build()
-
-        val request = Request.Builder()
-            .url("http://192.168.0.132:4000/register")
-            .post(requestBody)
-            .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.e("RegisterActivity", "Failed to upload user data", e)
-                runOnUiThread {
-                    Toast.makeText(
-                        this@RegisterActivity,
-                        "Failed to upload user data",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                if (response.isSuccessful) {
-                    runOnUiThread {
-                        Toast.makeText(
-                            this@RegisterActivity,
-                            "User registered successfully",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        finish()
-                    }
-                } else {
-                    runOnUiThread {
-                        Toast.makeText(
-                            this@RegisterActivity,
-                            "Failed to register user",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-        })
-    }
-
-    private fun fetchLabNamesFromDatabase(): List<String> {
-        // Replace this with your database query to fetch lab names
-        val labNames = listOf("Lab 1", "Lab 2", "Lab 3") // Dummy data for demonstration
-        return labNames
-    }
-
-    private fun getLabNameIndex(labName: String): Int {
-        val labNames = spinnerLabName.adapter as ArrayAdapter<String>
-        return labNames.getPosition(labName)
-    }
-
-
-    private fun fileExists(uri: Uri): Boolean {
-        val file = File(uri.path)
-        return file.exists()
     }
 }
+
