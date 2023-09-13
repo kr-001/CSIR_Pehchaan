@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,44 +8,56 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="141dp"
-        android:layout_height="127dp"
-        android:src="@drawable/logo"
+        android:layout_width="198dp"
+        android:layout_height="196dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp" />
+        android:layout_marginTop="32dp"
+        android:src="@mipmap/ic_launcher_foreground" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CSIR Pehchaan"
-        android:textSize="24sp"
+        android:text="सीएसआईआर पहचान"
+        android:textSize="42sp"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/imageView3"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="58sp" />
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(Digital Identity)"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imageView3"
+        android:layout_marginTop="108sp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
         android:layout_centerInParent="true"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp">
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="33dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginBottom="16dp"
-            android:padding="16dp"
-            android:background="?attr/selectableItemBackground">
+            android:background="?attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <Button
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="150sp"
                 android:text="Register"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -54,15 +67,15 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:background="?attr/selectableItemBackground">
+            android:padding="16dp">
 
             <Button
                 android:id="@+id/button2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login"
+                android:text="   Login   "
                 android:textSize="24sp"
                 android:textStyle="bold" />
 

@@ -22,6 +22,7 @@ import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import android.content.Intent
 import android.provider.MediaStore
+import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -46,6 +47,9 @@ class RegisterActivity : AppCompatActivity() {
     private val READ_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE = 101
     private var selectedImageUri: Uri? = null
     private var photoPath: String = ""
+    private lateinit var spinnerLabName: Spinner
+    private lateinit var progressBar: ProgressBar
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,10 +59,11 @@ class RegisterActivity : AppCompatActivity() {
         buttonSendOTP = findViewById(R.id.buttonSendOTP)
         editTextOTP = findViewById(R.id.editTextOTP)
         buttonSubmitOTP = findViewById(R.id.buttonSubmitOTP)
-        editTextIDCardNumber = findViewById(R.id.editTextIDCardNumber)
         imageViewPhotoPreview = findViewById(R.id.imageViewPhotoPreview)
         buttonUploadPhoto = findViewById(R.id.buttonUploadPhoto)
-        val spinnerLabName: Spinner = findViewById(R.id.spinnerLabName)
+        spinnerLabName = findViewById(R.id.spinnerLabName)
+        progressBar = findViewById(R.id.progressBar)
+
 
         val labNameAdapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, labNameList)
@@ -83,6 +88,7 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onResponse(call: Call, response: Response) {
+
                 val responseBody = response.body?.string()
 
                 // Parse the response body and extract the LabName options
@@ -108,6 +114,7 @@ class RegisterActivity : AppCompatActivity() {
             val email = editTextEmail.text.toString().trim()
             if (isValidEmail(email)) {
                 sendOTPRequest(email)
+                progressBar.visibility = View.VISIBLE
             } else {
                 editTextEmail.error = "Invalid email address"
             }
@@ -181,7 +188,7 @@ class RegisterActivity : AppCompatActivity() {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
                 runOnUiThread {
-                    Toast.makeText(applicationContext, "Failed to send OTP", Toast.LENGTH_SHORT)
+                    Toast.makeText(applicationContext, "You are not registered in database. Pls, Contact LAB ADMIN.", Toast.LENGTH_SHORT)
                         .show()
                 }
             }
@@ -191,6 +198,7 @@ class RegisterActivity : AppCompatActivity() {
 
                 runOnUiThread {
                     if (response.isSuccessful) {
+                        progressBar.visibility = View.GONE
                         // Extract the OTP from the server response
                         Log.e("response Body", "${responseBody.toString()}")
                         val otpJson = JSONObject(responseBody)
@@ -201,13 +209,14 @@ class RegisterActivity : AppCompatActivity() {
 
                         Toast.makeText(
                             applicationContext,
-                            "OTP sent successfully",
+                            "OTP sent to registered EMAIL ID",
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
+                        progressBar.visibility = View.GONE
                         Toast.makeText(
                             applicationContext,
-                            "Failed to send OTP",
+                            "You are not registered in database. Please, Contact LAB ADMIN.",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -221,8 +230,8 @@ class RegisterActivity : AppCompatActivity() {
 
         // Get the values from the EditText and ImageView
         val email = editTextEmail.text.toString().trim()
-        val idCardNumber = editTextIDCardNumber.text.toString().trim()
         val photoBitmap = (imageViewPhotoPreview.drawable as BitmapDrawable).bitmap
+        val labCode = extractLabCode(spinnerLabName.selectedItem.toString())
 
         // Create a temporary file to store the photo
         val photoFile = File.createTempFile("photo", ".jpg", cacheDir)
@@ -234,7 +243,7 @@ class RegisterActivity : AppCompatActivity() {
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addFormDataPart("email", email)
-            .addFormDataPart("idCardNumber", idCardNumber)
+            .addFormDataPart("labCode", labCode )
             .addFormDataPart(
                 "photo",
                 photoFile.name,
@@ -269,6 +278,9 @@ class RegisterActivity : AppCompatActivity() {
                             "Registration successful",
                             Toast.LENGTH_SHORT
                         ).show()
+                        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     } else {
                         Toast.makeText(
                             applicationContext,
@@ -289,6 +301,15 @@ class RegisterActivity : AppCompatActivity() {
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 
+    private fun extractLabCode(labName: String): String {
+        val startIndex = labName.indexOf('(')
+        val endIndex = labName.indexOf(')')
+        return if (startIndex != -1 && endIndex != -1) {
+            labName.substring(startIndex + 1, endIndex)
+        } else {
+            labName
+        }
+    }
     private fun openImagePicker() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         if (intent.resolveActivity(packageManager) != null) {

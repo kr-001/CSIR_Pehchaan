@@ -19,132 +19,120 @@
             <!-- Logo -->
             <ImageView
                 android:id="@+id/imageViewLogo"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:src="@mipmap/ic_launcher_round"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintVertical_bias="0.2"
+                android:layout_width="149dp"
+                android:layout_height="171dp"
                 android:contentDescription="@string/logo_content_description"
-                android:padding="16dp" />
+                android:padding="16dp"
+                android:src="@mipmap/ic_launcher_foreground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- CSIR Pehchaan Text -->
             <TextView
                 android:id="@+id/textViewCSIRPehchaan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
                 android:text="CSIR Pehchaan"
                 android:textSize="24sp"
-                app:layout_constraintTop_toBottomOf="@id/imageViewLogo"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                android:layout_marginTop="32dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageViewLogo" />
 
             <!-- Enter Your Details Text -->
             <TextView
                 android:id="@+id/textViewEnterDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Enter Your Details - as per your ID"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/textViewCSIRPehchaan"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                android:layout_marginTop="16dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewCSIRPehchaan" />
 
-            <!-- ID Card Number -->
-            <EditText
-                android:id="@+id/editTextIDCardNumber"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="ID Card Number"
-                android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/textViewEnterDetails"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:padding="16dp" />
+
 
             <!-- Email -->
+
+            <!-- Lab Name -->
+            <!-- Lab Name -->
             <EditText
                 android:id="@+id/editTextEmail"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Email"
-                android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextIDCardNumber"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:padding="16dp" />
+                android:hint="Email"
+                android:padding="16dp"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.125"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewEnterDetails" />
 
-            <!-- Lab Name -->
-            <!-- Lab Name -->
             <TextView
                 android:id="@+id/textViewLabName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="Lab Name"
                 android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@id/editTextEmail"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTextEmail" />
+
             <Spinner
                 android:id="@+id/spinnerLabName"
-                android:text = "Lab Name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@android:drawable/btn_dropdown"
-                android:paddingEnd="32dp"
-                android:paddingStart="8dp"
-                android:hint="Select Lab Name"
-                app:layout_constraintTop_toBottomOf="@id/textViewLabName"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:entries="@array/lab_names" />
+                android:background="@android:drawable/btn_dropdown"
+                android:entries="@array/lab_names"
+                android:hint="Select Lab Name"
+                android:paddingStart="8dp"
+                android:paddingEnd="32dp"
+                android:text="Lab Name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewLabName" />
 
             <!-- Photo Upload Section -->
             <TextView
                 android:id="@+id/textViewPhotoLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:text="Upload Photo"
                 android:textSize="16sp"
-                app:layout_constraintTop_toBottomOf="@id/spinnerLabName"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp" />
+                app:layout_constraintTop_toBottomOf="@id/spinnerLabName" />
 
             <Button
                 android:id="@+id/buttonUploadPhoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:text="Upload"
                 android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/spinnerLabName"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp" />
+                app:layout_constraintTop_toBottomOf="@id/spinnerLabName" />
 
             <ImageView
                 android:id="@+id/imageViewPhotoPreview"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
-                app:layout_constraintTop_toBottomOf="@id/buttonUploadPhoto"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="16dp" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/buttonUploadPhoto" />
 
 
             <!-- OTP Label -->
@@ -158,52 +146,68 @@
                 android:text="Enter OTP"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imageViewPhotoPreview" />
+                app:layout_constraintTop_toBottomOf="@+id/buttonSendOTP" />
 
             <EditText
                 android:id="@+id/editTextOTP"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="OTP"
-                android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@id/textViewOTPLabel"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:padding="16dp" />
+                android:hint="OTP"
+                android:padding="16dp"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewOTPLabel" />
 
             <Button
                 android:id="@+id/buttonSendOTP"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Send OTP"
-                android:textSize="20sp"
-                android:background="@drawable/rounded_button_background"
-                app:layout_constraintTop_toBottomOf="@id/editTextOTP"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="24dp"
-                android:padding="16dp" />
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_button_background"
+                android:padding="16dp"
+                android:text="Generate OTP"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.125"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewPhotoPreview" />
 
             <Button
                 android:id="@+id/buttonSubmitOTP"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Submit OTP"
-                android:textSize="20sp"
-                android:background="@drawable/rounded_button_background"
-                app:layout_constraintTop_toBottomOf="@id/buttonSendOTP"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:padding="16dp" />
+                android:background="@drawable/rounded_button_background"
+                android:padding="16dp"
+                android:text="Submit OTP"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextOTP" />
+
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/coloraccent"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone"/>
     </RelativeLayout>
 </ScrollView>

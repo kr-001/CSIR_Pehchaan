@@ -1,0 +1,25 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/background_circle">
+        <shape android:shape="oval">
+            <solid android:color="#808080" /> <!-- Grey color -->
+        </shape>
+    </item>
+
+    <!-- Top Diagonal Line -->
+    <item android:left="5dp" android:right="2dp" android:top="5dp" android:bottom="5dp">
+        <rotate android:fromDegrees="45">
+            <shape android:shape="line">
+                <stroke android:width="2dp" android:color="#000000" /> <!-- White color, you can change this -->
+            </shape>
+        </rotate>
+    </item>
+
+    <!-- Bottom Diagonal Line -->
+    <item android:left="5dp" android:right="2dp" android:top="5dp" android:bottom="5dp">
+        <rotate android:fromDegrees="-45">
+            <shape android:shape="line">
+                <stroke android:width="2dp" android:color="#000000" /> <!-- White color, you can change this -->
+            </shape>
+        </rotate>
+    </item>
+</layer-list>

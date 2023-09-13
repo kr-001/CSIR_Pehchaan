@@ -20,9 +20,10 @@
     <string name="verification_status">Verification Status: %1$s</string>
     <string name="photo_description">Photo</string>
 
-
+<string name="emailLogin">Enter Email I.D.</string>
     <string name="lorem_ipsum">Lorem</string>
     <string name="dp_Name">D.P.Name</string>
     <string name="logo_description" />
     <string name="qrcode_description" />
+    <string name="verification">Verification:</string>
 </resources>

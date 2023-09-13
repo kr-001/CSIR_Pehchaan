@@ -13,5 +13,6 @@ data class User(
     var photoPath: String = "",
     var password: String = "",
     var email : String = "",
-    var contact : String = ""
+    var contact : String = "",
+    val address : String = ""
 ) : Serializable

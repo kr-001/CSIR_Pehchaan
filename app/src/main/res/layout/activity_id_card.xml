@@ -1,154 +1,299 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp"
     android:orientation="vertical"
     android:padding="16dp">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:layout_gravity="center"
+        app:title="सीएसआईआर पहचान" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="67dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/imageViewLogoLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="28dp"
             android:contentDescription="@string/logo_description"
-            android:src="@drawable/logo_left" />
+            android:src="@mipmap/ic_launcher_foreground" />
 
         <ImageView
             android:id="@+id/imageViewLogoRight"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="110dp"
+            android:layout_weight="1"
             android:contentDescription="@string/logo_description"
             android:src="@drawable/logo_right" />
 
     </LinearLayout>
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:orientation="vertical">
 
         <ImageView
             android:id="@+id/imageViewPhoto"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/default_photo"
-            android:contentDescription="@string/photo_description"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"/>
-
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
-
-        <TextView
-            android:id="@+id/textViewFullName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
-
-        <TextView
-            android:id="@+id/textViewDesignation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
-
-        <TextView
-            android:id="@+id/textViewDivisionName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
-
-        <TextView
-            android:id="@+id/textViewLabName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
-
-        <TextView
-            android:id="@+id/textViewCityState"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
-
-        <TextView
-            android:id="@+id/textViewIdCardNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+            android:contentDescription="@string/photo_description"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/default_photo" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewIDPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I.D. No. :"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-            <CheckBox
-            android:id="@+id/checkboxEmail"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textViewIdCardNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Email"
-            android:checked="true" />
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
 
-            <CheckBox
-                android:id="@+id/checkboxContact"
+            <TextView
+                android:id="@+id/textViewTitlePlace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Contact"
-                android:checked="true" />
+                android:text="Name: "
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-            <CheckBox
-                android:id="@+id/checkboxStatus"
+            <TextView
+                android:id="@+id/textViewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Status"
-                android:checked="true" />
+                android:layout_marginStart="87.6dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-            <CheckBox
-                android:id="@+id/checkboxAutho"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textViewFullName"
+                android:layout_width="235dp"
                 android:layout_height="wrap_content"
-                android:text="Autho"
-                android:checked="true" />
+                android:layout_marginStart="4dp"
+
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/buttonShareVcf"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Share VCF"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/buttonGenerateQR"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Generate QR Code"
-            android:layout_marginTop="8dp"/>
+            <TextView
+                android:id="@+id/textViewDesignationPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Designation: "
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
-        <ImageView
-            android:id="@+id/imageViewQRCode"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textViewDesignation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="51dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            android:contentDescription="@string/qrcode_description"/>
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewDivisionPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Division: "
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <TextView
+                android:id="@+id/textViewDivisionName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="76dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewSubDivisionPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sub Division: "
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <TextView
+                android:id="@+id/textViewSubDivisionName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        </LinearLayout>
+
+
+        <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <TextView
+        android:id="@+id/textViewLabNamePlace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lab Name: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+        <TextView
+            android:id="@+id/textViewLabName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="61dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+</LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewBGroupPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Blood Group: "
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <TextView
+                android:id="@+id/textViewBloodGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="47dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewAddressPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Address: "
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <TextView
+                android:id="@+id/textViewAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="73dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewAuthoStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/verification"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/green" />
+
+            <TextView
+                android:id="@+id/textViewVeriStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="37dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/green" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewAuthoPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Authorized By: "
+                android:textColor="@color/green"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <TextView
+                android:id="@+id/textViewAuthoName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textColor="@color/green"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewEmergencyPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Emergency Contact: "
+                android:textColor="@color/red"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <TextView
+                android:id="@+id/textViewEmergencyName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3.5dp"
+                android:textColor="@color/red"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </LinearLayout>
+
+
 
     </LinearLayout>
 
