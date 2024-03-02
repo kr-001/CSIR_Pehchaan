@@ -4,4 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="green">#03925e</color>
+    <color name="app_background">#FFFFFF</color>
+    <color name="button_normal_color">#3498db</color>
+    <color name="button_pressed_color">#2980b9</color>
+    <color name="button_stroke_color">#2c3e50</color>
 </resources>

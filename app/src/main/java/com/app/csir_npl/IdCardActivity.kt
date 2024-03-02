@@ -53,10 +53,13 @@ class IdCardActivity : AppCompatActivity() {
     private lateinit var emergencyContact : TextView
     private  lateinit var textViewStatus: TextView
     private lateinit var qrCodeDialog: Dialog
+    private lateinit var email : String
+    private lateinit var password : String
 
     companion object {
         private const val READ_EXTERNAL_STORAGE_REQUEST_CODE = 123
     }
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,7 +97,10 @@ class IdCardActivity : AppCompatActivity() {
         val address = intent.getStringExtra("address")
         val emergency = intent.getStringExtra("emergency")
         val lab = intent.getStringExtra("lab")
-        val email = intent.getStringExtra("email")
+        email = intent.getStringExtra("emailId").toString()
+        password = intent.getStringExtra("password").toString()
+        Log.e("UserEmail" , "$email")
+        Log.e("password" , "$password")
         val autho = intent.getStringExtra("autho")
         val status = intent.getStringExtra("status")
         val idCardNumber = intent.getStringExtra("idCardNumber")
@@ -146,6 +152,7 @@ class IdCardActivity : AppCompatActivity() {
             .into(imageViewLogoRight)
     }
 
+
     private fun showDetailsSelectionPopup() {
         val dialogBuilder = AlertDialog.Builder(this)
         dialogBuilder.setTitle("Select Details to Include in QR Code")
@@ -183,12 +190,12 @@ class IdCardActivity : AppCompatActivity() {
         dialogBuilder.show()
     }
 
-
     //13-09-2023
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_id_card, menu)
         return true
     }
+
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -206,6 +213,9 @@ class IdCardActivity : AppCompatActivity() {
                 intent.putExtra("lab", textViewLabName.text.toString())
                 intent.putExtra("address", textViewAddress.text.toString())
                 intent.putExtra("CardNumber" , textViewIdCardNumber.text.toString())
+                intent.putExtra("email" , email)
+                intent.putExtra("password" , password)
+
                 startActivity(intent)
                 true
             }

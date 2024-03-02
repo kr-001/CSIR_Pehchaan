@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         val request = Request.Builder()
-            .url("http://192.168.0.132:4000/request-otp") //
+            .url("http://192.168.0.222:4000/request-otp")
             .post(requestBody)
             .build()
 
@@ -94,7 +94,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun showOtpPopup() {
         val dialog = Dialog(this@LoginActivity)
-        dialog.setContentView(R.layout.dialog_otp) // Replace with the layout file for your OTP dialog
+        dialog.setContentView(R.layout.dialog_otp)
 
         val editTextOtp: EditText = dialog.findViewById(R.id.editTextOtp)
         val buttonVerify: Button = dialog.findViewById(R.id.buttonVerify)
@@ -125,7 +125,7 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         val request = Request.Builder()
-            .url("http://192.168.0.132:4000/login") // Replace <YOUR_SERVER_HOST> with your server's IP address or domain name
+            .url("http://192.168.0.222:4000/login")
             .post(requestBody)
             .build()
 
@@ -207,7 +207,7 @@ class LoginActivity : AppCompatActivity() {
                             Toast.makeText(this@LoginActivity, "Failed to parse response", Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        Toast.makeText(this@LoginActivity, "Authentication failed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "Authentication failed, Please check OTP you entered.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

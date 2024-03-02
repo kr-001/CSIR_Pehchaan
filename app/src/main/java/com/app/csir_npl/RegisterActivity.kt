@@ -72,7 +72,7 @@ class RegisterActivity : AppCompatActivity() {
 
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("http://192.168.0.132:4000/labnames") // Replace with the actual URL to fetch LabName options
+            .url("http://192.168.0.222:4000/labnames")
             .build()
 
         client.newCall(request).enqueue(object : Callback {
@@ -90,20 +90,12 @@ class RegisterActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
 
                 val responseBody = response.body?.string()
-
-                // Parse the response body and extract the LabName options
                 val labNamesJsonArray = JSONArray(responseBody)
-
-                // Clear the existing LabName options list
                 labNameList.clear()
-
-                // Iterate through the LabName options JSON array and add them to the list
                 for (i in 0 until labNamesJsonArray.length()) {
                     val labName = labNamesJsonArray.getString(i)
                     labNameList.add(labName)
                 }
-
-                // Notify the adapter that the data has changed
                 runOnUiThread {
                     labNameAdapter.notifyDataSetChanged()
                 }
@@ -179,7 +171,7 @@ class RegisterActivity : AppCompatActivity() {
 
         // Create a request to send the email data to the server
         val request = Request.Builder()
-            .url("http://192.168.0.132:4000/send-otp")
+            .url("http://192.168.0.222:4000/send-otp")
             .post(requestBody.toString().toRequestBody("application/json".toMediaTypeOrNull()))
             .build()
 
@@ -199,12 +191,9 @@ class RegisterActivity : AppCompatActivity() {
                 runOnUiThread {
                     if (response.isSuccessful) {
                         progressBar.visibility = View.GONE
-                        // Extract the OTP from the server response
-                        Log.e("response Body", "${responseBody.toString()}")
+                        Log.e("Response body with OTP", "${responseBody.toString()}")
                         val otpJson = JSONObject(responseBody)
                         val otp = otpJson.getString("otp")
-
-                        // Assign the received OTP to the generatedOTP variable
                         generatedOTP = otp
 
                         Toast.makeText(
@@ -252,7 +241,7 @@ class RegisterActivity : AppCompatActivity() {
             .build()
 
         val request = Request.Builder()
-            .url("http://192.168.0.132:4000/register")
+            .url("http://192.168.0.222:4000/register")
             .post(requestBody)
             .build()
 

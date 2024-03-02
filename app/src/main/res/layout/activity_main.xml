@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/app_background"
     tools:context=".MainActivity">
 
     <ImageView
@@ -19,64 +19,62 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="सीएसआईआर पहचान"
-        android:textSize="42sp"
+        android:textSize="@dimen/title_text_size"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/imageView3"
-        android:layout_marginTop="58sp" />
+        android:layout_marginTop="24dp" />
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="(Digital Identity)"
-        android:textSize="28sp"
+        android:textSize="@dimen/subtitle_text_size"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/imageView3"
-        android:layout_marginTop="108sp" />
-
+        android:layout_below="@id/textView"
+        android:layout_marginTop="8dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginStart="33dp"
-        android:layout_marginEnd="33dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:background="?attr/selectableItemBackground"
             android:orientation="vertical"
             android:padding="16dp">
 
             <Button
                 android:id="@+id/button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="150sp"
                 android:text="Register"
-                android:textSize="24sp"
+                android:textSize="@dimen/button_text_size"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
+
             android:orientation="vertical"
             android:padding="16dp">
 
             <Button
                 android:id="@+id/button2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="   Login   "
-                android:textSize="24sp"
+                android:text="Login"
+                android:textSize="@dimen/button_text_size"
                 android:textStyle="bold" />
 
         </LinearLayout>
