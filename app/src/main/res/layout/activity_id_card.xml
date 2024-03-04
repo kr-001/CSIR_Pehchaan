@@ -25,17 +25,18 @@
             android:id="@+id/imageViewLogoLeft"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_marginStart="28dp"
+            android:layout_weight="1"
             android:contentDescription="@string/logo_description"
-            android:src="@mipmap/ic_launcher_foreground" />
+            android:src="@mipmap/ic_launcher" />
 
         <ImageView
             android:id="@+id/imageViewLogoRight"
-            android:layout_width="0dp"
-            android:layout_height="110dp"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
             android:layout_weight="1"
             android:contentDescription="@string/logo_description"
+            android:scaleType="fitCenter"
             android:src="@drawable/logo_right" />
 
     </LinearLayout>
@@ -57,9 +58,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="10dp"
+        android:background="@drawable/profile_border"
         android:orientation="vertical">
 
         <!-- ID Number -->
+
+        <!-- Name -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,19 +72,20 @@
             <TextView
                 android:id="@+id/textViewIDPlace"
                 android:layout_width="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:text="I.D. No. :"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             <TextView
                 android:id="@+id/textViewIdCardNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="266dp"
+                android:layout_height="match_parent"
                 android:layout_marginStart="80dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
         </LinearLayout>
 
-        <!-- Name -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -92,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Name: "
+                android:layout_marginLeft="5dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             <TextView
@@ -99,14 +105,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="87.6dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
 
             <TextView
                 android:id="@+id/textViewFullName"
                 android:layout_width="235dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
         </LinearLayout>
 
         <!-- Designation -->
@@ -120,6 +126,7 @@
                 android:id="@+id/textViewDesignationPlace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:text="Designation: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -128,7 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="51dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
         </LinearLayout>
 
         <!-- Division -->
@@ -141,6 +148,7 @@
             <TextView
                 android:id="@+id/textViewDivisionPlace"
                 android:layout_width="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
                 android:text="Division: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
@@ -150,7 +158,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="76dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
         </LinearLayout>
 
         <!-- Sub Division -->
@@ -163,6 +171,7 @@
             <TextView
                 android:id="@+id/textViewSubDivisionPlace"
                 android:layout_width="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
                 android:text="Sub Division: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
@@ -172,7 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="48dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
         </LinearLayout>
 
         <!-- Lab Name -->
@@ -185,6 +194,7 @@
             <TextView
                 android:id="@+id/textViewLabNamePlace"
                 android:layout_width="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
                 android:text="Lab Name: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
@@ -194,7 +204,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="61dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
         </LinearLayout>
 
         <!-- Blood Group -->
@@ -207,6 +217,7 @@
             <TextView
                 android:id="@+id/textViewBGroupPlace"
                 android:layout_width="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:layout_height="wrap_content"
                 android:text="Blood Group: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
@@ -215,8 +226,9 @@
                 android:id="@+id/textViewBloodGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+
                 android:layout_marginStart="47dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
         </LinearLayout>
 
         <!-- Address -->
@@ -230,6 +242,7 @@
                 android:id="@+id/textViewAddressPlace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:text="Address: "
                 android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
@@ -238,7 +251,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="73dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
         </LinearLayout>
 
         <!-- Verification Status -->
@@ -252,6 +265,7 @@
                 android:id="@+id/textViewAuthoStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
                 android:text="@string/verification"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textColor="@color/green" />
@@ -261,7 +275,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="37dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textAppearance="@style/TextViewTimesNewRoman" />
                 android:textColor="@color/green" />
         </LinearLayout>
 
@@ -277,6 +291,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Authorized By: "
+                android:layout_marginLeft="5dp"
                 android:textColor="@color/green"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -285,8 +300,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
+
                 android:textColor="@color/green"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
         </LinearLayout>
 
         <!-- Emergency Contact -->
@@ -299,6 +315,8 @@
             <TextView
                 android:id="@+id/textViewEmergencyPlace"
                 android:layout_width="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_height="wrap_content"
                 android:text="Emergency Contact: "
                 android:textColor="@color/red"
@@ -310,7 +328,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3.5dp"
                 android:textColor="@color/red"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

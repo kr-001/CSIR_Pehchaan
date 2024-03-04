@@ -4,67 +4,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
+        android:id="@+id/linear_layout_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         tools:ignore="MissingConstraints">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="Update User Details"
             android:textSize="18dp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/editTextUpdatedTitle"
-            android:layout_width="match_parent"
+        <!-- Address Field -->
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Title" />
-        <EditText
-            android:id="@+id/editTextUpdatedCardNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="I.D. Card No. " />
-
-        <EditText
-            android:id="@+id/editTextUpdatedDesignation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Designation" />
-
-        <EditText
-            android:id="@+id/editTextUpdatedDivision"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Division" />
-
-        <EditText
-            android:id="@+id/editTextUpdatedLabName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Lab Name" />
+            android:layout_marginTop="16dp"
+            android:text="Address" />
 
         <EditText
             android:id="@+id/editTextUpdatedAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Address" />
+            android:hint="Enter your new address here" />
+
+        <!-- Password Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Password" />
 
         <EditText
             android:id="@+id/passwordEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/Password"/>
+            android:hint="Enter your new password here" />
 
-
-        <Button
-            android:id="@+id/buttonSave"
-            android:layout_width="wrap_content"
+        <!-- Save and Cancel Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Save" />
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/buttonSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save" />
+
+            <Button
+                android:id="@+id/buttonCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel" />
+
+        </LinearLayout>
+
+        <!-- Note -->
         <TextView
             android:id="@+id/textViewNote"
             android:layout_width="wrap_content"
@@ -72,10 +80,8 @@
             android:layout_gravity="center"
             android:text="Important Note: Modify only the details you want to change, and leave the remaining details unchanged. Afterward, click the Save button."
             android:textSize="12sp"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="24dp" />
 
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-

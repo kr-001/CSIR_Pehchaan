@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/profile_border"
+        android:padding="16dp">
+
+        <!-- About Heading -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Project Logo -->
+
+        <!-- Project Description -->
+
+        <ImageView
+            android:id="@+id/project_logo"
+            android:layout_width="201dp"
+            android:layout_height="154dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher_foreground" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="सीएसआईआर पहचान"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/profile_border"
+            android:padding="16dp"
+            android:text="CSIR PEHCHAAN is a digital identification card system designed for employees within CSIR Labs. This innovative project aims to streamline the identification process by digitizing traditional ID cards, providing employees with easy access to their identification details through a digital platform. By leveraging modern technology, CSIR PEHCHAAN enhances security measures and efficiency within CSIR Labs, offering a seamless and convenient identification solution for all employees. The project was undertaken by Kumar Ravi under the guidance of Dr. Neeraj Bhanot."
+            android:layout_marginBottom="20dp"/>
+
+        <!-- Need of Project -->
+        <!-- Need of Project Section -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Need of Project"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="The need for this project arises from the desire to eliminate the hassle of traditional ID card printing and sharing cumbersome physical documents. By implementing a paperless approach to identification, CSIR PEHCHAAN aims to streamline the identification process, making it more efficient, environmentally friendly, and accessible. With this digital identification card system, employees can easily share and access their identification details anytime, anywhere, enhancing convenience and security in the workplace."
+            android:background="@drawable/profile_border"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp"/>
+
+
+        <!-- Your Profile Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/profile_border"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <!-- Your Photo -->
+            <ImageView
+                android:id="@+id/imageViewYourPhoto"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/kuma_ravi_round"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Your Details -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kumar Ravi"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/textViewSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="I am Kumar Ravi, a dedicated and passionate individual with a strong background in technology. Despite facing challenges, I've remained committed to my academic pursuits. Proficient in languages like C++, React, Python, and Java, I've completed coursework in computer networks, operating systems, and cloud computing. I have hands-on experience in developing impactful projects and implementing advanced features. With a focus on problem-solving, I've achieved a stellar 5-star rating in C++, SQL, and Problem Solving on platforms like HackerRank. Overall, my dedication, adaptability, and technical expertise make me a valuable addition to any technical team."
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Your LinkedIn -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="https://www.linkedin.com/in/kumar-r-a53a03117/"
+                android:autoLink="web"
+                android:drawableStart="@mipmap/linkedin_icon"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"/>
+
+
+        </LinearLayout>
+
+        <!-- Dr. Neeraj Bhanot's Profile Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/profile_border"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <!-- Dr. Neeraj Bhanot's Photo -->
+            <ImageView
+                android:id="@+id/imageViewDrPhoto"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/neeraj_bhanot"
+                android:scaleType="centerCrop"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Dr. Neeraj Bhanot's Details -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dr. Neeraj Bhanot"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/textNeerajViewSummary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dr. Neeraj Bhanot is a distinguished Scientist and Assistant Professor at the AcSIR with a remarkable background in Industrial Engineering and Digital Transformation. Holding a PhD in Industrial Engineering from IIT Delhi, he brings extensive expertise in areas such as Sustainability Assessment, Performance Benchmarking, and Digital Metrology. With a strong academic foundation, including an M.Tech in Industrial Engineering from GNDEC Ludhiana and an MBA in Sales and Marketing from IGNOU, New Delhi, Dr. Bhanot has contributed significantly to research and academia. His research interests span across Digital Transformation, Project Management, and the application perspectives of cutting-edge technologies like Internet of Things, Big Data Analytics, Artificial Intelligence, and Blockchain. With a rich academic and research experience spanning institutions such as CSIR–National Physical Laboratory, Indian Institute of Management Amritsar, and Dr. B R Ambedkar National Institute of Technology Jalandhar, Dr. Bhanot has made impactful contributions to the field. His dedication, expertise, and visionary approach make him a valuable asset to the scientific community."
+                android:textSize="14sp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Dr. Neeraj Bhanot's LinkedIn -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="https://www.linkedin.com/in/neeraj-bhanot-76638092/"
+                android:autoLink="web"
+                android:drawableStart="@mipmap/linkedin_icon"
+                android:drawablePadding="8dp"
+                android:layout_marginBottom="8dp"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

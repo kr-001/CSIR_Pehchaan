@@ -160,6 +160,10 @@ class IdCardActivity : AppCompatActivity() {
         val view = layoutInflater.inflate(R.layout.dialog_qr_code_selection, null)
         dialogBuilder.setView(view)
 
+        //04-03-2024- Kr.Ravi
+        val checkboxDesignation = view.findViewById<CheckBox>(R.id.checkboxDesignation);
+        val checkboxLabName = view.findViewById<CheckBox>(R.id.checkboxLabName);
+
         val checkboxEmail = view.findViewById<CheckBox>(R.id.checkboxEmail)
         val checkboxContact = view.findViewById<CheckBox>(R.id.checkboxContact)
 
@@ -170,8 +174,8 @@ class IdCardActivity : AppCompatActivity() {
 
             val emailID = if (checkboxEmail.isChecked) intent.getStringExtra("emailId").toString() else ""
             val contact = if (checkboxContact.isChecked) intent.getStringExtra("contact").toString() else ""
-            val designation = intent.getStringExtra("designation").toString()
-            val division = intent.getStringExtra("division").toString()
+            val designation = if (checkboxDesignation.isChecked) textViewDesignation.text.toString() else ""
+            val division = if(checkboxLabName.isChecked) textViewLabName.text.toString() else ""
             val qrCodeBitmap = generateQRCode(name, lab, idCardNumber, emailID, contact, designation, division)
             val qrCodeDialog = Dialog(this)
 
@@ -202,6 +206,11 @@ class IdCardActivity : AppCompatActivity() {
         return when(item.itemId){
             R.id.menu_generate_qr -> {
                 showDetailsSelectionPopup()
+                true
+            }
+            R.id.action_about -> {
+                val intent = Intent(this, AboutActivity::class.java)
+                startActivity(intent)
                 true
             }
 
@@ -253,19 +262,15 @@ class IdCardActivity : AppCompatActivity() {
         emailID: String,
         contact: String,
         designation: String,
-        division: String,
+        division: String
     ): String {
         val builder = StringBuilder()
         builder.append("BEGIN:VCARD\n")
         builder.append("VERSION:3.0\n")
         builder.append("FN:$name\n")
-        builder.append("ORG:$designation,$division,$lab\n")
+        builder.append("ORG:$designation,$lab\n")
         builder.append("TEL:$contact\n")
-        builder.append("ID:$idCardNumber\n")
         builder.append("EMAIL:$emailID\n")
-        builder.append("ROLE: Designation$designation\n")
-        builder.append("NOTE: Division:$division\n")
-
         builder.append("END:VCARD")
 
         return builder.toString()

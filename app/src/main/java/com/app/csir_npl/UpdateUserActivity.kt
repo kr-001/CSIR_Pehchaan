@@ -32,48 +32,26 @@ class UpdateUserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.update_user_layout)
-        val title = intent.getStringExtra("title")
-        val card = intent.getStringExtra("CardNumber")
-        val designation = intent.getStringExtra("designation")
-        val division = intent.getStringExtra("division")
-        val lab = intent.getStringExtra("lab")
         val address = intent.getStringExtra("address")
         val password = intent.getStringExtra("password")
         val email = intent.getStringExtra("email")
 
-        val editTextUpdatedTitle: EditText = findViewById(id.editTextUpdatedTitle)
-        val editTextCardNumber : EditText = findViewById(id.editTextUpdatedCardNumber)
-        val editTextUpdatedDesignation: EditText = findViewById(id.editTextUpdatedDesignation)
-        val editTextUpdatedDivision: EditText = findViewById(id.editTextUpdatedDivision)
-        val editTextUpdatedLabName: EditText = findViewById(id.editTextUpdatedLabName)
         val editTextUpdatedAddress: EditText = findViewById(id.editTextUpdatedAddress)
         val editPassword : EditText = findViewById(id.passwordEdit)
 
 
-        editTextUpdatedTitle.setText(title)
-        editTextUpdatedDesignation.setText(designation)
-        editTextUpdatedDivision.setText(division)
-        editTextUpdatedLabName.setText(lab)
         editTextUpdatedAddress.setText(address)
-        editTextCardNumber.setText(card)
         editPassword.setText(password)
 
         val buttonSave: Button = findViewById(id.buttonSave)
+        val buttonCancel: Button = findViewById(id.buttonCancel)
         buttonSave.setOnClickListener {
-            val updatedTitle = editTextUpdatedTitle.text.toString()
-            val cardNumber = editTextCardNumber.text.toString()
-            val updatedDesignation = editTextUpdatedDesignation.text.toString()
-            val updatedDivision = editTextUpdatedDivision.text.toString()
-            val updatedLabName = editTextUpdatedLabName.text.toString()
+            val userEmail  = email
             val updatedAddress = editTextUpdatedAddress.text.toString()
             val updatedPassword = editPassword.text.toString()
 
             val updatedUserOnServer = User(
-                title = updatedTitle,
-                idCardNumber = cardNumber,
-                designation = updatedDesignation,
-                divisionName = updatedDivision,
-                labName = updatedLabName,
+                email = userEmail.toString(),
                 address = updatedAddress,
                 password = updatedPassword
             )
@@ -81,6 +59,9 @@ class UpdateUserActivity : AppCompatActivity() {
                 requestOtp(email,password)
             }
             newUser = updatedUserOnServer
+        }
+        buttonCancel.setOnClickListener {
+            finish()
         }
     }
     private fun requestOtp(email: String, password: String?) {
@@ -206,11 +187,7 @@ class UpdateUserActivity : AppCompatActivity() {
         val client = OkHttpClient()
 
         val jsonObject = JSONObject()
-        jsonObject.put("title", updatedUser.title)
-        jsonObject.put("CardNumber", updatedUser.idCardNumber)
-        jsonObject.put("designation", updatedUser.designation)
-        jsonObject.put("division", updatedUser.divisionName)
-        jsonObject.put("lab", updatedUser.labName)
+        jsonObject.put("email" , updatedUser.email)
         jsonObject.put("address", updatedUser.address)
         jsonObject.put("password" , updatedUser.password)
 

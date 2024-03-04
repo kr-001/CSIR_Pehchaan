@@ -41,7 +41,7 @@
             android:exported="true"/>
         <activity android:name=".IdCardActivity" />
         <activity android:name="com.app.csir_npl.UpdateUserActivity" />
-
+        <activity android:name="com.app.csir_npl.AboutActivity"/>
 
 
 

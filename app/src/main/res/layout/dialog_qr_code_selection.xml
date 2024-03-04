@@ -12,6 +12,19 @@
         tools:ignore="MissingConstraints">
 
         <CheckBox
+            android:id="@+id/checkboxDesignation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Designation" />
+
+        <CheckBox
+            android:id="@+id/checkboxLabName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lab Name" />
+
+
+        <CheckBox
             android:id="@+id/checkboxEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
