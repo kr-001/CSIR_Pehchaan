@@ -1,4 +1,5 @@
 package  com.app.csir_npl
+
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
@@ -11,6 +12,7 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.graphics.RectF
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -36,7 +38,6 @@ import java.io.File
 
 class IdCardActivity : AppCompatActivity() {
     private lateinit var imageViewPhoto: ImageView
-    private lateinit var textViewTitle: TextView
     private lateinit var textViewFullName: TextView
     private lateinit var textViewDesignation: TextView
     private lateinit var textViewDivisionName: TextView
@@ -68,7 +69,6 @@ class IdCardActivity : AppCompatActivity() {
 
 
         imageViewPhoto = findViewById(R.id.imageViewPhoto)
-        textViewTitle = findViewById(R.id.textViewTitle)
         textViewFullName = findViewById(R.id.textViewFullName)
         textViewDesignation = findViewById(R.id.textViewDesignation)
         textViewDivisionName = findViewById(R.id.textViewDivisionName)
@@ -84,11 +84,26 @@ class IdCardActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
-        toolbar.setTitleTextColor(ContextCompat.getColor(this, android.R.color.white))
-        val title = intent.getStringExtra("title")
-        val name = intent.getStringExtra("name")
-        photoPath = intent.getStringExtra("photoPath").toString()
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        val name = intent.getStringExtra("full_name")
+        if (name != null) {
+            Log.d("FULL NAME: ", name)
+        }
+        photoPath = intent.getStringExtra("photoPath").toString()
+        val typeface = Typeface.createFromAsset(assets, "tnr.ttf")
+        textViewFullName.typeface = typeface
+        textViewDesignation.typeface = typeface
+        textViewAddress.typeface = typeface
+        textViewAutho.typeface = typeface
+        textViewDesignation.typeface = typeface
+        textViewSubDivisionName.typeface = typeface
+        textViewIdCardNumber.typeface = typeface
+        textViewBloodGroup.typeface = typeface
+        textViewStatus.typeface = typeface
+        textViewLabName.typeface = typeface
+        textViewDivisionName.typeface = typeface
+        emergencyContact.typeface = typeface
         val photoUrl = photoPath
         val correctedPhotoUrl = photoUrl.replace("\\", "/")
         val designation = intent.getStringExtra("designation")
@@ -99,8 +114,6 @@ class IdCardActivity : AppCompatActivity() {
         val lab = intent.getStringExtra("lab")
         email = intent.getStringExtra("emailId").toString()
         password = intent.getStringExtra("password").toString()
-        Log.e("UserEmail" , "$email")
-        Log.e("password" , "$password")
         val autho = intent.getStringExtra("autho")
         val status = intent.getStringExtra("status")
         val idCardNumber = intent.getStringExtra("idCardNumber")
@@ -115,7 +128,6 @@ class IdCardActivity : AppCompatActivity() {
         if (name != null && photoPath != null) {
             Log.i("PhotoPath: ", "$correctedPhotoUrl")
             loadPhoto(correctedPhotoUrl)
-            textViewTitle.text = title
             textViewFullName.text = name
             textViewDesignation.text = designation
             textViewDivisionName.text = division
@@ -213,10 +225,14 @@ class IdCardActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+            R.id.menu_scan_qr->{
+                startQRSacnner()
+                true
+            }
 
             R.id.menu_request_detail_modification -> {
                 val intent = Intent(this , UpdateUserActivity::class.java)
-                intent.putExtra("title", textViewTitle.text.toString())
+                intent.putExtra("full_name", textViewFullName.text.toString())
                 intent.putExtra("designation", textViewDesignation.text.toString())
                 intent.putExtra("division", textViewDivisionName.text.toString())
                 intent.putExtra("lab", textViewLabName.text.toString())
@@ -258,11 +274,9 @@ class IdCardActivity : AppCompatActivity() {
     private fun buildVcfData(
         name: String,
         lab: String,
-        idCardNumber: String,
         emailID: String,
         contact: String,
         designation: String,
-        division: String
     ): String {
         val builder = StringBuilder()
         builder.append("BEGIN:VCARD\n")
@@ -292,8 +306,6 @@ class IdCardActivity : AppCompatActivity() {
                 idCardNumber,
                 emailID,
                 contact,
-                designation,
-                division
             )
             val hints = mapOf<EncodeHintType, ErrorCorrectionLevel>(EncodeHintType.ERROR_CORRECTION to ErrorCorrectionLevel.H)
             val qrCodeWriter = QRCodeWriter()
@@ -307,6 +319,7 @@ class IdCardActivity : AppCompatActivity() {
                     bmp.setPixel(x, y, if (bitMatrix[x, y]) Color.BLACK else Color.WHITE)
                 }
             }
+            Log.d("QR DATA:", qrData)
             return getRoundedCornerBitmap(bmp, 30)
         } catch (e: WriterException) {
             e.printStackTrace()
@@ -337,7 +350,9 @@ class IdCardActivity : AppCompatActivity() {
         return output
     }
 
-
-
+    private fun startQRSacnner(){
+        val intent = Intent(this, QRScannerActivity::class.java)
+        startActivity(intent)
+    }
 
 }

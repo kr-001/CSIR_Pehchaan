@@ -9,4 +9,7 @@
         android:id="@+id/action_about"
         android:title="About"
         />
+    <item
+        android:id="@+id/menu_scan_qr"
+        android:title="Scan QR Code" />
 </menu>

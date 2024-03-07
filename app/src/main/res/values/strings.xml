@@ -26,4 +26,8 @@
     <string name="logo_description" />
     <string name="qrcode_description" />
     <string name="verification">Verification:</string>
+
+    <string name="empty_string"></string>
+    <string name="https_www_linkedin_com_in_kumar_r_a53a03117">https://www.linkedin.com/in/kumar-r-a53a03117/</string>
+
 </resources>

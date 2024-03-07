@@ -61,7 +61,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
    // implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.21"
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
-    implementation 'com.zaxxer:HikariCP:5.0.1'
+    implementation 'com.zaxxer:HikariCP:5.1.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.1'
 
 
@@ -74,20 +74,21 @@ dependencies {
 
     //implementation 'ch.qos.logback:logback-classic:1.4.8'
     implementation 'junit:junit:4.13.2'
-    implementation 'androidx.core:core-ktx:+'
-    implementation 'androidx.core:core-ktx:+'
-    implementation 'androidx.core:core-ktx:+'
-    implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'com.google.zxing:core:3.5.1'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
-    implementation 'androidx.core:core-ktx:+'
-    implementation 'androidx.core:core-ktx:+'
-    implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
 
     //30-06-2023
     implementation 'com.android.volley:volley:1.2.0'
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -105,6 +106,11 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:4.1.0'
     //04-09-2023
     implementation 'com.google.zxing:core:3.4.1'
+    implementation 'com.journeyapps:zxing-android-embedded:4.0.0'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.8'
+
+
+
 
 
 

@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -39,17 +47,19 @@
             android:name="com.app.csir_npl.LabNameActivity"
             android:label="Lab Name Activity"
             android:exported="true"/>
-        <activity android:name=".IdCardActivity" />
+        <activity android:name=".IdCardActivity"
+            android:label="सीएसआईआर पहचान"
+            />
         <activity android:name="com.app.csir_npl.UpdateUserActivity" />
         <activity android:name="com.app.csir_npl.AboutActivity"/>
+       <activity android:name="com.app.csir_npl.QRScannerActivity"/>
+
 
 
 
     </application>
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.INTERNET" />
+
 
 
 </manifest>

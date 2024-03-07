@@ -41,16 +41,16 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun requestOtp(idNumber: String, password: String) {
+    private fun requestOtp(email: String, password: String) {
         val client = OkHttpClient()
 
         val requestBody = FormBody.Builder()
-            .add("email", idNumber)
+            .add("email", email)
             .add("password", password)
             .build()
 
         val request = Request.Builder()
-            .url("http://192.168.0.222:4000/request-otp")
+            .url("http://192.168.0.222:4000/login") // Assuming login URL accepts email and password directly
             .post(requestBody)
             .build()
 
@@ -58,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
                 runOnUiThread {
-                    Toast.makeText(this@LoginActivity, "Failed to request OTP", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Failed to authenticate", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -69,28 +69,82 @@ class LoginActivity : AppCompatActivity() {
 
                 runOnUiThread {
                     if (response.isSuccessful) {
-                        progressBar.visibility = View.GONE
                         try {
                             val jsonResponse = JSONObject(responseBody)
+                            val message = jsonResponse.getString("message")
+                            val user = jsonResponse.getJSONObject("user")
+                            Log.d("LoginActivity", "Response Body: $responseBody")
 
-                            val success = jsonResponse.getBoolean("success")
+                            if (user.length() > 0) {
+                                val title = user.getString("title")
+                                val name = user.getString("name")
+                                val photoPath = user.getString("photoUrl")
+                                val designation = user.getString("designation")
+                                val division = user.getString("division")
+                                val subDivision = user.getString("subDivision")
+                                val lab = user.getString("lab")
+                                val idCardNumber = user.getString("id")
+                                val contact = user.getString("contact")
+                                val status = user.getString("status")
+                                val autho = user.getString("autho")
+                                val logoUrl = user.getString("logoUrl")
+                                val address = user.getString("address")
+                                val password = user.getString("password")
+                                val emergency = user.getString("emergency")
+                                val bGroup = user.getString("bGroup")
 
-                            if (success) {
-                                showOtpPopup()
+                                if (status == "unverified" || status == "User Revoked") {
+                                    Toast.makeText(
+                                        this@LoginActivity,
+                                        "User unverified or revoked by admin",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    val intent = Intent(this@LoginActivity, IdCardActivity::class.java)
+                                    val fullName = "$title$name"
+                                    intent.putExtra("full_name", fullName)
+                                    intent.putExtra("photoPath", photoPath)
+                                    intent.putExtra("designation", designation)
+                                    intent.putExtra("division", division)
+                                    intent.putExtra("subDivision", subDivision)
+                                    intent.putExtra("lab", lab)
+                                    intent.putExtra("idCardNumber", idCardNumber)
+                                    intent.putExtra("emailId", email)
+                                    intent.putExtra("contact", contact)
+                                    intent.putExtra("status", status)
+                                    intent.putExtra("password", password)
+                                    intent.putExtra("autho", autho)
+                                    intent.putExtra("logoUrl", logoUrl)
+                                    intent.putExtra("address", address)
+                                    intent.putExtra("emergency", emergency)
+                                    intent.putExtra("bGroup", bGroup)
+                                    Log.e("Intent:", "$intent")
+                                    startActivity(intent)
+                                    finish()
+                                }
                             } else {
-                                Toast.makeText(this@LoginActivity, "Failed to request OTP", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this@LoginActivity,
+                                    "Empty user object. Authentication failed",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         } catch (e: JSONException) {
                             e.printStackTrace()
                             Toast.makeText(this@LoginActivity, "Failed to parse response", Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        Toast.makeText(this@LoginActivity, "Failed to request OTP", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Authentication failed, Please check credentials",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
         })
     }
+
 
     private fun showOtpPopup() {
         val dialog = Dialog(this@LoginActivity)
@@ -178,8 +232,8 @@ class LoginActivity : AppCompatActivity() {
                                 } else {
 
                                     val intent = Intent(this@LoginActivity, IdCardActivity::class.java)
-                                    intent.putExtra("title", title)
-                                    intent.putExtra("name", name)
+                                    val fullName = "$title.$name"
+                                    intent.putExtra("full_name", fullName)
                                     intent.putExtra("photoPath", photoPath)
                                     intent.putExtra("designation", designation)
                                     intent.putExtra("division", division)

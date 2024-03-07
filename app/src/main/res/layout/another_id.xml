@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
     <!-- Title with three dots -->
@@ -14,21 +11,19 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_gravity="start"
+        android:layout_gravity="end"
         android:background="?attr/colorPrimary">
 
-        <!-- Center align the title -->
+        <!-- Set the title text appearance and gravity -->
         <TextView
-            android:id="@+id/toolbar_title"
+            android:id="@+id/toolbarTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:text="सीएसआईआर पहचान"
-            android:textColor="@android:color/white"
-            android:textSize="24sp" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_gravity="center"/>
 
     </androidx.appcompat.widget.Toolbar>
-
 
 
     <LinearLayout
@@ -51,7 +46,6 @@
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_weight="1"
-
             android:contentDescription="@string/logo_description"
             android:scaleType="fitCenter"
             android:src="@drawable/logo_right" />
@@ -60,25 +54,23 @@
 
     <!-- Employee photo -->
     <ImageView
-        android:id="@+id/imageViewPhoto"
-        android:layout_width="170dp"
-        android:layout_height="154dp"
+        android:id="@+id/photoImageView"
+        android:layout_width="210dp"
+        android:layout_height="200dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="210dp"
-        android:contentDescription="Photo"
-        android:background="@drawable/profile_border"
         android:scaleType="centerCrop"
-        android:src="@drawable/default_photo" />
+        android:src="@drawable/default_photo"
+        android:contentDescription="Photo"/>
 
     <!-- Employee details -->
     <LinearLayout
-        android:background="@drawable/profile_border"
         android:id="@+id/detailsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="20dp"
-        android:layout_below="@id/imageViewPhoto"
+        android:layout_below="@id/photoImageView"
         android:gravity="center_horizontal">
 
         <!-- First ID Number -->
@@ -86,8 +78,6 @@
             android:layout_width="258dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
             android:layout_marginEnd="8dp"
 
             android:gravity="center_vertical">
@@ -100,7 +90,7 @@
                 android:gravity="start"
                 android:textAppearance="@style/TextViewTimesNewRoman"
                 android:text="I.D. NO. "
-                 />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/colonTextView1"
@@ -116,7 +106,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:textAppearance="@style/TextViewTimesNewRoman"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -126,8 +117,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -138,7 +127,7 @@
                 android:textAppearance="@style/TextViewTimesNewRoman"
                 android:gravity="start"
                 android:text="Name. "
-                />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/colonTextView2"
@@ -155,7 +144,8 @@
                 android:layout_marginStart="8dp"
                 android:textAppearance="@style/TextViewTimesNewRoman"
                 android:gravity="center"
-                />
+
+                android:textSize="18sp" />
 
         </LinearLayout>
         <!-- Designation-->
@@ -164,8 +154,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -176,7 +164,7 @@
                 android:gravity="start"
                 android:textAppearance="@style/TextViewTimesNewRoman"
                 android:text="Designation"
-                 />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/colonTextView3"
@@ -192,7 +180,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="center"
-                android:textAppearance="@style/TextViewTimesNewRoman" />
+                android:textAppearance="@style/TextViewTimesNewRoman"
+                android:textSize="18sp" />
 
         </LinearLayout>
         <!-- Division-->
@@ -201,8 +190,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -212,7 +199,8 @@
                 android:layout_marginLeft="10dp"
                 android:gravity="start"
                 android:text="Division"
-                android:textAppearance="@style/TextViewTimesNewRoman" />
+                android:textAppearance="@style/TextViewTimesNewRoman"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/colonTextView4"
@@ -237,8 +225,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -247,9 +233,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:gravity="start"
-                android:text="Sub Division"
-                android:textAppearance="@style/TextViewTimesNewRoman"
-                 />
+                android:text="Division"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/colonTextView5"
@@ -266,7 +251,8 @@
                 android:layout_marginStart="8dp"
                 android:gravity="center"
 
-                android:textAppearance="@style/TextViewTimesNewRoman" />
+                android:textAppearance="@style/TextViewTimesNewRoman"
+                android:textSize="18sp" />
 
         </LinearLayout>
         <LinearLayout
@@ -274,8 +260,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -286,7 +270,7 @@
                 android:gravity="start"
                 android:text="Lab Name"
                 android:textAppearance="@style/TextViewTimesNewRoman"
-                 />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/colonTextView6"
@@ -302,7 +286,9 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextViewTimesNewRoman"
                 android:layout_marginStart="8dp"
-                android:gravity="center" />
+                android:gravity="center"
+
+                android:textSize="18sp" />
 
         </LinearLayout>
         <LinearLayout
@@ -310,8 +296,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -322,7 +306,7 @@
                 android:textAppearance="@style/TextViewTimesNewRoman"
                 android:gravity="start"
                 android:text="Blood Group"
-                 />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/colonTextView7"
@@ -337,15 +321,16 @@
                 android:layout_width="123dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:gravity="center" />
+                android:gravity="center"
+
+                android:textSize="18sp" />
 
         </LinearLayout>
         <LinearLayout
             android:layout_width="258dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
+
             android:layout_marginEnd="8dp"
             android:gravity="center_vertical">
 
@@ -356,7 +341,8 @@
                 android:layout_marginLeft="10dp"
                 android:gravity="start"
                 android:textAppearance="@style/TextViewTimesNewRoman"
-                android:text="Address" />
+                android:text="Address"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/colonTextView8"
@@ -372,7 +358,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:textAppearance="@style/TextViewTimesNewRoman"
-                android:gravity="center" />
+                android:gravity="center"
+
+                android:textSize="18sp" />
 
         </LinearLayout>
         <LinearLayout
@@ -380,8 +368,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
             android:gravity="center_vertical">
 
             <TextView
@@ -392,7 +378,8 @@
                 android:textAppearance="@style/TextViewTimesNewRoman"
                 android:gravity="start"
                 android:text="@string/verification"
-                android:textColor="@color/green" />
+                android:textColor="@color/green"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/colonTextView9"
@@ -409,7 +396,9 @@
                 android:layout_marginStart="8dp"
                 android:gravity="center"
                 android:textColor="@color/green"
-                android:textAppearance="@style/TextViewTimesNewRoman" />
+                android:textAppearance="@style/TextViewTimesNewRoman"
+
+                android:textSize="18sp" />
 
         </LinearLayout>
         <LinearLayout
@@ -422,14 +411,13 @@
             <TextView
                 android:id="@+id/textViewAuthoPlace"
                 android:layout_width="105dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:gravity="start"
                 android:text="Authorized By "
                 android:textColor="@color/green"
-                android:textAppearance="@style/TextViewTimesNewRoman" />
+                android:textAppearance="@style/TextViewTimesNewRoman"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/colonTextView10"
@@ -447,7 +435,7 @@
                 android:gravity="center"
                 android:textColor="@color/green"
                 android:textAppearance="@style/TextViewTimesNewRoman"
-                />
+                android:textSize="18sp" />
 
         </LinearLayout>
         <LinearLayout
@@ -462,13 +450,11 @@
                 android:layout_width="105dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:textAppearance="@style/TextViewTimesNewRoman"
                 android:text="Emergeny Contact"
                 android:textColor="@color/red"
-                 />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/colonTextView11"
@@ -486,7 +472,7 @@
                 android:gravity="center"
                 android:textAppearance="@style/TextViewTimesNewRoman"
                 android:textColor="@color/red"
-                 />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -498,4 +484,3 @@
 
 
 </RelativeLayout>
-</ScrollView>

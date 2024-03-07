@@ -6,7 +6,7 @@
         <!-- Add any other desired styling attributes for the button -->
     </style>
     <style name="TextViewTimesNewRoman">
-        <item name="android:fontFamily">serif</item>
+        <item name="android:fontFamily">@assets/tnr</item>
         <item name="android:textSize">16sp</item> <!-- Adjust the size as needed -->
     </style>
 </resources>
