@@ -55,11 +55,7 @@
                 app:layout_constraintTop_toBottomOf="@id/textViewCSIRPehchaan" />
 
 
-
             <!-- Email -->
-
-            <!-- Lab Name -->
-            <!-- Lab Name -->
             <EditText
                 android:id="@+id/editTextEmail"
                 android:layout_width="0dp"
@@ -74,6 +70,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewEnterDetails" />
 
+            <!-- Lab Name -->
             <TextView
                 android:id="@+id/textViewLabName"
                 android:layout_width="wrap_content"
@@ -134,68 +131,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/buttonUploadPhoto" />
 
-
-            <!-- OTP Label -->
-
-            <TextView
-                android:id="@+id/textViewOTPLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="44dp"
-                android:text="Enter OTP"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonSendOTP" />
-
-            <EditText
-                android:id="@+id/editTextOTP"
+            <!-- Proceed Button -->
+            <Button
+                android:id="@+id/buttonProceed"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:hint="OTP"
+                android:background="@drawable/rounded_button_background"
                 android:padding="16dp"
+                android:text="@string/proceed"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewOTPLabel" />
-
-            <Button
-                android:id="@+id/buttonSendOTP"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_button_background"
-                android:padding="16dp"
-                android:text="Generate OTP"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.125"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewPhotoPreview" />
 
-            <Button
-                android:id="@+id/buttonSubmitOTP"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rounded_button_background"
-                android:padding="16dp"
-                android:text="Submit OTP"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextOTP" />
-
-
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"

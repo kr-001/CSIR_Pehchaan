@@ -34,6 +34,7 @@ class UpdateUserActivity : AppCompatActivity() {
 
         val editTextUpdatedAddress: EditText = findViewById(id.editTextUpdatedAddress)
         val editPassword : EditText = findViewById(id.passwordEdit)
+        val totpEdit : EditText = findViewById(id.totpEdit)
 
         editTextUpdatedAddress.setText(address)
         editPassword.setText(password)
@@ -44,6 +45,7 @@ class UpdateUserActivity : AppCompatActivity() {
         buttonSave.setOnClickListener {
             val updatedAddress = editTextUpdatedAddress.text.toString()
             val updatedPassword = editPassword.text.toString()
+            val totpCode = totpEdit.text.toString()
 
             // Create an AlertDialog to prompt for current password
             val builder = AlertDialog.Builder(this)
@@ -58,9 +60,9 @@ class UpdateUserActivity : AppCompatActivity() {
             builder.setPositiveButton("OK") { dialog, which ->
                 val currentPassword = input.text.toString()
 
-                // Authenticate user with current password
+                // Authenticate user with current password and TOTP code
                 if (email != null) {
-                    authenticateUser(email, currentPassword, updatedAddress, updatedPassword)
+                    authenticateUser(email, currentPassword, updatedAddress, updatedPassword, totpCode)
                 }
             }
             builder.setNegativeButton("Cancel") { dialog, which ->
@@ -76,12 +78,13 @@ class UpdateUserActivity : AppCompatActivity() {
         }
     }
 
-    private fun authenticateUser(email: String, currentPassword: String, updatedAddress: String, updatedPassword: String) {
+    private fun authenticateUser(email: String, currentPassword: String, updatedAddress: String, updatedPassword: String, totpCode: String) {
         val client = OkHttpClient()
 
         val requestBody = FormBody.Builder()
             .add("email", email)
             .add("currentPassword", currentPassword)
+            .add("totpCode", totpCode) // Add TOTP code to the request
             .build()
 
         val request = Request.Builder()
@@ -112,8 +115,6 @@ class UpdateUserActivity : AppCompatActivity() {
             }
         })
     }
-
-
 
     // Function to update user details on the server
     private fun updateUserOnServer(updatedUser: User) {

@@ -48,7 +48,21 @@
             android:id="@+id/passwordEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your new password here" />
+            android:hint="Enter your new password here"
+            android:inputType="textPassword" />
+
+        <!-- TOTP Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="TOTP Code" />
+
+        <EditText
+            android:id="@+id/totpEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your TOTP code from Google Authenticator" />
 
         <!-- Save and Cancel Buttons -->
         <LinearLayout

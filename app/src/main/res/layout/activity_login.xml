@@ -69,6 +69,22 @@
         android:padding="16dp"
         android:autofillHints="password" />
 
+    <!-- TOTP -->
+    <EditText
+        android:id="@+id/editTextTotp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/totp"
+        android:inputType="text"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:padding="16dp" />
+
     <!-- Login Button -->
     <Button
         android:id="@+id/buttonLogin"
@@ -76,12 +92,13 @@
         android:layout_height="wrap_content"
         android:text="@string/LoginButton"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@id/editTextTotp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"

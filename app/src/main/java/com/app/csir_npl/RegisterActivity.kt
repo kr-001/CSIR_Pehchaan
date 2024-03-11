@@ -2,6 +2,8 @@ package com.app.csir_npl
 
 import android.Manifest
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -27,8 +29,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import okhttp3.RequestBody.Companion.asRequestBody
+import org.junit.runner.manipulation.Ordering
 import java.io.File
 import java.io.FileOutputStream
+import android.content.Context
 
 import java.io.IOException
 
@@ -52,13 +56,11 @@ class RegisterActivity : AppCompatActivity() {
 
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         editTextEmail = findViewById(R.id.editTextEmail)
-        buttonSendOTP = findViewById(R.id.buttonSendOTP)
-        editTextOTP = findViewById(R.id.editTextOTP)
-        buttonSubmitOTP = findViewById(R.id.buttonSubmitOTP)
         imageViewPhotoPreview = findViewById(R.id.imageViewPhotoPreview)
         buttonUploadPhoto = findViewById(R.id.buttonUploadPhoto)
         spinnerLabName = findViewById(R.id.spinnerLabName)
@@ -102,31 +104,103 @@ class RegisterActivity : AppCompatActivity() {
             }
         })
 
-        buttonSendOTP.setOnClickListener {
-            val email = editTextEmail.text.toString().trim()
-            if (isValidEmail(email)) {
-                sendOTPRequest(email)
-                progressBar.visibility = View.VISIBLE
-            } else {
-                editTextEmail.error = "Invalid email address"
-            }
+        findViewById<Button>(R.id.buttonProceed).setOnClickListener {
+            navigateToSecretKeyLayout()
         }
-
-        buttonSubmitOTP.setOnClickListener {
-            val enteredOTP = editTextOTP.text.toString().trim()
-            if (enteredOTP == generatedOTP) {
-                checkMasterTableAndSaveUser()
-            } else {
-                editTextOTP.error = "Incorrect OTP"
-            }
-        }
-
         buttonUploadPhoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             getContent.launch(intent)
         }
     }
+
+    private fun navigateToSecretKeyLayout() {
+        // Inflate layout for displaying secret key
+        val secretKeyLayout = layoutInflater.inflate(R.layout.layout_secret_key, null)
+        setContentView(secretKeyLayout)
+
+        // Generate and display secret key
+        generateSecretKeyFromServer(object : SecretKeyCallback {
+            override fun onSecretKeyReceived(secretKey: String?) {
+                if (secretKey != null) {
+                    findViewById<TextView>(R.id.textViewSecretKey).text = secretKey
+
+                    // Handle click event for "Copy" button
+                    findViewById<Button>(R.id.buttonCopy).setOnClickListener {
+                        copySecretKeyToClipboard(secretKey)
+                    }
+
+                    // Handle click event for "Open" button
+                    findViewById<Button>(R.id.buttonOpen).setOnClickListener {
+                        openGoogleAuthenticatorSetup(secretKey)
+                        checkMasterTableAndSaveUser(secretKey)
+                    }
+                } else {
+                    // Handle the case when the secret key is null
+                    Toast.makeText(applicationContext, "Failed to fetch secret key", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+    }
+
+    private fun generateSecretKeyFromServer(callback: SecretKeyCallback) {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://192.168.0.222:4000/generateSecret")
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                // Handle failure, such as showing an error message
+                runOnUiThread {
+                    callback.onSecretKeyReceived(null)
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body?.string()
+                    val jsonResponse = JSONObject(responseBody)
+                    val secretKey = jsonResponse.optString("secretKey", "")
+                    runOnUiThread {
+                        callback.onSecretKeyReceived(secretKey)
+                    }
+                } else {
+                    runOnUiThread {
+                        callback.onSecretKeyReceived(null)
+                    }
+                }
+            }
+
+        })
+    }
+
+    interface SecretKeyCallback {
+        fun onSecretKeyReceived(secretKey: String?)
+    }
+
+
+
+    private fun copySecretKeyToClipboard(secretKey: String) {
+        val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("Secret Key", secretKey)
+        clipboardManager.setPrimaryClip(clip)
+        Toast.makeText(this, "Secret key copied to clipboard", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun openGoogleAuthenticatorSetup(secretKey: String) {
+        val playStoreUrl = "https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(playStoreUrl)
+
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        } else {
+            Toast.makeText(this, "Google Play Store app not found", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun getFilePathFromUri(uri: Uri): String? {
         val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
         val cursor = contentResolver.query(uri, filePathColumn, null, null, null)
@@ -214,7 +288,7 @@ class RegisterActivity : AppCompatActivity() {
         })
     }
 
-    private fun checkMasterTableAndSaveUser() {
+    private fun checkMasterTableAndSaveUser(secretKey: String) {
         val client = OkHttpClient()
 
         // Get the values from the EditText and ImageView
@@ -238,6 +312,7 @@ class RegisterActivity : AppCompatActivity() {
                 photoFile.name,
                 photoFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
             )
+            .addFormDataPart("secretKey", secretKey)
             .build()
 
         val request = Request.Builder()

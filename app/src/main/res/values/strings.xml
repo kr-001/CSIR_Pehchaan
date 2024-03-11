@@ -33,5 +33,10 @@
     <string name="kr_summary">CSIR PEHCHAAN is a digital identification card system designed for employees within CSIR Labs. This innovative project aims to streamline the identification process by digitizing traditional ID cards, providing employees with easy access to their identification details through a digital platform. By leveraging modern technology, CSIR PEHCHAAN enhances security measures and efficiency within CSIR Labs, offering a seamless and convenient identification solution for all employees. The project was undertaken by Kumar Ravi under the guidance of Dr. Neeraj Bhanot.</string>
     <string name="need_of_project">Need of Project</string>
     <string name="need_of_projec">The need for this project arises from the desire to eliminate the hassle of traditional ID card printing and sharing cumbersome physical documents. By implementing a paperless approach to identification, CSIR PEHCHAAN aims to streamline the identification process, making it more efficient, environmentally friendly, and accessible. With this digital identification card system, employees can easily share and access their identification details anytime, anywhere, enhancing convenience and security in the workplace.</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="otp">OTP</string>
+    <string name="proceed">Proceed</string>
+    <string name="totp">TOTP</string>
+
 
 </resources>
