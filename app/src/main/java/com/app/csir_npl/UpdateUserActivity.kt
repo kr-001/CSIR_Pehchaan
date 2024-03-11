@@ -1,37 +1,33 @@
-
 package com.app.csir_npl
+
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.app.csir_npl.R.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.FormBody
-import okhttp3.MediaType
+import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.Response
 import okio.IOException
-import org.json.JSONException
 import org.json.JSONObject
 
 class UpdateUserActivity : AppCompatActivity() {
 
     private var newUser =  User()
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout.update_user_layout)
+
         val address = intent.getStringExtra("address")
         val password = intent.getStringExtra("password")
         val email = intent.getStringExtra("email")
@@ -39,40 +35,57 @@ class UpdateUserActivity : AppCompatActivity() {
         val editTextUpdatedAddress: EditText = findViewById(id.editTextUpdatedAddress)
         val editPassword : EditText = findViewById(id.passwordEdit)
 
-
         editTextUpdatedAddress.setText(address)
         editPassword.setText(password)
 
         val buttonSave: Button = findViewById(id.buttonSave)
         val buttonCancel: Button = findViewById(id.buttonCancel)
+
         buttonSave.setOnClickListener {
-            val userEmail  = email
             val updatedAddress = editTextUpdatedAddress.text.toString()
             val updatedPassword = editPassword.text.toString()
 
-            val updatedUserOnServer = User(
-                email = userEmail.toString(),
-                address = updatedAddress,
-                password = updatedPassword
-            )
-            if (email != null) {
-                requestOtp(email,password)
+            // Create an AlertDialog to prompt for current password
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Enter Current Password")
+
+            // Set up the input field for password
+            val input = EditText(this)
+            input.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            builder.setView(input)
+
+            // Set up the buttons
+            builder.setPositiveButton("OK") { dialog, which ->
+                val currentPassword = input.text.toString()
+
+                // Authenticate user with current password
+                if (email != null) {
+                    authenticateUser(email, currentPassword, updatedAddress, updatedPassword)
+                }
             }
-            newUser = updatedUserOnServer
+            builder.setNegativeButton("Cancel") { dialog, which ->
+                dialog.cancel()
+            }
+
+            builder.show()
         }
+
+
         buttonCancel.setOnClickListener {
             finish()
         }
     }
-    private fun requestOtp(email: String, password: String?) {
+
+    private fun authenticateUser(email: String, currentPassword: String, updatedAddress: String, updatedPassword: String) {
         val client = OkHttpClient()
+
         val requestBody = FormBody.Builder()
             .add("email", email)
-            .add("password", password.toString())
+            .add("currentPassword", currentPassword)
             .build()
 
         val request = Request.Builder()
-            .url("http://192.168.0.222:4000/send-otp") // Replace with your backend URL
+            .url("http://192.168.0.222:4000/updateRequestVerify")
             .post(requestBody)
             .build()
 
@@ -80,55 +93,7 @@ class UpdateUserActivity : AppCompatActivity() {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
                 runOnUiThread {
-                    Toast.makeText(this@UpdateUserActivity, "Failed to request OTP", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val responseBody = response.body?.string()
-                Log.e("Response Body: ", "$responseBody")
-                runOnUiThread {
-                    if (response.isSuccessful) {
-                        try {
-                            val jsonResponse = JSONObject(responseBody)
-                            val success = jsonResponse.getString("message")
-                            if (success.isNotEmpty()) {
-                                showOtpPopup()
-                            } else {
-                                Toast.makeText(this@UpdateUserActivity, "FAILED TO PARSE RESPONSE", Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                            Toast.makeText(this@UpdateUserActivity, "Failed to Parse Response", Toast.LENGTH_SHORT)
-                                .show()
-                        }
-                    } else {
-                        Toast.makeText(this@UpdateUserActivity, "Failed to request OTP", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        })
-    }
-    private fun authenticateUser(email: String, otp: String) {
-        val client = OkHttpClient()
-
-        // Create a JSON request body with email and OTP
-        val requestBody = FormBody.Builder()
-            .add("email", email)
-            .add("otp", otp)
-            .build()
-
-        val request = Request.Builder()
-            .url("http://192.168.0.222:4000/verify-otp")
-            .post(requestBody)
-            .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-                runOnUiThread {
-                    Toast.makeText(this@UpdateUserActivity, "Failed to verify OTP", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@UpdateUserActivity, "Failed to authenticate user", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -136,20 +101,12 @@ class UpdateUserActivity : AppCompatActivity() {
                 val responseBody = response.body?.string()
                 runOnUiThread {
                     if (response.isSuccessful) {
-                        try {
-                            val jsonResponse = JSONObject(responseBody)
-                            val success = jsonResponse.getBoolean("success")
-                            if (success) {
-                                updateUserOnServer(newUser)
-                            } else {
-                                Toast.makeText(this@UpdateUserActivity, "OTP verification failed", Toast.LENGTH_SHORT).show()
-                            }
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
-                            Toast.makeText(this@UpdateUserActivity, "Failed to Parse Response", Toast.LENGTH_SHORT).show()
-                        }
+                        // Authentication successful, create a User object with updated data and update user on server
+                        val updatedUser = User(email = email, address = updatedAddress, password = updatedPassword)
+                        updateUserOnServer(updatedUser)
                     } else {
-                        Toast.makeText(this@UpdateUserActivity, "Failed to verify OTP", Toast.LENGTH_SHORT).show()
+                        // Authentication failed, display error message
+                        Toast.makeText(this@UpdateUserActivity, "Authentication failed", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -157,30 +114,8 @@ class UpdateUserActivity : AppCompatActivity() {
     }
 
 
-    private fun showOtpPopup() {
-        val dialog = android.app.Dialog(this@UpdateUserActivity)
-        dialog.setContentView(layout.dialog_otp)
-        val email = intent.getStringExtra("email")
-        val editTextOtp: EditText = dialog.findViewById(R.id.editTextOtp)
-        val buttonVerify: Button = dialog.findViewById(R.id.buttonVerify)
 
-        buttonVerify.setOnClickListener {
-            val otp = editTextOtp.text.toString()
-            if (otp.isNotEmpty()) {
-                dialog.dismiss()
-                // Verify OTP with your backend
-                if (email != null) {
-                    authenticateUser(email, otp)
-                }
-            } else {
-                Toast.makeText(this@UpdateUserActivity, "Please enter the OTP", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        dialog.show()
-    }
-
-
+    // Function to update user details on the server
     private fun updateUserOnServer(updatedUser: User) {
         val url = "http://192.168.0.222:4000/updateDetails"
 
@@ -228,6 +163,3 @@ class UpdateUserActivity : AppCompatActivity() {
         }
     }
 }
-
-
-

@@ -30,12 +30,20 @@
             android:layout_gravity="center"
             android:layout_marginBottom="16dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher_foreground" />
+            android:src="@mipmap/ic_launcher_foreground"
+            android:rotation="0"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:animateLayoutChanges="true"
+            android:rotationX="0"
+            android:rotationY="0"
+            android:layoutAnimation="@anim/rotate_anim" />
+
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="सीएसआईआर पहचान"
+            android:text="@string/csir_hindi"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
@@ -45,7 +53,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/profile_border"
             android:padding="16dp"
-            android:text="CSIR PEHCHAAN is a digital identification card system designed for employees within CSIR Labs. This innovative project aims to streamline the identification process by digitizing traditional ID cards, providing employees with easy access to their identification details through a digital platform. By leveraging modern technology, CSIR PEHCHAAN enhances security measures and efficiency within CSIR Labs, offering a seamless and convenient identification solution for all employees. The project was undertaken by Kumar Ravi under the guidance of Dr. Neeraj Bhanot."
+            android:text="@string/kr_summary"
             android:layout_marginBottom="20dp"/>
 
         <!-- Need of Project -->
@@ -53,7 +61,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Need of Project"
+            android:text="@string/need_of_project"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp"/>
@@ -61,7 +69,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="The need for this project arises from the desire to eliminate the hassle of traditional ID card printing and sharing cumbersome physical documents. By implementing a paperless approach to identification, CSIR PEHCHAAN aims to streamline the identification process, making it more efficient, environmentally friendly, and accessible. With this digital identification card system, employees can easily share and access their identification details anytime, anywhere, enhancing convenience and security in the workplace."
+            android:text="@string/need_of_projec"
             android:background="@drawable/profile_border"
             android:padding="16dp"
             android:layout_marginBottom="16dp"/>
@@ -74,26 +82,37 @@
             android:padding="16dp"
             android:layout_marginBottom="16dp">
 
-            <!-- Your Photo -->
-            <ImageView
-                android:id="@+id/imageViewYourPhoto"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@mipmap/kuma_ravi_round"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                android:layout_marginBottom="16dp"/>
-
-            <!-- Your Details -->
-            <TextView
-                android:layout_width="wrap_content"
+            <!-- Photo and Name -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Kumar Ravi"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:layout_marginBottom="8dp"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
 
+                <!-- Photo -->
+                <ImageView
+                    android:id="@+id/imageViewYourPhoto"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@mipmap/kuma_ravi_round"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:layout_marginEnd="16dp"/>
+
+                <!-- Name -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="Kumar Ravi"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:gravity="fill_horizontal" />
+
+            </LinearLayout>
+
+            <!-- Summary -->
             <TextView
                 android:id="@+id/textViewSummary"
                 android:layout_width="match_parent"
@@ -102,7 +121,7 @@
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp"/>
 
-            <!-- Your LinkedIn -->
+            <!-- LinkedIn -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -111,8 +130,6 @@
                 android:drawableStart="@mipmap/linkedin_icon"
                 android:drawablePadding="8dp"
                 android:layout_marginBottom="8dp"/>
-
-
         </LinearLayout>
 
 
@@ -126,27 +143,36 @@
             android:background="@drawable/profile_border"
             android:padding="16dp"
             android:layout_marginBottom="16dp">
-
-            <!-- Dr. Neeraj Bhanot's Photo -->
-            <ImageView
-                android:id="@+id/imageViewDrPhoto"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:src="@mipmap/neeraj_bhanot"
-                android:scaleType="centerCrop"
-                android:layout_marginBottom="16dp"/>
-
             <!-- Dr. Neeraj Bhanot's Details -->
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dr. Neeraj Bhanot"
-                android:textSize="18sp"
-                android:layout_gravity="center"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="16dp">
 
+                <!-- Photo -->
+                <ImageView
+                    android:id="@+id/imageViewDrPhoto"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@mipmap/neeraj_bhanot"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:layout_marginEnd="16dp"/>
+
+                <!-- Name -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dr. Neeraj Bhanot"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="25dp"
+                    android:gravity="fill_horizontal"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <!-- Dr. Neeraj Bhanot's Summary -->
             <TextView
                 android:id="@+id/textNeerajViewSummary"
                 android:layout_width="match_parent"
@@ -164,9 +190,8 @@
                 android:drawableStart="@mipmap/linkedin_icon"
                 android:drawablePadding="8dp"
                 android:layout_marginBottom="8dp"/>
-
-
         </LinearLayout>
+
 
     </LinearLayout>
 </ScrollView>
