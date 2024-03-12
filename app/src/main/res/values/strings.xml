@@ -30,13 +30,22 @@
     <string name="empty_string"></string>
     <string name="https_www_linkedin_com_in_kumar_r_a53a03117">https://www.linkedin.com/in/kumar-r-a53a03117/</string>
     <string name="csir_hindi">सीएसआईआर पहचान</string>
-    <string name="kr_summary">CSIR PEHCHAAN is a digital identification card system designed for employees within CSIR Labs. This innovative project aims to streamline the identification process by digitizing traditional ID cards, providing employees with easy access to their identification details through a digital platform. By leveraging modern technology, CSIR PEHCHAAN enhances security measures and efficiency within CSIR Labs, offering a seamless and convenient identification solution for all employees. The project was undertaken by Kumar Ravi under the guidance of Dr. Neeraj Bhanot.</string>
+    <string name="kr_summary">CSIR PEHCHAAN is a digital identification card system tailored for CSIR Labs\' staff. This project digitizes conventional ID cards, granting employees swift access to their identification details via a digital platform. By harnessing modern technology, CSIR PEHCHAAN bolsters security and efficiency within CSIR Labs, delivering a seamless and convenient identification solution. The project was undertaken by Kumar Ravi under the guidance of Dr. Neeraj Bhanot.</string>
     <string name="need_of_project">Need of Project</string>
-    <string name="need_of_projec">The need for this project arises from the desire to eliminate the hassle of traditional ID card printing and sharing cumbersome physical documents. By implementing a paperless approach to identification, CSIR PEHCHAAN aims to streamline the identification process, making it more efficient, environmentally friendly, and accessible. With this digital identification card system, employees can easily share and access their identification details anytime, anywhere, enhancing convenience and security in the workplace.</string>
+    <string name="need_of_projec">This project is driven by the imperative to eradicate the complexities associated with traditional ID card production and physical distribution. Adopting a paperless identification approach, CSIR PEHCHAAN strives to simplify the identification process while promoting environmental sustainability. By digitizing identification procedures, the system not only enhances convenience and security for employees but also contributes to environmental conservation. This shift away from paper-based ID cards will save a significant number of trees from being cut down for paper production.</string>
     <string name="enter_otp">Enter OTP</string>
     <string name="otp">OTP</string>
     <string name="proceed">Proceed</string>
+    <string name="dr_neeraj_bhanot_summary">Dr. Neeraj Bhanot currently serves as a Scientist and Assistant Professor (AcSIR) at CSIR-National Physical Laboratory, affiliated with the Ministry of Science &amp; Technology, New Delhi. He holds a PhD in Industrial Engineering from IIT Delhi and specializes in research fields including Sustainability Assessment, Performance Benchmarking, and the practical applications of advanced technologies such as the Internet of Things, Big Data Analytics, and Artificial Intelligence. His LinkedIn profile is accessible from the icon below.</string>
+
     <string name="totp">TOTP</string>
+
+    <string name="emergeny_no">Emergeny No.</string>
+    <string name="linkedin_profile_url">https://www.linkedin.com/in/kumar-r-a53a03117/</string>
+    <string name="summary_text">Kumar Ravi possesses a robust technological background, demonstrating proficiency in languages such as C++, React, Python, and Java. He has accomplished coursework in computer networks, operating systems, and cloud computing. With a problem-solving-oriented focus, he has garnered 5-star ratings in C++, SQL, and Problem Solving on platforms like HackerRank. His LinkedIn profile is accessible from the icon below.</string>
+    <string name="kumar_ravi">Kumar Ravi</string>
+    <string name="dr_neeraj_bhanot">Dr. Neeraj Bhanot</string>
+    <string name="en_hin">Aa/अ</string>
 
 
 </resources>

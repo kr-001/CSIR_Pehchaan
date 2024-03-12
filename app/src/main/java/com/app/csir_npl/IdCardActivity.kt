@@ -2,6 +2,8 @@ package  com.app.csir_npl
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.app.PendingIntent
+import android.provider.Settings
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -13,28 +15,37 @@ import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.Typeface
+import android.nfc.NdefMessage
+import android.nfc.NdefRecord
+import android.nfc.NfcAdapter
+import android.nfc.tech.Ndef
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.CheckBox
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import com.journeyapps.barcodescanner.BarcodeEncoder
-import java.io.File
+import java.nio.charset.Charset
 
 class IdCardActivity : AppCompatActivity() {
     private lateinit var imageViewPhoto: ImageView
@@ -50,12 +61,14 @@ class IdCardActivity : AppCompatActivity() {
     private lateinit var buttonGenerateQR: Button
     private lateinit var imageViewQRCode: ImageView
     private lateinit var photoPath: String
-    private lateinit var imageViewLogoRight : ImageView
-    private lateinit var emergencyContact : TextView
-    private  lateinit var textViewStatus: TextView
+    private lateinit var imageViewLogoRight: ImageView
+    private lateinit var emergencyContact: TextView
+    private lateinit var textViewStatus: TextView
     private lateinit var qrCodeDialog: Dialog
-    private lateinit var email : String
-    private lateinit var password : String
+    private lateinit var email: String
+    private lateinit var password: String
+    private lateinit var nfcShareDialog: Dialog
+    private val NFC_PERMISSION_REQUEST_CODE = 100
 
     companion object {
         private const val READ_EXTERNAL_STORAGE_REQUEST_CODE = 123
@@ -139,9 +152,9 @@ class IdCardActivity : AppCompatActivity() {
             textViewAutho.text = autho
             textViewStatus.text = status
 
-            if(emergency == "null"){
+            if (emergency == "null") {
                 emergencyContact.text = "Not Available"
-            }else{
+            } else {
                 emergencyContact.text = emergency
                 emergencyContact.visibility = View.VISIBLE
             }
@@ -149,13 +162,41 @@ class IdCardActivity : AppCompatActivity() {
         } else {
             Log.e("IdCardActivity", "photoPath is null")
         }
+
+
+    }
+    private fun showNfcShareDialog() {
+        val imageViewStatus = nfcShareDialog.findViewById<ImageView>(R.id.imageViewStatus)
+        val textViewStatus = nfcShareDialog.findViewById<TextView>(R.id.textViewStatus)
+        val slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up)
+        nfcShareDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        nfcShareDialog.show()
+        imageViewStatus.startAnimation(slideUp)
+        textViewStatus.startAnimation(slideUp)
     }
 
+    private fun hideNfcShareDialog() {
+        val imageViewStatus = nfcShareDialog.findViewById<ImageView>(R.id.imageViewStatus)
+        val textViewStatus = nfcShareDialog.findViewById<TextView>(R.id.textViewStatus)
+        val slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down)
+        imageViewStatus.startAnimation(slideDown)
+        textViewStatus.startAnimation(slideDown)
+        slideDown.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+
+            override fun onAnimationEnd(animation: Animation?) {
+                nfcShareDialog.dismiss()
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {}
+        })
+    }
     private fun loadPhoto(correctedPhotoUrl: String) {
         Glide.with(this)
             .load(correctedPhotoUrl)
             .into(imageViewPhoto)
     }
+
     private fun loadLogo(logoUrl: String) {
         Glide.with(this)
             .load(logoUrl)
@@ -184,15 +225,27 @@ class IdCardActivity : AppCompatActivity() {
             val lab = textViewLabName.text.toString()
             val idCardNumber = textViewIdCardNumber.text.toString()
 
-            val emailID = if (checkboxEmail.isChecked) intent.getStringExtra("emailId").toString() else ""
-            val contact = if (checkboxContact.isChecked) intent.getStringExtra("contact").toString() else ""
-            val designation = if (checkboxDesignation.isChecked) textViewDesignation.text.toString() else ""
-            val division = if(checkboxLabName.isChecked) textViewLabName.text.toString() else ""
-            val qrCodeBitmap = generateQRCode(name, lab, idCardNumber, emailID, contact, designation, division)
+            val emailID =
+                if (checkboxEmail.isChecked) intent.getStringExtra("emailId").toString() else ""
+            val contact =
+                if (checkboxContact.isChecked) intent.getStringExtra("contact").toString() else ""
+            val designation =
+                if (checkboxDesignation.isChecked) textViewDesignation.text.toString() else ""
+            val division = if (checkboxLabName.isChecked) textViewLabName.text.toString() else ""
+            val qrCodeBitmap =
+                generateQRCode(name, lab, idCardNumber, emailID, contact, designation, division)
+            Log.d("AT INTENT name", name)
+            Log.d("AT INTENT lab", lab)
+            Log.d("AT INTENT idCard", idCardNumber)
+            Log.d("AT INTENT email", emailID)
+            Log.d("AT INTENT contact", contact)
+            Log.d("AT INTENT designation", designation)
+
             val qrCodeDialog = Dialog(this)
 
             qrCodeDialog.setContentView(R.layout.dialog_qr_code_display)
-            val imageViewQRCodePopup = qrCodeDialog.findViewById<ImageView>(R.id.imageViewQRCodePopup)
+            val imageViewQRCodePopup =
+                qrCodeDialog.findViewById<ImageView>(R.id.imageViewQRCodePopup)
             val buttonClosePopup = qrCodeDialog.findViewById<TextView>(R.id.buttonClosePopup)
             imageViewQRCodePopup.setImageBitmap(qrCodeBitmap)
 
@@ -213,33 +266,50 @@ class IdCardActivity : AppCompatActivity() {
     }
 
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
+        return when (item.itemId) {
             R.id.menu_generate_qr -> {
                 showDetailsSelectionPopup()
                 true
             }
+
             R.id.action_about -> {
                 val intent = Intent(this, AboutActivity::class.java)
                 startActivity(intent)
                 true
             }
-            R.id.menu_scan_qr->{
+
+            R.id.menu_scan_qr -> {
                 startQRSacnner()
                 true
             }
+            R.id.menu_nfc -> {
+                // Show NFC sharing dialog and start sharing
+                nfcShareDialog = Dialog(this)
+                nfcShareDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                nfcShareDialog.setContentView(R.layout.popup_nfc_share)
+                nfcShareDialog.setCancelable(false)
+                showNfcShareDialog()
+                startNfcSharing()
+
+                // Simulate successful NFC share after 3 seconds
+                Handler(Looper.getMainLooper()).postDelayed({
+                    hideNfcShareDialog()
+                }, 3000)
+                true
+            }
+
 
             R.id.menu_request_detail_modification -> {
-                val intent = Intent(this , UpdateUserActivity::class.java)
+                val intent = Intent(this, UpdateUserActivity::class.java)
                 intent.putExtra("full_name", textViewFullName.text.toString())
                 intent.putExtra("designation", textViewDesignation.text.toString())
                 intent.putExtra("division", textViewDivisionName.text.toString())
                 intent.putExtra("lab", textViewLabName.text.toString())
                 intent.putExtra("address", textViewAddress.text.toString())
-                intent.putExtra("CardNumber" , textViewIdCardNumber.text.toString())
-                intent.putExtra("email" , email)
-                intent.putExtra("password" , password)
+                intent.putExtra("CardNumber", textViewIdCardNumber.text.toString())
+                intent.putExtra("email", email)
+                intent.putExtra("password", password)
 
                 startActivity(intent)
                 true
@@ -253,11 +323,18 @@ class IdCardActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<String>,
+        permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
+            NFC_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startNfcSharing() // Retry if NFC permission granted
+                } else {
+                    // Handle NFC permission denied case
+                }
+            }
             READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     val correctedPhotoUrl = photoPath
@@ -266,9 +343,9 @@ class IdCardActivity : AppCompatActivity() {
                     Log.e("PHOTOPATH", "ERROR $photoPath")
                 }
             }
+            // Add more cases if needed for other request codes
         }
     }
-
 
 
     private fun buildVcfData(
@@ -277,16 +354,23 @@ class IdCardActivity : AppCompatActivity() {
         emailID: String,
         contact: String,
         designation: String,
-    ): String {
+
+        ): String {
         val builder = StringBuilder()
         builder.append("BEGIN:VCARD\n")
         builder.append("VERSION:3.0\n")
         builder.append("FN:$name\n")
-        builder.append("ORG:$designation,$lab\n")
-        builder.append("TEL:$contact\n")
+        builder.append("ORG:$designation, $lab\n")  // Only organization name
+        builder.append("TEL:$contact\n")  // Only phone number
         builder.append("EMAIL:$emailID\n")
         builder.append("END:VCARD")
+        Log.d("NAME : ", name)
+        Log.d("LAB : ", lab)
+        Log.d("contact", contact)
+        Log.d("email: ", emailID)
+        Log.d("designation: ", designation)
 
+        Log.d("BUILDER STRING VCF: ", builder.toString())
         return builder.toString()
     }
 
@@ -303,11 +387,12 @@ class IdCardActivity : AppCompatActivity() {
             val qrData = buildVcfData(
                 name,
                 lab,
-                idCardNumber,
                 emailID,
                 contact,
+                designation
             )
-            val hints = mapOf<EncodeHintType, ErrorCorrectionLevel>(EncodeHintType.ERROR_CORRECTION to ErrorCorrectionLevel.H)
+            val hints =
+                mapOf<EncodeHintType, ErrorCorrectionLevel>(EncodeHintType.ERROR_CORRECTION to ErrorCorrectionLevel.H)
             val qrCodeWriter = QRCodeWriter()
             val bitMatrix = qrCodeWriter.encode(qrData, BarcodeFormat.QR_CODE, 500, 500, hints)
             val width = bitMatrix.width
@@ -350,9 +435,80 @@ class IdCardActivity : AppCompatActivity() {
         return output
     }
 
-    private fun startQRSacnner(){
+    private fun startQRSacnner() {
         val intent = Intent(this, QRScannerActivity::class.java)
         startActivity(intent)
     }
+
+
+    private fun prepareNfcData(): String {
+        val name = textViewFullName.text.toString()
+        val lab = textViewLabName.text.toString()
+        val emailID = intent.getStringExtra("emailId").toString()
+        val contact = intent.getStringExtra("contact").toString()
+        val designation = textViewDesignation.text.toString()
+        val division = textViewDivisionName.text.toString()
+
+        val builder = StringBuilder()
+        builder.append("BEGIN:VCARD\n")
+        builder.append("VERSION:3.0\n")
+        builder.append("FN:$name\n")
+        builder.append("ORG:$designation, $lab\n") // Only organization name
+        builder.append("TEL:$contact\n") // Only phone number
+        builder.append("EMAIL:$emailID\n")
+        builder.append("END:VCARD")
+
+        return builder.toString()
+    }
+
+    private fun startNfcSharing() {
+        val nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+        if (nfcAdapter == null) {
+            Toast.makeText(this, "No NFC detected", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (!nfcAdapter.isEnabled) {
+            // NFC is not enabled, prompt the user to enable it
+            Toast.makeText(this, "Please enable NFC", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(Settings.ACTION_NFC_SETTINGS))
+            return
+        }
+
+        val nfcData = prepareNfcData() // Prepare your data to share
+        Log.d("NFC_DATA", nfcData)
+        val mimeType = "text/vcard" // Replace with appropriate MIME type
+
+        val nfcIntent = Intent(this, javaClass).apply {
+            action = Intent.ACTION_SEND
+            type = mimeType
+            putExtra(Intent.EXTRA_TEXT, nfcData)
+        }
+
+        val nfcPendingIntent = PendingIntent.getActivity(
+            this, 0, nfcIntent, PendingIntent.FLAG_MUTABLE
+        )
+
+
+        val readerCallback = NfcAdapter.ReaderCallback { tag ->
+            // Create the NdefMessage to send
+            val ndefMessage = NdefMessage(
+                arrayOf(
+                    NdefRecord.createMime(mimeType, nfcData.toByteArray(Charsets.UTF_8))
+                )
+            )
+            // Return the message to send
+            ndefMessage
+        }
+
+        // Start NFC reader mode
+        nfcAdapter.enableReaderMode(
+            this, readerCallback,
+            NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_NFC_B, null
+        )
+
+        // Enable foreground dispatch
+        nfcAdapter.enableForegroundDispatch(this, nfcPendingIntent, null, null)
+    }
+
 
 }

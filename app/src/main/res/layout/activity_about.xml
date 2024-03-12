@@ -10,14 +10,32 @@
         android:background="@drawable/profile_border"
         android:padding="16dp">
 
+
+
         <!-- About Heading -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="About"
-            android:textSize="24sp"
+            android:textSize="28sp"
             android:textStyle="bold"
+            android:layout_gravity="center"
             android:layout_marginBottom="16dp"/>
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/languageSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:text="@string/en_hin" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/black"
+            android:layout_marginBottom="16dp"/>
+
 
         <!-- Project Logo -->
 
@@ -40,11 +58,13 @@
             android:layoutAnimation="@anim/rotate_anim" />
 
 
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/csir_hindi"
+            android:text="@string/app_name"
             android:textSize="24sp"
+            android:gravity="center"
             android:textStyle="bold"
             android:layout_marginBottom="8dp"/>
 
@@ -61,6 +81,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/need_of_project"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -77,38 +98,38 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/profile_border"
-            android:padding="16dp"
-            android:layout_marginBottom="16dp">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <!-- Photo and Name -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginBottom="16dp"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="16dp">
+                android:orientation="horizontal">
 
                 <!-- Photo -->
                 <ImageView
                     android:id="@+id/imageViewYourPhoto"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:src="@mipmap/kuma_ravi_round"
                     android:layout_gravity="center"
+                    android:layout_marginEnd="16dp"
                     android:scaleType="centerCrop"
-                    android:layout_marginEnd="16dp"/>
+                    android:src="@mipmap/kuma_ravi_round" />
 
                 <!-- Name -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="Kumar Ravi"
-                    android:textSize="25sp"
-                    android:textStyle="bold"
-                    android:gravity="fill_horizontal" />
+                    android:layout_marginLeft="25dp"
+                    android:gravity="fill_horizontal"
+                    android:text="@string/kumar_ravi"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -117,22 +138,21 @@
                 android:id="@+id/textViewSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="I am Kumar Ravi, a dedicated and passionate individual with a strong background in technology. Despite facing challenges, I've remained committed to my academic pursuits. Proficient in languages like C++, React, Python, and Java, I've completed coursework in computer networks, operating systems, and cloud computing. I have hands-on experience in developing impactful projects and implementing advanced features. With a focus on problem-solving, I've achieved a stellar 5-star rating in C++, SQL, and Problem Solving on platforms like HackerRank. Overall, my dedication, adaptability, and technical expertise make me a valuable addition to any technical team."
-                android:textSize="14sp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:text="@string/summary_text"
+                android:textSize="14sp" />
 
             <!-- LinkedIn -->
             <TextView
+                android:id="@+id/textViewLinkedin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="https://www.linkedin.com/in/kumar-r-a53a03117/"
-                android:autoLink="web"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="center"
                 android:drawableStart="@mipmap/linkedin_icon"
-                android:drawablePadding="8dp"
-                android:layout_marginBottom="8dp"/>
+                android:drawablePadding="8dp" />
+
         </LinearLayout>
-
-
 
 
         <!-- Dr. Neeraj Bhanot's Profile Section -->
@@ -165,9 +185,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Dr. Neeraj Bhanot"
+                    android:text="@string/dr_neeraj_bhanot"
                     android:layout_marginLeft="10dp"
-                    android:textSize="25dp"
+                    android:textSize="26sp"
                     android:gravity="fill_horizontal"
                     android:textStyle="bold"/>
             </LinearLayout>
@@ -177,19 +197,19 @@
                 android:id="@+id/textNeerajViewSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dr. Neeraj Bhanot is a distinguished Scientist and Assistant Professor at the AcSIR with a remarkable background in Industrial Engineering and Digital Transformation. Holding a PhD in Industrial Engineering from IIT Delhi, he brings extensive expertise in areas such as Sustainability Assessment, Performance Benchmarking, and Digital Metrology. With a strong academic foundation, including an M.Tech in Industrial Engineering from GNDEC Ludhiana and an MBA in Sales and Marketing from IGNOU, New Delhi, Dr. Bhanot has contributed significantly to research and academia. His research interests span across Digital Transformation, Project Management, and the application perspectives of cutting-edge technologies like Internet of Things, Big Data Analytics, Artificial Intelligence, and Blockchain. With a rich academic and research experience spanning institutions such as CSIR–National Physical Laboratory, Indian Institute of Management Amritsar, and Dr. B R Ambedkar National Institute of Technology Jalandhar, Dr. Bhanot has made impactful contributions to the field. His dedication, expertise, and visionary approach make him a valuable asset to the scientific community."
+                android:text="@string/dr_neeraj_bhanot_summary"
                 android:textSize="14sp"
                 android:layout_marginBottom="8dp"/>
 
             <!-- Dr. Neeraj Bhanot's LinkedIn -->
             <TextView
+                android:id="@+id/textViewLinkedin2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="https://www.linkedin.com/in/neeraj-bhanot-76638092/"
-                android:autoLink="web"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="center"
                 android:drawableStart="@mipmap/linkedin_icon"
-                android:drawablePadding="8dp"
-                android:layout_marginBottom="8dp"/>
+                android:drawablePadding="8dp" />
         </LinearLayout>
 
 

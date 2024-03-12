@@ -83,7 +83,7 @@
 
         <!-- First ID Number -->
         <LinearLayout
-            android:layout_width="258dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="3dp"
@@ -98,9 +98,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:gravity="start"
-                android:textAppearance="@style/TextViewTimesNewRoman"
                 android:text="I.D. NO. "
-                 />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
 
             <TextView
                 android:id="@+id/colonTextView1"
@@ -112,7 +111,7 @@
 
             <TextView
                 android:id="@+id/textViewIdCardNumber"
-                android:layout_width="123dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:textAppearance="@style/TextViewTimesNewRoman"
@@ -122,7 +121,7 @@
 
         <!-- Full Name -->
         <LinearLayout
-            android:layout_width="258dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
@@ -150,17 +149,16 @@
 
             <TextView
                 android:id="@+id/textViewFullName"
-                android:layout_width="123dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:textAppearance="@style/TextViewTimesNewRoman"
                 android:gravity="center"
-                />
+                android:textAppearance="@style/TextViewTimesNewRoman" />
 
         </LinearLayout>
         <!-- Designation-->
         <LinearLayout
-            android:layout_width="258dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
@@ -188,7 +186,7 @@
 
             <TextView
                 android:id="@+id/textViewDesignation"
-                android:layout_width="123dp"
+                android:layout_width="201dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="center"
@@ -197,7 +195,7 @@
         </LinearLayout>
         <!-- Division-->
         <LinearLayout
-            android:layout_width="258dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
@@ -224,7 +222,7 @@
 
             <TextView
                 android:id="@+id/textViewDivisionName"
-                android:layout_width="123dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="center"
@@ -233,7 +231,7 @@
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="258dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
@@ -261,7 +259,7 @@
 
             <TextView
                 android:id="@+id/textViewSubDivisionName"
-                android:layout_width="123dp"
+                android:layout_width="201dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="center"
@@ -270,7 +268,7 @@
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="258dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
@@ -298,15 +296,15 @@
 
             <TextView
                 android:id="@+id/textViewLabName"
-                android:layout_width="123dp"
+                android:layout_width="202dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextViewTimesNewRoman"
                 android:layout_marginStart="8dp"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textAppearance="@style/TextViewTimesNewRoman" />
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="258dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
@@ -334,14 +332,14 @@
 
             <TextView
                 android:id="@+id/textViewBloodGroup"
-                android:layout_width="123dp"
+                android:layout_width="201dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="center" />
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="258dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="3dp"
@@ -368,15 +366,15 @@
 
             <TextView
                 android:id="@+id/textViewAddress"
-                android:layout_width="123dp"
+                android:layout_width="202dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:textAppearance="@style/TextViewTimesNewRoman"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textAppearance="@style/TextViewTimesNewRoman" />
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="258dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
@@ -404,16 +402,16 @@
 
             <TextView
                 android:id="@+id/textViewVeriStatus"
-                android:layout_width="123dp"
+                android:layout_width="202dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="center"
-                android:textColor="@color/green"
-                android:textAppearance="@style/TextViewTimesNewRoman" />
+                android:textAppearance="@style/TextViewTimesNewRoman"
+                android:textColor="@color/green" />
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="258dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
@@ -441,32 +439,32 @@
 
             <TextView
                 android:id="@+id/textViewAuthoName"
-                android:layout_width="123dp"
+                android:layout_width="202dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="center"
-                android:textColor="@color/green"
                 android:textAppearance="@style/TextViewTimesNewRoman"
-                />
+                android:textColor="@color/green" />
 
         </LinearLayout>
         <LinearLayout
-            android:layout_width="258dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginBottom="10dp"
             android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/textViewEmergencyPlace"
                 android:layout_width="105dp"
-                android:layout_height="wrap_content"
+                android:layout_height="23dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="start"
                 android:textAppearance="@style/TextViewTimesNewRoman"
-                android:text="Emergeny Contact"
+                android:text="@string/emergeny_no"
                 android:textColor="@color/red"
                  />
 
@@ -480,13 +478,12 @@
 
             <TextView
                 android:id="@+id/textViewEmergencyName"
-                android:layout_width="123dp"
+                android:layout_width="199dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="center"
                 android:textAppearance="@style/TextViewTimesNewRoman"
-                android:textColor="@color/red"
-                 />
+                android:textColor="@color/red" />
 
         </LinearLayout>
 

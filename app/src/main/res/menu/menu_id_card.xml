@@ -3,13 +3,18 @@
         android:id="@+id/menu_generate_qr"
         android:title="Generate QR Code" />
     <item
+        android:id="@+id/menu_scan_qr"
+        android:title="Scan QR Code" />
+    <item
+        android:id="@+id/menu_nfc"
+        android:title="Tap and Share" />
+    <item
         android:id="@+id/menu_request_detail_modification"
         android:title="Request Detail Modification" />
     <item
         android:id="@+id/action_about"
         android:title="About"
         />
-    <item
-        android:id="@+id/menu_scan_qr"
-        android:title="Scan QR Code" />
+
+
 </menu>
