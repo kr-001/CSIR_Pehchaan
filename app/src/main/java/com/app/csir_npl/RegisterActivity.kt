@@ -1,6 +1,5 @@
 package com.app.csir_npl
 
-import android.Manifest
 import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -14,8 +13,6 @@ import android.util.Log
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -29,7 +26,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import okhttp3.RequestBody.Companion.asRequestBody
-import org.junit.runner.manipulation.Ordering
 import java.io.File
 import java.io.FileOutputStream
 import android.content.Context
@@ -67,9 +63,8 @@ class RegisterActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
 
 
-        val labNameAdapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_item, labNameList)
-        labNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val labNameAdapter = LabNameAdapter(this, labNameList)
+//        labNameAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerLabName.adapter = labNameAdapter
 
         val client = OkHttpClient()

@@ -46,6 +46,8 @@
     <string name="kumar_ravi">Kumar Ravi</string>
     <string name="dr_neeraj_bhanot">Dr. Neeraj Bhanot</string>
     <string name="en_hin">Aa/अ</string>
+    <string name="photo">Photo</string>
+    <string name="lab_name">Lab Name</string>
 
 
 </resources>
