@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CSIR Pehchaan</string>
+    <string name="app_name">CSIR PEHCHAAN</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -36,18 +36,20 @@
     <string name="enter_otp">Enter OTP</string>
     <string name="otp">OTP</string>
     <string name="proceed">Proceed</string>
-    <string name="dr_neeraj_bhanot_summary">Dr. Neeraj Bhanot currently serves as a Scientist and Assistant Professor (AcSIR) at CSIR-National Physical Laboratory, affiliated with the Ministry of Science &amp; Technology, New Delhi. He holds a PhD in Industrial Engineering from IIT Delhi and specializes in research fields including Sustainability Assessment, Performance Benchmarking, and the practical applications of advanced technologies such as the Internet of Things, Big Data Analytics, and Artificial Intelligence. His LinkedIn profile is accessible from the icon below.</string>
+    <string name="dr_neeraj_bhanot_summary">Dr. Neeraj Bhanot currently serves as a Scientist and Assistant Professor (AcSIR) at CSIR-National Physical Laboratory, affiliated with the Ministry of Science &amp; Technology, New Delhi. He holds a PhD in Industrial Engineering from IIT Delhi and specializes in research fields including Sustainability Assessment, Performance Benchmarking, and the practical applications of advanced technologies such as the Internet of Things, Big Data Analytics, and Artificial Intelligence..</string>
 
     <string name="totp">TOTP</string>
 
     <string name="emergeny_no">Emergeny No.</string>
     <string name="linkedin_profile_url">https://www.linkedin.com/in/kumar-r-a53a03117/</string>
-    <string name="summary_text">Kumar Ravi possesses a robust technological background, demonstrating proficiency in languages such as C++, React, Python, and Java. He has accomplished coursework in computer networks, operating systems, and cloud computing. With a problem-solving-oriented focus, he has garnered 5-star ratings in C++, SQL, and Problem Solving on platforms like HackerRank. His LinkedIn profile is accessible from the icon below.</string>
+    <string name="summary_text">Kumar Ravi possesses a robust technological background, demonstrating proficiency in languages such as C++, React, Python, and Java. He has accomplished coursework in computer networks, operating systems, and cloud computing. With a problem-solving-oriented focus, he has garnered 5-star ratings in C++, SQL, and Problem Solving on platforms like HackerRank.</string>
     <string name="kumar_ravi">Kumar Ravi</string>
     <string name="dr_neeraj_bhanot">Dr. Neeraj Bhanot</string>
     <string name="en_hin">Aa/अ</string>
     <string name="photo">Photo</string>
     <string name="lab_name">Lab Name</string>
+    <string name="enter_your_totp_code_from_microsoft_authenticator">Enter your TOTP code from Microsoft Authenticator</string>
+    <string name="update_user_details">Update User Details</string>
 
 
 </resources>

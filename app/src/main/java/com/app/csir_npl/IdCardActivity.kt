@@ -58,8 +58,6 @@ class IdCardActivity : AppCompatActivity() {
     private lateinit var textViewIdCardNumber: TextView
     private lateinit var textViewBloodGroup: TextView
     private lateinit var textViewAutho: TextView
-    private lateinit var buttonGenerateQR: Button
-    private lateinit var imageViewQRCode: ImageView
     private lateinit var photoPath: String
     private lateinit var imageViewLogoRight: ImageView
     private lateinit var emergencyContact: TextView
@@ -69,6 +67,18 @@ class IdCardActivity : AppCompatActivity() {
     private lateinit var password: String
     private lateinit var nfcShareDialog: Dialog
     private val NFC_PERMISSION_REQUEST_CODE = 100
+    private lateinit var textViewIdCardNumberKey: TextView
+    private lateinit var textViewFullNameKey: TextView
+    private lateinit var textViewDesignationKey: TextView
+    private lateinit var textViewDivisionNameKey: TextView
+    private lateinit var textViewLabNameKey: TextView
+    private lateinit var textViewAddressKey: TextView
+    private lateinit var textViewBloodGroupKey: TextView
+    private lateinit var textViewAuthoKey: TextView
+    private lateinit var emergencyContactKey: TextView
+    private lateinit var textViewStatusKey: TextView
+    private lateinit var textViewSubDivisionNameKey: TextView
+
 
     companion object {
         private const val READ_EXTERNAL_STORAGE_REQUEST_CODE = 123
@@ -94,6 +104,17 @@ class IdCardActivity : AppCompatActivity() {
         textViewBloodGroup = findViewById(R.id.textViewBloodGroup)
         imageViewLogoRight = findViewById(R.id.imageViewLogoRight)
         textViewStatus = findViewById(R.id.textViewVeriStatus)
+        textViewIdCardNumberKey = findViewById(R.id.textViewIDPlace)
+        textViewFullNameKey = findViewById(R.id.textViewTitlePlace)
+        textViewDesignationKey= findViewById(R.id.textViewDesignationPlace)
+        textViewDivisionNameKey = findViewById(R.id.textViewDivisionPlace)
+        textViewBloodGroupKey = findViewById(R.id.textViewBGroupPlace)
+        textViewAddressKey = findViewById(R.id.textViewAddressPlace)
+        textViewAuthoKey = findViewById(R.id.textViewAuthoPlace)
+        textViewLabNameKey = findViewById(R.id.textViewLabNamePlace)
+        textViewStatusKey = findViewById(R.id.textViewAuthoStatus)
+        textViewSubDivisionNameKey = findViewById(R.id.textViewSubDivisionPlace)
+        emergencyContactKey = findViewById(R.id.textViewEmergencyName)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -115,6 +136,17 @@ class IdCardActivity : AppCompatActivity() {
         textViewBloodGroup.typeface = typeface
         textViewStatus.typeface = typeface
         textViewLabName.typeface = typeface
+        textViewIdCardNumberKey.typeface = typeface
+        textViewStatusKey.typeface = typeface
+        textViewSubDivisionNameKey.typeface = typeface
+        textViewDesignationKey.typeface = typeface
+        textViewDivisionNameKey.typeface = typeface
+        textViewLabNameKey.typeface = typeface
+        textViewBloodGroupKey.typeface = typeface
+        textViewAddressKey.typeface = typeface
+        textViewAuthoKey.typeface = typeface
+        textViewFullNameKey.typeface = typeface
+        emergencyContact.typeface = typeface
         textViewDivisionName.typeface = typeface
         emergencyContact.typeface = typeface
         val photoUrl = photoPath
@@ -361,7 +393,7 @@ class IdCardActivity : AppCompatActivity() {
         builder.append("VERSION:3.0\n")
         builder.append("FN:$name\n")
         builder.append("ORG:$designation, $lab\n")  // Only organization name
-        builder.append("TEL:$contact\n")  // Only phone number
+        builder.append("TEL:+91 $contact\n")  // Only phone number
         builder.append("EMAIL:$emailID\n")
         builder.append("END:VCARD")
         Log.d("NAME : ", name)

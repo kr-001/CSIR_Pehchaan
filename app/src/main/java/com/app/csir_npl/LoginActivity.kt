@@ -107,7 +107,7 @@ class LoginActivity : AppCompatActivity() {
                                     ).show()
                                 } else {
                                     val intent = Intent(this@LoginActivity, IdCardActivity::class.java)
-                                    val fullName = "$title$name"
+                                    val fullName = "$title $name" // need change
                                     intent.putExtra("full_name", fullName)
                                     intent.putExtra("photoPath", photoPath)
                                     intent.putExtra("designation", designation)

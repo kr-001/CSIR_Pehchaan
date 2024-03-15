@@ -1,0 +1,5 @@
+<!-- water_image.xml -->
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@mipmap/csir_logo_foreground"
+    android:gravity="center"
+    android:alpha="0.3" /> <!-- Adjust the alpha value to control transparency -->

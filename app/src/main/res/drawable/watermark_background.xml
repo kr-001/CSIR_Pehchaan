@@ -1,0 +1,11 @@
+<!-- watermark_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background Shape -->
+    <item android:drawable="@android:color/transparent" />
+    <!-- Watermark Image or Text -->
+    <item>
+        <bitmap
+            android:src="@drawable/watermark_image"
+            android:alpha="0.3" /> <!-- Adjust the alpha value to control transparency -->
+    </item>
+</layer-list>

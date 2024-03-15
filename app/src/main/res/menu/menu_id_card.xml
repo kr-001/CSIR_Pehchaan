@@ -7,13 +7,13 @@
         android:title="Scan QR Code" />
     <item
         android:id="@+id/menu_nfc"
-        android:title="Tap and Share" />
+        android:title="Tap and Share (NFC)" />
     <item
         android:id="@+id/menu_request_detail_modification"
         android:title="Request Detail Modification" />
     <item
         android:id="@+id/action_about"
-        android:title="About"
+        android:title="About App"
         />
 
 

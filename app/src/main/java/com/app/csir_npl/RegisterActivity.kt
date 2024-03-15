@@ -127,7 +127,7 @@ class RegisterActivity : AppCompatActivity() {
 
                     // Handle click event for "Open" button
                     findViewById<Button>(R.id.buttonOpen).setOnClickListener {
-                        openGoogleAuthenticatorSetup(secretKey)
+                        openMicrosoftAuthenticatorSetup(secretKey)
                         checkMasterTableAndSaveUser(secretKey)
                     }
                 } else {
@@ -184,17 +184,18 @@ class RegisterActivity : AppCompatActivity() {
         Toast.makeText(this, "Secret key copied to clipboard", Toast.LENGTH_SHORT).show()
     }
 
-    private fun openGoogleAuthenticatorSetup(secretKey: String) {
-        val playStoreUrl = "https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2"
+    private fun openMicrosoftAuthenticatorSetup(secretKey: String) {
+        val playStoreUrl = "https://play.google.com/store/apps/details?id=com.azure.authenticator"
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(playStoreUrl)
 
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(intent)
         } else {
-            Toast.makeText(this, "Google Play Store app not found", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Microsoft Authenticator not found", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun getFilePathFromUri(uri: Uri): String? {
         val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
@@ -224,11 +225,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 
 
-
-    private fun generateOTP(): String {
-        val random = (1000..9999).random()
-        return random.toString()
-    }
 
     private fun sendOTPRequest(email: String) {
         val client = OkHttpClient()

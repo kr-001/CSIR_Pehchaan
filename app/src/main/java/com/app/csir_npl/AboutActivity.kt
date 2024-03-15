@@ -49,8 +49,7 @@ class AboutActivity : AppCompatActivity() {
         }
         spannableString1.setSpan(clickableSpan1, 0, text1.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-        binding.textViewLinkedin.text = spannableString1
-        binding.textViewLinkedin.movementMethod = LinkMovementMethod.getInstance()
+
 
         val text2 = ""
         val spannableString2 = SpannableString(text2)
@@ -61,11 +60,10 @@ class AboutActivity : AppCompatActivity() {
         }
         spannableString2.setSpan(clickableSpan2, 0, text2.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-        binding.textViewLinkedin2.text = spannableString2
-        binding.textViewLinkedin2.movementMethod = LinkMovementMethod.getInstance()
+
     }
 
-    private fun openLinkedInProfile(linkedinUrl: String) {
+    fun openLinkedInProfile(linkedinUrl: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(linkedinUrl))
         startActivity(intent)
     }
@@ -83,4 +81,17 @@ class AboutActivity : AppCompatActivity() {
 
         recreate()
     }
+
+    fun openLinkedInProfile(view: View) {
+        val url = "https://www.linkedin.com/in/kumar-r-a53a03117/"
+        val intent = Intent(Intent.ACTION_VIEW,  Uri.parse(url))
+        startActivity(intent)
+    }
+    fun openLinkedInProfile2(view: View) {
+        val url = "https://www.linkedin.com/in/neeraj-bhanot-76638092/"
+        val intent = Intent(Intent.ACTION_VIEW,  Uri.parse(url))
+        startActivity(intent)
+    }
+
+
 }
